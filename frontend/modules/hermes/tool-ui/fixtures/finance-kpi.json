@@ -1,0 +1,11 @@
+{
+  "kind": "finance.kpi.summary",
+  "payload": {
+    "title": "Finance KPIs",
+    "items": [
+      { "key": "revenue", "label": "Revenue", "value": 1280000, "trend": "+8.2%" },
+      { "key": "gross_margin", "label": "Gross Margin", "value": "18.6%", "trend": "+1.1pp" },
+      { "key": "cash_position", "label": "Cash Position", "value": 560000, "trend": "-3.4%" }
+    ]
+  }
+}

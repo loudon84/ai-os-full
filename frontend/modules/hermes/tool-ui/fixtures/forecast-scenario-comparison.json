@@ -1,0 +1,11 @@
+{
+  "kind": "forecast.scenario.comparison",
+  "payload": {
+    "title": "Scenario Comparison",
+    "rows": [
+      { "scenario": "Base", "revenue": 2800000, "endingCash": 950000, "riskLabel": "low" },
+      { "scenario": "Optimistic", "revenue": 3200000, "endingCash": 1200000, "riskLabel": "low" },
+      { "scenario": "Pessimistic", "revenue": 2200000, "endingCash": 400000, "riskLabel": "high" }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "kind": "risk.exposure.table",
+  "payload": {
+    "title": "Risk Exposure",
+    "rows": [
+      { "customerName": "ACME HK", "exposureAmount": 300000, "overdueAmount": 120000, "riskLevel": "high" },
+      { "customerName": "Nova SG", "exposureAmount": 180000, "overdueAmount": 30000, "riskLevel": "medium" }
+    ]
+  }
+}

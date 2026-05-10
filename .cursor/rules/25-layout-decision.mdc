@@ -1,0 +1,62 @@
+---
+description: Every new page must confirm layout before implementation
+globs:
+  - "frontend/app/[lang]/**/*.tsx"
+  - "frontend/modules/**/*.tsx"
+alwaysApply: true
+---
+
+# Layout Decision Gate
+
+When implementing a new feature page or modifying an existing page, you must first confirm the layout.
+
+Before writing code, read:
+
+- AGENTS.md
+- specs/INDEX.md
+- specs/layout-structure.md
+- specs/pages.md if route/page mapping is involved
+
+You must output a `Layout Decision` section before code.
+
+The Layout Decision must include:
+
+1. route type:
+   - dashboard route: app/[lang]/(dashboard)/*
+   - standalone route: app/[lang]/*
+   - shared route group layout
+
+2. selected page template:
+   - WorkspaceDashboardTemplate
+   - DataManagementTemplate
+   - AgentWorkspaceTemplate
+   - ExecutionDetailTemplate
+   - DocumentWorkspaceTemplate
+   - SettingsTemplate
+   - Custom, only if justified
+
+3. shell inheritance:
+   - whether it inherits Header
+   - whether it inherits Sidebar
+   - whether it inherits Footer
+   - whether it inherits ThemeCustomize
+   - whether it inherits Auth protection
+
+4. layout files:
+   - whether page.tsx only is enough
+   - whether page-level layout.tsx is required
+   - whether module-level WorkspaceLayout is required
+
+5. Copilot behavior:
+   - no Copilot page context
+   - register page context only
+   - AI three-column layout required
+   - global Copilot sidebar only, do not create new provider
+
+6. forbidden changes:
+   - do not modify app/[lang]/layout.tsx
+   - do not modify app/[lang]/(dashboard)/layout.tsx
+   - do not modify provider/*
+   - do not modify components/ui/*
+
+Do not generate page code until this Layout Decision is present.

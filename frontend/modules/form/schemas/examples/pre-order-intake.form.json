@@ -1,0 +1,127 @@
+{
+  "kind": "form",
+  "version": "1.0",
+  "formId": "pre_order_intake",
+  "title": "客户预下单信息采集",
+  "description": "用于销售员或 AI 客服采集客户预下单信息。",
+  "schema": {
+    "type": "object",
+    "required": ["customerName", "materialCode", "quantity", "targetPrice", "paymentTerm"],
+    "properties": {
+      "customerName": {
+        "type": "string",
+        "title": "客户名称",
+        "minLength": 2
+      },
+      "materialCode": {
+        "type": "string",
+        "title": "物料型号"
+      },
+      "quantity": {
+        "type": "integer",
+        "title": "数量",
+        "minimum": 1
+      },
+      "targetPrice": {
+        "type": "number",
+        "title": "目标单价",
+        "minimum": 0
+      },
+      "deliveryDate": {
+        "type": "string",
+        "title": "期望交期",
+        "format": "date"
+      },
+      "paymentTerm": {
+        "type": "string",
+        "title": "付款方式",
+        "enum": ["30%预付", "月结30天", "月结60天", "款到发货"]
+      },
+      "logisticsMode": {
+        "type": "string",
+        "title": "付运方式",
+        "enum": ["客户自提", "快递", "空运", "海运", "待确认"]
+      },
+      "remark": {
+        "type": "string",
+        "title": "备注"
+      }
+    }
+  },
+  "uiSchema": {
+    "customerName": {
+      "ui:widget": "TextInput"
+    },
+    "materialCode": {
+      "ui:widget": "TextInput"
+    },
+    "quantity": {
+      "ui:widget": "NumberInput"
+    },
+    "targetPrice": {
+      "ui:widget": "MoneyInput"
+    },
+    "deliveryDate": {
+      "ui:widget": "DateInput"
+    },
+    "paymentTerm": {
+      "ui:widget": "Select"
+    },
+    "logisticsMode": {
+      "ui:widget": "Select"
+    },
+    "remark": {
+      "ui:widget": "Textarea"
+    }
+  },
+  "layout": {
+    "type": "sectioned",
+    "sections": [
+      {
+        "id": "basic",
+        "title": "基础信息",
+        "fields": ["customerName", "materialCode", "quantity"]
+      },
+      {
+        "id": "commercial",
+        "title": "商务条件",
+        "fields": ["targetPrice", "deliveryDate", "paymentTerm", "logisticsMode"]
+      },
+      {
+        "id": "extra",
+        "title": "补充说明",
+        "fields": ["remark"]
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "submit",
+      "label": "提交",
+      "type": "submit",
+      "variant": "default"
+    },
+    {
+      "id": "draft",
+      "label": "保存草稿",
+      "type": "draft",
+      "variant": "secondary"
+    }
+  ],
+  "submit": {
+    "mode": "facade_task",
+    "taskType": "pre_order_intake",
+    "successMessage": "预下单信息已提交"
+  },
+  "runtime": {
+    "allowDebug": true,
+    "allowDraft": true,
+    "maxFields": 50,
+    "maxDepth": 5
+  },
+  "metadata": {
+    "generatedBy": "developer_agent",
+    "tags": ["sales", "order", "intake"]
+  }
+}
+

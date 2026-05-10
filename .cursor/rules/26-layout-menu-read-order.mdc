@@ -1,0 +1,32 @@
+---
+description: Layout / 菜单二开时先读 specs/structure.md，再按需读 layout-structure（Provider 全链）
+globs:
+  - "frontend/components/partials/**/*.{tsx,ts}"
+  - "frontend/provider/dashboard.layout.provider.tsx"
+  - "frontend/store/index.ts"
+  - "frontend/config/menus.ts"
+  - "frontend/config/site.ts"
+alwaysApply: false
+---
+
+# Layout / Menu 二开阅读顺序
+
+当任务涉及 **Dashboard 壳层、Header、Sidebar、Footer、Theme Customizer、站点/菜单配置** 的修改或扩展（layout / menu 二开）时，在写代码或给方案前必须按顺序加载文档，避免漏看 Store 副作用与 Customizer 行为。
+
+## 必读（第一步）
+
+1. **`specs/structure.md`** — DashTail 机制与本仓库对照：Theme Customizer 如何驱动 `useThemeStore` / `useSidebar`、`config/site.ts` 与 `config/menus.ts` 的映射、与官方文档的差异、CSS（`globals.scss`）注意点。
+
+## 按需（第二步）
+
+2. **`specs/layout-structure.md`** — 仅在需要理清 **Provider 全链**、根 `layout` 嵌套、认证/i18n、`DirectionProvider`、`GlobalCopilotProvider` 与 Dashboard 的衔接时再读；不必为纯改 `config/menus.ts` 或单个 Customizer 控件全文通读。
+
+## 与「页面 Layout Decision」规则的关系
+
+- 若任务是 **新增/改业务页面母版与路由壳**，仍须遵守 `25-layout-decision.mdc`（Layout Decision + 禁止改动的 provider/layout 边界）。
+- 本规则聚焦 **壳层与菜单工程（partials + store + menus 配置）** 的二开入口文档顺序。
+
+## 成功标准
+
+- 能说出当前改动影响的是 `layout` 分支、`sidebarType`、`navbarType`/`footerType` 还是菜单数据源中的哪一条链。
+- 若修改了 `setLayout` 或 `content-wrapper` 的 margin 约定，已对照 `specs/structure.md` 中的差异与副作用清单。

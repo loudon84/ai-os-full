@@ -1,0 +1,3 @@
+rule_dirs:
+  - tools/ast-grep/rules
+language: Tsx

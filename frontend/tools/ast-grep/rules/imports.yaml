@@ -1,0 +1,10 @@
+rules:
+  - id: import-declaration
+    language: Tsx
+    rule:
+      pattern: import $$$NAMES from $SOURCE
+
+  - id: import-no-source
+    language: Tsx
+    rule:
+      pattern: import $$$NAMES

@@ -1,0 +1,11 @@
+{
+  "kind": "finance.cashflow.trend",
+  "payload": {
+    "title": "Cashflow Trend",
+    "points": [
+      { "period": "2026-W15", "inflow": 520000, "outflow": 380000, "net": 140000 },
+      { "period": "2026-W16", "inflow": 610000, "outflow": 420000, "net": 190000 },
+      { "period": "2026-W17", "inflow": 580000, "outflow": 450000, "net": 130000 }
+    ]
+  }
+}

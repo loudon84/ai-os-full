@@ -1,0 +1,51 @@
+---
+description: 功能完成后必须同步更新文档索引与 specs，防止文档与代码漂移
+alwaysApply: true
+---
+
+# 功能完成后文档同步规则
+
+任务完成前，Agent 必须检查以下两类文档同步义务，满足后才可结束任务。
+
+## 1. 代码结构变更 → 更新 docs/INDEX.md + AGENTS.md
+
+当本次变更涉及以下任一情形时，必须同步更新 `docs/INDEX.md` 和根级 `AGENTS.md` 第三节「文档目录一句话地图」：
+
+- 新增/删除/重命名 `backend/src/routes/` 或 `backend/src/services/` 下的模块
+- 新增/删除/重命名 `packages/shared/` 或 `packages/db/` 下的导出
+- 新增/删除/重命名 `frontend/modules/<domain>/`
+- 新增/删除 PRD 文档（`docs/prd/`）
+- 新增/删除 specs 文档（`frontend/specs/`）
+- 新增/删除 conventions 文档（`docs/conventions/`）
+- 变更 monorepo 工程配置（workspace 包增删、端口变化、依赖拓扑变化）
+
+更新要求：
+
+- `docs/INDEX.md`：在对应分区表中增删条目，注明大小、触发词、必读场景
+- `AGENTS.md` 第三节：保持与 `docs/INDEX.md` 条目对齐
+
+## 2. 页面/功能变更 → 更新 frontend/specs/
+
+当本次变更涉及以下任一情形时，必须按 `frontend/specs/INDEX.md` 第五节「索引更新规则」同步更新对应的 specs 文件：
+
+- 新增/删除/重命名 `frontend/modules/<domain>/` 下的顶级目录或文件 → 更新 `specs/INDEX.md` §2
+- 新增/删除 `frontend/app/` 路由页面 → 更新 `specs/INDEX.md` §2 对应"挂载页"块 + `specs/pages.md`
+- 新增/删除全局 Hook / Store / util → 更新 `specs/INDEX.md` §3
+- 新增/删除/改组 UI 组件（`components/`） → 更新 `specs/components.md`
+- 变更 Layout / Provider 嵌套结构 → 更新 `specs/layout-structure.md`
+- 变更项目目录结构 → 更新 `specs/project-structure.md`
+
+## 3. 执行流程
+
+```txt
+代码变更完成
+  ├─ 检查是否触发「代码结构变更」→ 是 → 更新 docs/INDEX.md + AGENTS.md
+  ├─ 检查是否触发「页面/功能变更」→ 是 → 更新对应 specs/ 文件
+  └─ 两者都不触发 → 无需更新，结束任务
+```
+
+## 4. 禁止事项
+
+- 禁止在未完成文档同步的情况下声称任务完成
+- 禁止在文档中添加与实际代码不一致的描述
+- 禁止整段复制 PRD/specs 原文到索引中——索引只做指路

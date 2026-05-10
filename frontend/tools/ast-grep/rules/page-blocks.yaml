@@ -1,0 +1,75 @@
+rules:
+  - id: page-header-block
+    language: Tsx
+    rule:
+      pattern: <PageHeader $$$PROPS />
+
+  - id: filter-bar-block
+    language: Tsx
+    rule:
+      pattern: <FilterBar $$$PROPS />
+
+  - id: data-table-block
+    language: Tsx
+    rule:
+      pattern: <DataTable $$$PROPS />
+
+  - id: table-block
+    language: Tsx
+    rule:
+      pattern: <Table $$$PROPS />
+
+  - id: tabs-block
+    language: Tsx
+    rule:
+      pattern: <Tabs $$$PROPS />
+
+  - id: dialog-block
+    language: Tsx
+    rule:
+      pattern: <Dialog $$$PROPS />
+
+  - id: drawer-block
+    language: Tsx
+    rule:
+      pattern: <Drawer $$$PROPS />
+
+  - id: form-block
+    language: Tsx
+    rule:
+      pattern: <Form $$$PROPS />
+
+  - id: card-block
+    language: Tsx
+    rule:
+      pattern: <Card $$$PROPS />
+
+  - id: sheet-block
+    language: Tsx
+    rule:
+      pattern: <Sheet $$$PROPS />
+
+  - id: alert-dialog-block
+    language: Tsx
+    rule:
+      pattern: <AlertDialog $$$PROPS />
+
+  - id: modal-block
+    language: Tsx
+    rule:
+      pattern: <Modal $$PROPS />
+
+  - id: copilot-sidebar-block
+    language: Tsx
+    rule:
+      pattern: <GlobalCopilotSidebar $$PROPS />
+
+  - id: copilot-session-panel-block
+    language: Tsx
+    rule:
+      pattern: <CopilotSessionPanel $$PROPS />
+
+  - id: copilot-trigger-block
+    language: Tsx
+    rule:
+      pattern: <GlobalCopilotTrigger $$PROPS />

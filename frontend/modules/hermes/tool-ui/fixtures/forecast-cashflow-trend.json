@@ -1,0 +1,11 @@
+{
+  "kind": "forecast.cashflow.trend",
+  "payload": {
+    "title": "Forecast Cashflow Trend",
+    "points": [
+      { "period": "2026-W18", "cashIn": 680000, "cashOut": 530000, "endingCash": 710000 },
+      { "period": "2026-W19", "cashIn": 720000, "cashOut": 550000, "endingCash": 880000 },
+      { "period": "2026-W20", "cashIn": 650000, "cashOut": 580000, "endingCash": 950000 }
+    ]
+  }
+}

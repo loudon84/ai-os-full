@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+.next/
+tsconfig.tsbuildinfo
+
+# Turbo
+.turbo/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python (ai-os-api)
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+
+# Storybook
+storybook-static/
+
+# Debug
+debug-storybook.log
+*.log

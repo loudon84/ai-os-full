@@ -1,0 +1,48 @@
+rules:
+  - id: loading-state-prop
+    language: Tsx
+    rule:
+      pattern: $NAME={$$$EXPR}
+    constraints:
+      NAME:
+        regex: "^(is)?[Ll]oading|isFetching|isPending"
+
+  - id: error-state-prop
+    language: Tsx
+    rule:
+      pattern: $NAME={$$$EXPR}
+    constraints:
+      NAME:
+        regex: "^(is)?[Ee]rror|hasError"
+
+  - id: empty-state-prop
+    language: Tsx
+    rule:
+      pattern: $NAME={$$$EXPR}
+    constraints:
+      NAME:
+        regex: "^isEmpty|noData|empty"
+
+  - id: disabled-state-prop
+    language: Tsx
+    rule:
+      pattern: $NAME={$$EXPR}
+    constraints:
+      NAME:
+        regex: "^(is)?[Dd]isabled"
+
+  - id: status-state-prop
+    language: Tsx
+    rule:
+      pattern: $NAME={$$EXPR}
+    constraints:
+      NAME:
+        regex: "^status$"
+
+  - id: dangerous-state-prop
+    language: Tsx
+    rule:
+      pattern: $NAME={$$EXPR}
+    constraints:
+      NAME:
+        regex: "^dangerous$"

@@ -1,0 +1,310 @@
+openapi: 3.0.3
+info:
+  title: Document Datasheet AI (Facade)
+  version: 0.1.0
+servers:
+  - url: /api/v1
+paths:
+  /document-ai/interactions:
+    post:
+      summary: Create AI interaction and task
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: false
+          schema: { type: string }
+        - in: header
+          name: X-Correlation-Id
+          required: false
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateInteractionRequest"
+      responses:
+        "200":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateInteractionResponse"
+  /document-ai/interactions/{interaction_id}:
+    get:
+      summary: Get interaction
+      parameters:
+        - in: path
+          name: interaction_id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Interaction"
+        "404": { description: Not found }
+  /document-ai/interactions/{interaction_id}/events/stream:
+    get:
+      summary: Stream execution events (SSE)
+      parameters:
+        - in: path
+          name: interaction_id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: text/event-stream
+  /document-ai/patches/validate:
+    post:
+      summary: Validate patch returned by agent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchValidateRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PatchValidateResponse"
+  /document-ai/patches/{patch_id}:
+    get:
+      summary: Get patch
+      parameters:
+        - in: path
+          name: patch_id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Patch"
+        "404": { description: Not found }
+  /document-ai/patches/{patch_id}/decision:
+    post:
+      summary: Record patch apply decision
+      parameters:
+        - in: path
+          name: patch_id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchDecisionRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PatchDecisionResponse"
+components:
+  schemas:
+    SheetRangeContext:
+      type: object
+      required: [workbookId, worksheetId, worksheetName, range, values, sampleLimit, selectionHash]
+      properties:
+        workbookId: { type: string }
+        worksheetId: { type: string }
+        worksheetName: { type: string }
+        range:
+          type: object
+          required: [startRow, endRow, startColumn, endColumn]
+          properties:
+            startRow: { type: integer }
+            endRow: { type: integer }
+            startColumn: { type: integer }
+            endColumn: { type: integer }
+            a1Notation: { type: string, nullable: true }
+        headers:
+          type: array
+          items: { type: string }
+          nullable: true
+        values:
+          type: array
+          items:
+            type: array
+            items:
+              oneOf:
+                - { type: string }
+                - { type: number }
+                - { type: boolean }
+                - { type: "null" }
+        formulas:
+          type: array
+          items:
+            type: array
+            items: { type: string, nullable: true }
+          nullable: true
+        sampleLimit:
+          type: object
+          required: [maxRows, maxColumns, truncated]
+          properties:
+            maxRows: { type: integer }
+            maxColumns: { type: integer }
+            truncated: { type: boolean }
+        selectionHash: { type: string }
+    SpreadsheetPatchBase:
+      type: object
+      required: [patchId, interactionId, workbookId, op, reason, riskLevel]
+      properties:
+        patchId: { type: string }
+        interactionId: { type: string }
+        workbookId: { type: string }
+        worksheetId: { type: string, nullable: true }
+        op:
+          type: string
+          enum:
+            - set_cell_values
+            - set_cell_formulas
+        reason: { type: string }
+        riskLevel:
+          type: string
+          enum: [low, medium, high]
+        beforeSelectionHash: { type: string, nullable: true }
+    SetCellValuesPatch:
+      allOf:
+        - $ref: "#/components/schemas/SpreadsheetPatchBase"
+        - type: object
+          required: [op, range, values]
+          properties:
+            op: { type: string, enum: [set_cell_values] }
+            range:
+              type: object
+              required: [startRow, startColumn, rowCount, columnCount]
+              properties:
+                startRow: { type: integer }
+                startColumn: { type: integer }
+                rowCount: { type: integer }
+                columnCount: { type: integer }
+            values:
+              type: array
+              items:
+                type: array
+                items:
+                  oneOf:
+                    - { type: string }
+                    - { type: number }
+                    - { type: boolean }
+                    - { type: "null" }
+    SetCellFormulasPatch:
+      allOf:
+        - $ref: "#/components/schemas/SpreadsheetPatchBase"
+        - type: object
+          required: [op, range, formulas]
+          properties:
+            op: { type: string, enum: [set_cell_formulas] }
+            range:
+              type: object
+              required: [startRow, startColumn, rowCount, columnCount]
+              properties:
+                startRow: { type: integer }
+                startColumn: { type: integer }
+                rowCount: { type: integer }
+                columnCount: { type: integer }
+            formulas:
+              type: array
+              items:
+                type: array
+                items: { type: string }
+    SpreadsheetPatch:
+      oneOf:
+        - $ref: "#/components/schemas/SetCellValuesPatch"
+        - $ref: "#/components/schemas/SetCellFormulasPatch"
+      discriminator:
+        propertyName: op
+        mapping:
+          set_cell_values: "#/components/schemas/SetCellValuesPatch"
+          set_cell_formulas: "#/components/schemas/SetCellFormulasPatch"
+    CreateInteractionRequest:
+      type: object
+      required: [document_id, workbook_id, version_id, session_id, mode, prompt, sheet_context]
+      properties:
+        document_id: { type: string }
+        workbook_id: { type: string }
+        version_id: { type: string }
+        session_id: { type: string }
+        mode: { type: string }
+        prompt: { type: string }
+        actor: { type: object, nullable: true }
+        org_scope: { type: object, nullable: true }
+        sheet_context: { $ref: "#/components/schemas/SheetRangeContext" }
+    CreateInteractionResponse:
+      type: object
+      required: [interaction_id, task_id, execution_id, status, stream_url]
+      properties:
+        interaction_id: { type: string }
+        task_id: { type: string }
+        execution_id: { type: string }
+        status: { type: string }
+        stream_url: { type: string }
+        proposed_patch_id: { type: string, nullable: true }
+    Interaction:
+      type: object
+      required: [interaction_id, document_id, workbook_id, version_id, session_id, mode, prompt, status]
+      properties:
+        interaction_id: { type: string }
+        document_id: { type: string }
+        workbook_id: { type: string }
+        version_id: { type: string }
+        session_id: { type: string }
+        mode: { type: string }
+        prompt: { type: string }
+        status: { type: string }
+        result_summary: { type: string, nullable: true }
+        error: { type: object, nullable: true }
+    PatchValidateRequest:
+      type: object
+      required: [interaction_id, patch]
+      properties:
+        interaction_id: { type: string }
+        patch: { $ref: "#/components/schemas/SpreadsheetPatch" }
+    PatchValidateResponse:
+      type: object
+      required: [valid, patch_id, risk_level, affected_cells, warnings]
+      properties:
+        valid: { type: boolean }
+        patch_id: { type: string }
+        risk_level: { type: string, enum: [low, medium, high] }
+        affected_cells: { type: integer }
+        warnings:
+          type: array
+          items: { type: string }
+    Patch:
+      type: object
+      required: [patch_id, interaction_id, patch_json, risk_level, validation_status, apply_status]
+      properties:
+        patch_id: { type: string }
+        interaction_id: { type: string }
+        patch_json: { type: object }
+        risk_level: { type: string }
+        validation_status: { type: string }
+        apply_status: { type: string }
+    PatchDecisionRequest:
+      type: object
+      required: [decision, actor_user_id, client_applied]
+      properties:
+        decision: { type: string, enum: [approved, rejected] }
+        actor_user_id: { type: string }
+        client_applied: { type: boolean }
+        applied_at_client_version: { type: string, nullable: true }
+        result: { type: object, nullable: true }
+    PatchDecisionResponse:
+      type: object
+      required: [patch_id, apply_status, audit_event_id]
+      properties:
+        patch_id: { type: string }
+        apply_status: { type: string }
+        audit_event_id: { type: string }

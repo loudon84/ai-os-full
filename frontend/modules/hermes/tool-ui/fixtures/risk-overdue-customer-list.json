@@ -1,0 +1,10 @@
+{
+  "kind": "risk.overdue.customer-list",
+  "payload": {
+    "title": "Overdue Customers",
+    "rows": [
+      { "customerName": "ACME HK", "orderNo": "SO-2026-001", "overdueDays": 45, "amount": 120000, "owner": "Alice" },
+      { "customerName": "Beta Corp", "orderNo": "SO-2026-003", "overdueDays": 12, "amount": 35000, "owner": "Bob" }
+    ]
+  }
+}

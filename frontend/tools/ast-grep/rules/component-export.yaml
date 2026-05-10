@@ -1,0 +1,20 @@
+rules:
+  - id: export-function-component
+    language: Tsx
+    rule:
+      pattern: export function $NAME($$$ARGS) { $$$BODY }
+
+  - id: export-const-arrow-component
+    language: Tsx
+    rule:
+      pattern: export const $NAME = ($$$ARGS) => $$$BODY
+
+  - id: export-default-identifier
+    language: Tsx
+    rule:
+      pattern: export default $NAME
+
+  - id: named-export-list
+    language: Tsx
+    rule:
+      pattern: export { $$$NAMES }

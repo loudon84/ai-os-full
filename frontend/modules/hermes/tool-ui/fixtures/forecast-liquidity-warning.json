@@ -1,0 +1,10 @@
+{
+  "kind": "forecast.liquidity.warning",
+  "payload": {
+    "level": "medium",
+    "message": "Projected ending cash may fall below weekly operating threshold in 2 weeks",
+    "suggestedAction": "Accelerate receivable collection and delay non-essential purchase orders",
+    "threshold": 300000,
+    "actualValue": 260000
+  }
+}

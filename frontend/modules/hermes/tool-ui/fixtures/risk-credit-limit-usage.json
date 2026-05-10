@@ -1,0 +1,7 @@
+{
+  "kind": "risk.credit.limit-usage",
+  "payload": [
+    { "customerName": "ACME HK", "creditLimit": 500000, "usedAmount": 300000, "usageRatio": 0.6, "remainingAmount": 200000 },
+    { "customerName": "Nova SG", "creditLimit": 250000, "usedAmount": 180000, "usageRatio": 0.72, "remainingAmount": 70000 }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "kind": "form",
+  "version": "1.0",
+  "formId": "cash_daily_report",
+  "title": "资金日报参数表单",
+  "description": "用于生成资金日报的参数收集表单（日期范围、币种、口径等）。",
+  "schema": {
+    "type": "object",
+    "required": ["reportDate", "currency", "scope"],
+    "properties": {
+      "reportDate": {
+        "type": "string",
+        "title": "报告日期",
+        "format": "date"
+      },
+      "currency": {
+        "type": "string",
+        "title": "币种",
+        "enum": ["CNY", "USD", "EUR"]
+      },
+      "scope": {
+        "type": "string",
+        "title": "统计口径",
+        "enum": ["集团口径", "事业部口径", "法人口径"]
+      },
+      "includeForecast": {
+        "type": "boolean",
+        "title": "包含预测数据"
+      },
+      "remark": {
+        "type": "string",
+        "title": "备注"
+      }
+    }
+  },
+  "uiSchema": {
+    "reportDate": {
+      "ui:widget": "DateInput"
+    },
+    "currency": {
+      "ui:widget": "Select"
+    },
+    "scope": {
+      "ui:widget": "Radio"
+    },
+    "includeForecast": {
+      "ui:widget": "Checkbox"
+    },
+    "remark": {
+      "ui:widget": "Textarea"
+    }
+  },
+  "layout": {
+    "type": "single-column"
+  },
+  "actions": [
+    {
+      "id": "submit",
+      "label": "生成日报",
+      "type": "submit",
+      "variant": "default"
+    }
+  ],
+  "submit": {
+    "mode": "portal_api",
+    "endpoint": "/api/forms/submit",
+    "method": "POST",
+    "successMessage": "资金日报参数已提交"
+  },
+  "runtime": {
+    "allowDebug": true,
+    "allowDraft": false,
+    "maxFields": 30,
+    "maxDepth": 4
+  },
+  "metadata": {
+    "generatedBy": "developer_agent",
+    "tags": ["finance", "report", "cash"]
+  }
+}
+

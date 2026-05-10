@@ -1,0 +1,1258 @@
+﻿[
+  {
+    "name": "Accordion",
+    "path": "components/ui/accordion.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Affix",
+    "path": "components/ui/affix.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "AlertDialog",
+    "path": "components/ui/alert-dialog.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Alert",
+    "path": "components/ui/alert.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "AspectRatio",
+    "path": "components/ui/aspect-ratio.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Avatar",
+    "path": "components/ui/avatar.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Badge",
+    "path": "components/ui/badge.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Breadcrumbs",
+    "path": "components/ui/breadcrumbs.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Button",
+    "path": "components/ui/button.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Calendar",
+    "path": "components/ui/calendar.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "CardSnippet",
+    "path": "components/ui/card-snippet.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Card",
+    "path": "components/ui/card.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Carousel",
+    "path": "components/ui/carousel.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Checkbox",
+    "path": "components/ui/checkbox.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Cleave",
+    "path": "components/ui/cleave.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Collapsible",
+    "path": "components/ui/collapsible.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Command",
+    "path": "components/ui/command.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Dialog",
+    "path": "components/ui/dialog.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Drawer",
+    "path": "components/ui/drawer.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "DropdownMenu",
+    "path": "components/ui/dropdown-menu.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Form",
+    "path": "components/ui/form.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "HoverCard",
+    "path": "components/ui/hover-card.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "InputGroup",
+    "path": "components/ui/input-group.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Input",
+    "path": "components/ui/input.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Kbd",
+    "path": "components/ui/kbd.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Label",
+    "path": "components/ui/label.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Menubar",
+    "path": "components/ui/menubar.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "NavigationMenu",
+    "path": "components/ui/navigation-menu.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Pagination",
+    "path": "components/ui/pagination.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Popover",
+    "path": "components/ui/popover.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Progress",
+    "path": "components/ui/progress.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "RadioGroup",
+    "path": "components/ui/radio-group.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Rating",
+    "path": "components/ui/rating.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Resizable",
+    "path": "components/ui/resizable.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "ScrollArea",
+    "path": "components/ui/scroll-area.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Select",
+    "path": "components/ui/select.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Separator",
+    "path": "components/ui/separator.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Sheet",
+    "path": "components/ui/sheet.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Skeleton",
+    "path": "components/ui/skeleton.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Slider",
+    "path": "components/ui/slider.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Sonner",
+    "path": "components/ui/sonner.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Steps",
+    "path": "components/ui/steps.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Switch",
+    "path": "components/ui/switch.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Table",
+    "path": "components/ui/table.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Tabs",
+    "path": "components/ui/tabs.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Textarea",
+    "path": "components/ui/textarea.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Timeline",
+    "path": "components/ui/timeline.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Toast",
+    "path": "components/ui/toast.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Toaster",
+    "path": "components/ui/toaster.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Toggle",
+    "path": "components/ui/toggle.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Tooltip",
+    "path": "components/ui/tooltip.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Tree",
+    "path": "components/ui/tree.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Watermark",
+    "path": "components/ui/watermark/watermark.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "LoginForm",
+    "path": "components/auth/login-form.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "VerifyForm",
+    "path": "components/auth/verify-form.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "ListFileCard",
+    "path": "components/files/list-file-card.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "SingleFileCard",
+    "path": "components/files/single-file-card.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "ViewFiles",
+    "path": "components/files/view-files.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "Blank",
+    "path": "components/blank.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "DashboardSelect",
+    "path": "components/dasboard-select.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "DashboardDropdown",
+    "path": "components/dashboard-dropdown.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "DatePickerWithRange",
+    "path": "components/date-picker-with-range.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "DeleteConfirmationDialog",
+    "path": "components/delete-confirmation-dialog.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "ErrorBlock",
+    "path": "components/error-block.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "HeaderSearch",
+    "path": "components/header-search.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "LayoutLoader",
+    "path": "components/layout-loader.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "LandingPageIndex",
+    "path": "components/landing-page/index.tsx",
+    "level": "page",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "AboutDashtail",
+    "path": "components/landing-page/about-dashtail.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "AboutUs",
+    "path": "components/landing-page/about-us.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "AllComponents",
+    "path": "components/landing-page/all-components.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "Contact",
+    "path": "components/landing-page/contact.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "CustomProject",
+    "path": "components/landing-page/custom-project.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "FAQ",
+    "path": "components/landing-page/faq.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "FigmaKit",
+    "path": "components/landing-page/figma-kit.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "LandingFooter",
+    "path": "components/landing-page/footer.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "Hero",
+    "path": "components/landing-page/hero.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "PricingPlan",
+    "path": "components/landing-page/pricing-plan.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "ProjectTools",
+    "path": "components/landing-page/project-tools.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "Stats",
+    "path": "components/landing-page/stats.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "ColorSchemasIndex",
+    "path": "components/landing-page/color-schemas/index.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "ThemeChange",
+    "path": "components/landing-page/color-schemas/theme-change.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "UsersStat",
+    "path": "components/landing-page/color-schemas/users-stat.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "Workload",
+    "path": "components/landing-page/color-schemas/workload.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "LandingHeaderIndex",
+    "path": "components/landing-page/header/index.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "NavMenu",
+    "path": "components/landing-page/header/nav-menu.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "ShowcaseIndex",
+    "path": "components/landing-page/showcase/index.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "ShowcaseContent",
+    "path": "components/landing-page/showcase/showcase-content.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "TaskBoardIndex",
+    "path": "components/task-board/index.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "AddTask",
+    "path": "components/task-board/add-task.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "Board",
+    "path": "components/task-board/board.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "CreateBoard",
+    "path": "components/task-board/create-borad.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "TaskHeader",
+    "path": "components/task-board/task-header.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "Task",
+    "path": "components/task-board/task.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "AssignList",
+    "path": "components/task-board/common/assign-list.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": true
+  },
+  {
+    "name": "AssignMembers",
+    "path": "components/task-board/common/assign-members.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": true
+  },
+  {
+    "name": "AssignTags",
+    "path": "components/task-board/common/assign-tags.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": true
+  },
+  {
+    "name": "Dependency",
+    "path": "components/task-board/common/dependency.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": true
+  },
+  {
+    "name": "Priority",
+    "path": "components/task-board/common/priority.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": true
+  },
+  {
+    "name": "StoryPoint",
+    "path": "components/task-board/common/story-point.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": true
+  },
+  {
+    "name": "TaskDate",
+    "path": "components/task-board/common/task-date.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": true
+  },
+  {
+    "name": "TaskTable",
+    "path": "components/task-board/task-list/task-table.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": true
+  },
+  {
+    "name": "TaskListIndex",
+    "path": "components/task-board/task-list/index.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "TaskSheetIndex",
+    "path": "components/task-board/task-sheet/index.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "SheetActions",
+    "path": "components/task-board/task-sheet/sheet-actions.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "SheetTitleDesc",
+    "path": "components/task-board/task-sheet/sheet-title-desc.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "TaskSheetHeader",
+    "path": "components/task-board/task-sheet/task-sheet-header.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "FooterStyle",
+    "path": "components/partials/customizer/footer-style.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "HeaderStyle",
+    "path": "components/partials/customizer/header-style.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "Radius",
+    "path": "components/partials/customizer/radius.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "RTLSwitch",
+    "path": "components/partials/customizer/rtl-switch.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "SelectLayout",
+    "path": "components/partials/customizer/select-layout.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "SelectTheme",
+    "path": "components/partials/customizer/select-theme.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "SidebarChange",
+    "path": "components/partials/customizer/sidebar-change.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "SidebarImage",
+    "path": "components/partials/customizer/sidebar-image.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": false
+  },
+  {
+    "name": "ThemeChangeCustomizer",
+    "path": "components/partials/customizer/theme-change.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "ThemeCustomizer",
+    "path": "components/partials/customizer/theme-customizer.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "HeaderIndex",
+    "path": "components/partials/header/index.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "FullScreen",
+    "path": "components/partials/header/full-screen.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "HorizontalHeader",
+    "path": "components/partials/header/horizontal-header.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "HorizontalMenu",
+    "path": "components/partials/header/horizontal-menu.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "Inbox",
+    "path": "components/partials/header/inbox.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "Language",
+    "path": "components/partials/header/language.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "MobileMenuHandler",
+    "path": "components/partials/header/mobile-menu-handler.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "NotificationMessage",
+    "path": "components/partials/header/notification-message.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "ProfileInfo",
+    "path": "components/partials/header/profile-info.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "ThemeButton",
+    "path": "components/partials/header/theme-button.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "VerticalHeader",
+    "path": "components/partials/header/vertical-header.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "ClassicHeader",
+    "path": "components/partials/header/layout/classic-header.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "FooterIndex",
+    "path": "components/partials/footer/index.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "FooterLayout",
+    "path": "components/partials/footer/footer-layout.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "MobileFooter",
+    "path": "components/partials/footer/mobile-footer.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "SidebarIndex",
+    "path": "components/partials/sidebar/index.tsx",
+    "level": "composite",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "DashboardPage",
+    "path": "app/[lang]/(dashboard)/(home)/dashboard/page.tsx",
+    "level": "page",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "EcommercePage",
+    "path": "app/[lang]/(dashboard)/(home)/ecommerce/page.tsx",
+    "level": "page",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "ProjectPage",
+    "path": "app/[lang]/(dashboard)/(home)/project/page.tsx",
+    "level": "page",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "CalendarPage",
+    "path": "app/[lang]/(dashboard)/(apps)/calendar/page.tsx",
+    "level": "page",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "ChatPage",
+    "path": "app/[lang]/(dashboard)/(apps)/chat/page.tsx",
+    "level": "page",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "EmailPage",
+    "path": "app/[lang]/(dashboard)/(apps)/email/page.tsx",
+    "level": "page",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "KanbanPage",
+    "path": "app/[lang]/(dashboard)/(apps)/kanban/page.tsx",
+    "level": "page",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "ProjectsPage",
+    "path": "app/[lang]/(dashboard)/(apps)/projects/page.tsx",
+    "level": "page",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "TaskPage",
+    "path": "app/[lang]/(dashboard)/(apps)/task/page.tsx",
+    "level": "page",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "LoginPage",
+    "path": "app/[lang]/auth/(login)/login/page.tsx",
+    "level": "page",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "RegisterPage",
+    "path": "app/[lang]/auth/(register)/register/page.tsx",
+    "level": "page",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "ForgotPage",
+    "path": "app/[lang]/auth/(forgot)/forgot/page.tsx",
+    "level": "page",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "Error404Page",
+    "path": "app/[lang]/error-page/404/page.tsx",
+    "level": "page",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "Error500Page",
+    "path": "app/[lang]/error-page/500/page.tsx",
+    "level": "page",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "BlankPage",
+    "path": "app/[lang]/(dashboard)/blank/page.tsx",
+    "level": "page",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "UserProfilePage",
+    "path": "app/[lang]/(dashboard)/user-profile/page.tsx",
+    "level": "page",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "InvoiceListPage",
+    "path": "app/[lang]/(dashboard)/(invoice)/invoice-list/page.tsx",
+    "level": "page",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "DataTablePage",
+    "path": "app/[lang]/(dashboard)/(tables)/data-table/page.tsx",
+    "level": "page",
+    "hasStory": false,
+    "hasAutodocs": false,
+    "isReusable": false
+  },
+  {
+    "name": "GlobalCopilotTrigger",
+    "path": "modules/copilotkit/components/GlobalCopilotTrigger.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "GlobalCopilotSidebar",
+    "path": "modules/copilotkit/components/GlobalCopilotSidebar.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "CopilotSessionPanel",
+    "path": "modules/copilotkit/components/CopilotSessionPanel.tsx",
+    "level": "composite",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "CopilotMessageList",
+    "path": "modules/copilotkit/components/CopilotMessageList.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "CopilotComposer",
+    "path": "modules/copilotkit/components/CopilotComposer.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "CopilotContextCard",
+    "path": "modules/copilotkit/components/CopilotContextCard.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  },
+  {
+    "name": "CopilotActionList",
+    "path": "modules/copilotkit/components/CopilotActionList.tsx",
+    "level": "base",
+    "hasStory": true,
+    "hasAutodocs": true,
+    "isReusable": true
+  }
+]

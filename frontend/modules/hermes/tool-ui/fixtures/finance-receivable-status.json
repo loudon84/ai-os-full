@@ -1,0 +1,9 @@
+{
+  "kind": "finance.receivable.status",
+  "payload": {
+    "rows": [
+      { "orderNo": "SO-2026-001", "customerName": "ACME HK", "amount": 120000, "status": "overdue", "dueDate": "2026-03-15" },
+      { "orderNo": "SO-2026-002", "customerName": "Nova SG", "amount": 85000, "status": "pending", "dueDate": "2026-04-20" }
+    ]
+  }
+}

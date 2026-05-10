@@ -1,0 +1,24 @@
+rules:
+  - id: type-props-declaration
+    language: Tsx
+    rule:
+      pattern: type $NAME = $BODY
+    constraints:
+      NAME:
+        regex: "Props$"
+
+  - id: interface-props-declaration
+    language: Tsx
+    rule:
+      pattern: interface $NAME { $$$BODY }
+    constraints:
+      NAME:
+        regex: "Props$"
+
+  - id: interface-props-extends
+    language: Tsx
+    rule:
+      pattern: interface $NAME extends $$$BASE { $$$BODY }
+    constraints:
+      NAME:
+        regex: "Props$"

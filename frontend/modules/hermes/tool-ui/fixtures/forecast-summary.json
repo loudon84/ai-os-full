@@ -1,0 +1,10 @@
+{
+  "kind": "forecast.summary",
+  "payload": {
+    "period": "2026-W18",
+    "cashIn": 680000,
+    "cashOut": 530000,
+    "endingCash": 710000,
+    "confidence": "0.81"
+  }
+}

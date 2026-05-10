@@ -1,0 +1,10 @@
+{
+  "kind": "risk.alert.summary",
+  "payload": {
+    "title": "Risk Alert",
+    "level": "high",
+    "topic": "A/R concentration",
+    "impact": "Top 3 customers account for 61% of outstanding receivables",
+    "recommendation": "Review limit policy and accelerate collection"
+  }
+}
