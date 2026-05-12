@@ -36,6 +36,9 @@ portal/
 │   │   ├── page.tsx            #     根页面 (重定向)
 │   │   ├── error.tsx           #     全局错误边界
 │   │   ├── not-found.tsx       #     404 页面
+│   │   ├── workspace/          #     个人工作台（WorkspaceLayoutProvider，与 dashboard 平级）
+│   │   ├── hermes/             #     Hermes（同上）
+│   │   ├── email/              #     邮件工作区（同上）
 │   │   ├── (dashboard)/        #     Dashboard 路由组 (需登录)
 │   │   ├── auth/               #     认证页面 (无需登录)
 │   │   ├── error-page/         #     错误页面 (401~503)
@@ -80,6 +83,7 @@ portal/
 ├── provider/                   # Provider 层
 │   ├── auth.provider.tsx       #   NextAuth SessionProvider
 │   ├── dashboard.layout.provider.tsx  # Dashboard 布局 Provider
+│   ├── workspace.layout.provider.tsx  # 个人工作台布局（Header + flex 主区）
 │   ├── direction.provider.tsx  #   RTL/LTR 方向 Provider
 │   ├── providers.client.tsx    #   React Query Provider
 │   └── providers.tsx           #   主题+Toast+Body Provider

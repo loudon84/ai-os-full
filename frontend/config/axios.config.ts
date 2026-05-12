@@ -16,7 +16,7 @@
  */
 import axios from "axios";
 
-import { tokenManager } from "@/modules/auth/lib/token-manager";
+import { tokenManager } from "@/modules/auth/services/token-manager";
 
 const isBrowser = typeof window !== "undefined";
 
@@ -51,7 +51,18 @@ api.interceptors.request.use(async (config) => {
   if (!config.baseURL) {
     config.baseURL = isBrowser ? "/api" : await resolveServerBaseURL();
   }
-  const token = tokenManager.getAccessToken();
+  let token = tokenManager.getAccessToken();
+  if (!token && isBrowser) {
+    try {
+      const { getSession } = await import("next-auth/react");
+      const session = await getSession();
+      token = (session as any)?.accessToken ?? null;
+      if (token) {
+        const refreshToken = (session as any)?.refreshToken ?? "";
+        tokenManager.setTokens(token, refreshToken);
+      }
+    } catch {}
+  }
   if (token) {
     config.headers = config.headers ?? {};
     if (!config.headers.Authorization) {
@@ -60,3 +71,33 @@ api.interceptors.request.use(async (config) => {
   }
   return config;
 });
+
+api.interceptors.response.use(
+  (res) => res,
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response?.status === 401 && isBrowser && !originalRequest._retry) {
+      originalRequest._retry = true;
+      const refreshToken = tokenManager.getRefreshToken();
+      if (refreshToken) {
+        try {
+          const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api/v1";
+          const res = await fetch(`${API_BASE}/auth/refresh`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ refresh_token: refreshToken }),
+          });
+          if (res.ok) {
+            const data = await res.json();
+            tokenManager.setTokens(data.access_token, data.refresh_token);
+            originalRequest.headers.Authorization = `Bearer ${data.access_token}`;
+            return api(originalRequest);
+          }
+        } catch {}
+      }
+      tokenManager.clear();
+      window.location.href = "/auth/login";
+    }
+    return Promise.reject(error);
+  },
+);

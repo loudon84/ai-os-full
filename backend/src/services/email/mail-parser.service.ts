@@ -57,6 +57,7 @@ export class MailParserService {
       attachments,
       flags: [],
       folderPath: params.folderPath,
+      folderSpecialUse: null,
     };
   }
 }

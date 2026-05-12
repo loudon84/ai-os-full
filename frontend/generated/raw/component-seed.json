@@ -1097,7 +1097,7 @@
   },
   {
     "name": "EmailPage",
-    "path": "app/[lang]/(dashboard)/(apps)/email/page.tsx",
+    "path": "app/[lang]/email/page.tsx",
     "level": "page",
     "hasStory": false,
     "hasAutodocs": false,

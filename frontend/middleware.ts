@@ -50,9 +50,25 @@ async function proxyTo(request: NextRequest, targetBase: string): Promise<Respon
   const cookie = request.headers.get("cookie");
   if (cookie) headers["cookie"] = cookie;
 
-  const tenantId = request.headers.get("x-tenant-id") || process.env.DEFAULT_TENANT_ID;
-  const workspaceId = request.headers.get("x-workspace-id") || process.env.DEFAULT_WORKSPACE_ID;
-  const userId = request.headers.get("x-user-id") || process.env.DEFAULT_USER_ID;
+  if (!auth) {
+    const tokenCookie = cookie?.match(/tj_auth_token=([^;]+)/)?.[1]
+      ?? cookie?.match(/next-auth\.session-token=([^;]+)/)?.[1];
+    if (tokenCookie) {
+      try {
+        const payload = JSON.parse(atob(tokenCookie.split(".")[1]));
+        if (payload.workspaceId) {
+          headers["x-workspace-id"] = payload.workspaceId;
+        }
+        if (payload.sub) {
+          headers["x-user-id"] = payload.sub;
+        }
+      } catch {}
+    }
+  }
+
+  const tenantId = request.headers.get("x-tenant-id") || (auth ? undefined : process.env.DEFAULT_TENANT_ID);
+  const workspaceId = request.headers.get("x-workspace-id") || (auth ? undefined : process.env.DEFAULT_WORKSPACE_ID);
+  const userId = request.headers.get("x-user-id") || (auth ? undefined : process.env.DEFAULT_USER_ID);
   if (tenantId) headers["x-tenant-id"] = tenantId;
   if (workspaceId) headers["x-workspace-id"] = workspaceId;
   if (userId) headers["x-user-id"] = userId;

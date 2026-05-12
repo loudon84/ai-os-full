@@ -14,6 +14,7 @@ import type { EmailMessageResponse } from "@portal/shared";
 import { EMAIL_PERMISSION } from "../constants/permissions";
 import { useEmailPermission } from "../hooks/use-email-permission";
 import { deleteEmailMessage, updateEmailMessage } from "../services/email-api";
+import { useEmailStore } from "../stores/email-store";
 
 interface EmailListProps {
   message: EmailMessageResponse;
@@ -31,7 +32,8 @@ function listDate(m: EmailMessageResponse): string {
 
 export function EmailList({ message, onOpen, onMailboxChanged }: EmailListProps) {
   const canMutate = useEmailPermission(EMAIL_PERMISSION.MESSAGE_MUTATE);
-  const [isChecked, setIsChecked] = useState(false);
+  const selectedIds = useEmailStore((s) => s.selectedMessageIds);
+  const toggleMessageSelection = useEmailStore((s) => s.toggleMessageSelection);
   const [open, setOpen] = useState(false);
   const [starPending, setStarPending] = useState(false);
 
@@ -40,6 +42,7 @@ export function EmailList({ message, onOpen, onMailboxChanged }: EmailListProps)
   const label = listFromLabel(message);
   const text = message.snippet ?? message.text_body ?? "";
   const dateStr = listDate(message);
+  const isSelected = selectedIds.has(id);
 
   const toggleStar = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -81,17 +84,16 @@ export function EmailList({ message, onOpen, onMailboxChanged }: EmailListProps)
       <div
         className={cn(
           "group relative flex cursor-pointer items-center border-b border-default-100 px-6 py-5 hover:bg-primary/10",
-          { "bg-primary/10 hover:bg-primary/10": isChecked },
+          { "bg-primary/10 hover:bg-primary/10": isSelected },
           !message.is_read && "font-semibold",
         )}
         onClick={() => onOpen(id)}
       >
         <Checkbox
           className="border-default-300 p-0 ltr:mr-6 rtl:ml-6"
-          onClick={(event) => {
-            event.stopPropagation();
-            setIsChecked((value) => !value);
-          }}
+          checked={isSelected}
+          onCheckedChange={() => toggleMessageSelection(id)}
+          onClick={(event) => event.stopPropagation()}
         />
         <div className="ltr:mr-6 rtl:ml-6" onClick={toggleStar}>
           <Icon

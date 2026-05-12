@@ -39,7 +39,31 @@ app/[lang]/(dashboard)/layout.tsx (DashboardLayout - 服务端组件)
   |   |   |   |   |-- <HeaderSearch>        头部搜索弹窗
   |   |   |-- <Footer>                      页脚
   |   |   |-- <ThemeCustomize>              主题定制面板 (Sheet 侧滑)
+
+app/[lang]/workspace/layout.tsx（个人工作台 — 与 `(dashboard)` 平级）
+  |-- getServerSession + redirect 同 DashboardLayout
+  |-- <WorkspaceLayoutProvider trans={trans}>
+  |   |-- 未挂载 → <LayoutLoader />
+  |   |-- flex h-screen flex-col：Header（flex-shrink-0）+ main（flex-1 min-h-0 overflow-auto，class 含 `workspace-layout`）
+  |   |-- main 的 marginRight 随 Global Copilot 开关（与 dashboard 同源 store）
+  |   |-- `globals.scss`：`.workspace-layout .app-height` 覆盖全屏高度扣除（桌面 `-8rem`、≤768px `-7.6rem`），区别于 dashboard 下 `.app-height`
+  |   |-- <HeaderSearch>
+  |-- 无 Sidebar / Footer / ThemeCustomize；全局 Copilot 仍在 RootLayout
+
+app/[lang]/hermes/layout.tsx（Hermes — 与 `(dashboard)` 平级）
+  |-- getServerSession + redirect 同 DashboardLayout
+  |-- <WorkspaceLayoutProvider trans={trans}>
+  |   |-- 同 workspace：仅 Header + flex 主区 + HeaderSearch + Copilot 右侧避让
+  |-- Hermes 子路由：/hermes、/hermes/sessions、/hermes/skills、/hermes/settings、/hermes/runtime、/hermes/dev/*
+
+app/[lang]/email/layout.tsx（Email — 与 `(dashboard)` 平级）
+  |-- getServerSession + redirect 同 DashboardLayout
+  |-- <WorkspaceLayoutProvider trans={trans}>
+  |   |-- 同 workspace：仅 Header + flex 主区 + HeaderSearch + Copilot 右侧避让
+  |-- Email 子路由：/email、/email/settings
 ```
+
+**EmailWorkspace 内部**：`ResizablePanelGroup` 横向三栏（窄屏为「主列表/详情」+「AI Panel」两栏比例约 72/28）：侧栏文件夹（宽屏）· 中间列表或详情（`EmailDetailPane` = 线程视图 + 正文 + `EmailActionBar`）· 右侧 `EmailAIPanel`（可折叠，`react-resizable-panels:layout` cookie 存 **3 个** size）。撰写支持浮层与全屏；全屏右侧为 `EmailComposeAIPanel`（润色/翻译当前正文）。
 
 ---
 

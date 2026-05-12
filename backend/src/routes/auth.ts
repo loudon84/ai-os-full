@@ -34,12 +34,14 @@ export function authRoutes(authService: AuthService): Router {
       if (!parsed.success) return next(badRequest("Invalid input"));
 
       const result = await authService.login(parsed.data);
+      const workspaceId = result.workspaceId;
       res.json({
         user: {
           id: result.user.id,
           email: result.user.email,
           display_name: result.user.displayName,
           status: result.user.status,
+          workspace_id: workspaceId,
         },
         access_token: result.tokens.accessToken,
         refresh_token: result.tokens.refreshToken,

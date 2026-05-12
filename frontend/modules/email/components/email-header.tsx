@@ -1,17 +1,19 @@
 "use client";
 
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Icon } from "@iconify/react";
 import {
   ChevronDown,
   ListFilter,
   Loader2,
-  MailCheck,
+  Mail,
   Menu,
   MicOff,
   Paperclip,
+  Plus,
   RefreshCw,
 } from "lucide-react";
+import { toast } from "react-hot-toast";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -25,7 +27,12 @@ import { Input } from "@/components/ui/input";
 import { InputGroup, InputGroupText } from "@/components/ui/input-group";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import type { EmailMessageResponse } from "@portal/shared";
+import type { EmailBatchAction, EmailMessageResponse } from "@portal/shared";
+
+import { EMAIL_PERMISSION } from "../constants/permissions";
+import { useEmailPermission } from "../hooks/use-email-permission";
+import { batchEmailMessageActions } from "../services/email-api";
+import { useEmailStore } from "../stores/email-store";
 
 interface EmailHeaderProps {
   selectedMail: EmailMessageResponse | null;
@@ -43,6 +50,10 @@ interface EmailHeaderProps {
   onSync: () => void;
   readFilter: "all" | "read" | "unread";
   onReadFilterChange: (v: "all" | "read" | "unread") => void;
+  onCompose: () => void;
+  /** 当前列表可见邮件 id（用于全选） */
+  visibleMessageIds: string[];
+  onAfterBatchAction: () => void;
 }
 
 export function EmailHeader({
@@ -61,8 +72,47 @@ export function EmailHeader({
   onSync,
   readFilter,
   onReadFilterChange,
+  onCompose,
+  visibleMessageIds,
+  onAfterBatchAction,
 }: EmailHeaderProps) {
   const isDesktop = useMediaQuery("(max-width: 1280px)");
+  const canMutate = useEmailPermission(EMAIL_PERMISSION.MESSAGE_MUTATE);
+  const selectedIds = useEmailStore((s) => s.selectedMessageIds);
+  const selectAllMessageIds = useEmailStore((s) => s.selectAllMessageIds);
+  const clearMessageSelection = useEmailStore((s) => s.clearMessageSelection);
+  const [batchPending, setBatchPending] = useState(false);
+
+  const allSelected =
+    visibleMessageIds.length > 0 && visibleMessageIds.every((id) => selectedIds.has(id));
+  const someSelected = visibleMessageIds.some((id) => selectedIds.has(id));
+
+  const runBatch = async (action: EmailBatchAction) => {
+    if (selectedIds.size === 0) {
+      toast.error("请先勾选邮件");
+      return;
+    }
+    if (!canMutate) {
+      toast.error("无权限批量操作邮件");
+      return;
+    }
+    setBatchPending(true);
+    try {
+      const res = await batchEmailMessageActions({
+        message_ids: [...selectedIds],
+        action,
+      });
+      if (!res.success) {
+        toast.error(res.error.message);
+        return;
+      }
+      toast.success(`已处理 ${res.data.affected} 封邮件`);
+      clearMessageSelection();
+      onAfterBatchAction();
+    } finally {
+      setBatchPending(false);
+    }
+  };
 
   return (
     <Fragment>
@@ -76,7 +126,14 @@ export function EmailHeader({
           )}
           {!selectedMail && (
             <div className="flex items-center gap-1">
-              <Checkbox className="border-default-200" />
+              <Checkbox
+                className="border-default-200"
+                checked={allSelected ? true : someSelected ? "indeterminate" : false}
+                onCheckedChange={(v) => {
+                  if (v === true) selectAllMessageIds(visibleMessageIds);
+                  else clearMessageSelection();
+                }}
+              />
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button size="icon" className="w-fit bg-transparent px-0 hover:bg-transparent">
@@ -123,28 +180,59 @@ export function EmailHeader({
             </Button>
           )}
           <div>
-            <HeaderIcon icon="heroicons:archive-box-arrow-down" label="归档（后续）" />
+            <HeaderIcon
+              icon="heroicons:archive-box-arrow-down"
+              label="归档所选"
+              disabled={batchPending}
+              onClick={canMutate ? () => void runBatch("archive") : undefined}
+            />
             <HeaderIcon icon="heroicons:exclamation-circle" label="举报垃圾邮件" onClick={handleSpam} />
-            <HeaderIcon icon="heroicons:trash" label="删除（后续）" />
+            <HeaderIcon
+              icon="heroicons:trash"
+              label="移至回收站"
+              disabled={batchPending}
+              onClick={canMutate ? () => void runBatch("trash") : undefined}
+            />
           </div>
           <div className="relative hidden px-3 before:absolute before:-top-4 before:left-1/2 before:h-9 before:w-px before:bg-default-300 before:content-[''] md:block" />
           <div>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button size="icon" className="rounded-full bg-transparent hover:bg-default-50">
-                    {!selectedMail ? (
-                      <MailCheck className="h-5 w-5 text-default-600" />
-                    ) : (
-                      <Icon icon="heroicons:envelope-open" className="h-5 w-5 text-default-600" />
-                    )}
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent side="bottom">
-                  <p>{!selectedMail ? "标记未读（后续）" : "标记已读（后续）"}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <DropdownMenu>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        size="icon"
+                        className="rounded-full bg-transparent hover:bg-default-50"
+                        disabled={batchPending || !canMutate}
+                        type="button"
+                      >
+                        <Mail className="h-5 w-5 text-default-600" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">
+                    <p>标记已读 / 未读（所选邮件）</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <DropdownMenuContent align="start">
+                <DropdownMenuItem
+                  onClick={() => {
+                    void runBatch("markRead");
+                  }}
+                >
+                  标记为已读
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    void runBatch("markUnread");
+                  }}
+                >
+                  标记为未读
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button size="icon" className="rounded-full bg-transparent hover:bg-default-50">
@@ -215,6 +303,10 @@ export function EmailHeader({
                 {syncError}
               </span>
             )}
+            <Button size="sm" onClick={onCompose}>
+              <Plus className="h-4 w-4 ltr:mr-1 rtl:ml-1" />
+              撰写
+            </Button>
           </div>
         </div>
       </div>
@@ -237,7 +329,7 @@ export function EmailHeader({
               onChange={(e) => onSearchChange(e.target.value)}
             />
           </InputGroup>
-          <Button type="submit" size="sm" variant="secondary" className="shrink-0">
+          <Button type="submit" size="sm" variant="outline" className="shrink-0">
             搜索
           </Button>
         </form>
@@ -250,10 +342,12 @@ function HeaderIcon({
   icon,
   label,
   onClick,
+  disabled,
 }: {
   icon: string;
   label: string;
   onClick?: () => void;
+  disabled?: boolean;
 }) {
   return (
     <TooltipProvider>
@@ -264,7 +358,7 @@ function HeaderIcon({
             size="icon"
             className="rounded-full bg-transparent hover:bg-default-50"
             type="button"
-            disabled={!onClick}
+            disabled={disabled || !onClick}
           >
             <Icon icon={icon} className="h-5 w-5 text-default-600" />
           </Button>

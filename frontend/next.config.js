@@ -1,9 +1,18 @@
 /** @type {import('next').NextConfig} */
 
+const path = require("path");
 
 const nextConfig = {
   transpilePackages: ["@portal/shared"],
   webpack(config) {
+    // @univerjs/engine-render 仍 deep-import 旧路径；opentype.js 1.3+ 已改为 dist/opentype.mjs
+    const opentypePkg = path.dirname(require.resolve("opentype.js/package.json"));
+    config.resolve.alias = {
+      ...(config.resolve.alias && typeof config.resolve.alias === "object" && !Array.isArray(config.resolve.alias)
+        ? config.resolve.alias
+        : {}),
+      "opentype.js/dist/opentype.module.js": path.join(opentypePkg, "dist", "opentype.mjs"),
+    };
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) =>
       rule.test?.test?.(".svg")

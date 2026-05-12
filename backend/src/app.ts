@@ -71,7 +71,7 @@ export function createApp(config: AppConfig): Express {
 
   api.use("/auth", authRoutes(authService));
 
-  app.use(authV2Middleware(config, authProvider));
+  app.use(authV2Middleware(config, authProvider, db));
 
   const repo = new DocumentRepository();
   const docPermission = new DocumentPermissionService(repo);
@@ -108,6 +108,8 @@ export function createApp(config: AppConfig): Express {
     db,
     emailAccountService,
     emailAccountRepo,
+    emailMessageRepo,
+    emailAttachmentRepo,
     emailSyncLogRepo,
   );
 

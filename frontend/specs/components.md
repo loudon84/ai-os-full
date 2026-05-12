@@ -310,3 +310,15 @@ import DatePickerWithRange from "@/components/date-picker-with-range";
 
 <DatePickerWithRange className="w-full" />
 ```
+
+### 4.7 Email 模块业务组件（`modules/email/components/`）
+
+| 组件 | 文件 | 说明 |
+|------|------|------|
+| EmailWorkspace | `email-workspace.tsx` | 邮箱主工作区：三栏可缩放、列表/详情切换、Copilot 钩子挂载 |
+| EmailTiptapEditor | `email-tiptap-editor.tsx` | Tiptap 富文本（StarterKit + Link/Image/Placeholder/Underline），`ref` 暴露 `getHTML`/`getText`/`setContent` |
+| EmailComposeForm | `email-compose-form.tsx` | 撰写（发送、`in_reply_to`/`references`、浮层/全屏切换、内联调用撰写 AI） |
+| EmailComposeWorkspace | `email-compose-workspace.tsx` | 全屏撰写壳层（顶栏 + 主区 + 可选右侧栏），由 `EmailComposeForm` 在全屏模式下组合 |
+| EmailAIPanel / EmailComposeAIPanel | `email-ai-panel.tsx`、`email-compose-ai-panel.tsx` | 右侧邮件 AI、全屏撰写侧 AI |
+| EmailDetailPane / EmailThreadView / EmailActionBar | `email-detail-pane.tsx`、`email-thread-view.tsx`、`email-action-bar.tsx` | 详情区：线程折叠、操作条（回复/转发/快捷 AI） |
+| EmailAiResultCard / EmailAiActionButton | `email-ai-result-card.tsx`、`email-ai-action-button.tsx` | Markdown 结果展示与快捷动作按钮 |

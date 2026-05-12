@@ -14,6 +14,7 @@ import {
   type NewDocumentVersion,
 } from "@portal/db";
 import { and, desc, eq, ilike, sql } from "drizzle-orm";
+import { randomUUID } from "node:crypto";
 
 export interface ListDocumentsParams {
   workspaceId: string;
@@ -79,6 +80,7 @@ export class DocumentRepository {
     },
   ): Promise<Document> {
     const insertable: NewDocument = {
+      id: randomUUID(),
       tenantId: params.tenantId,
       workspaceId: params.workspaceId,
       title: params.title,
@@ -181,6 +183,7 @@ export class DocumentRepository {
     },
   ): Promise<DocumentVersion> {
     const insertable: NewDocumentVersion = {
+      id: randomUUID(),
       documentId: params.documentId,
       versionNo: params.versionNo,
       snapshotBucket: params.snapshotBucket,
@@ -262,7 +265,7 @@ export class DocumentRepository {
   ): Promise<DocumentPermission> {
     const rows = await db
       .insert(documentPermissions)
-      .values(insertable)
+      .values({ ...insertable, id: insertable.id ?? randomUUID() })
       .returning();
     const perm = rows[0];
     if (!perm) {
@@ -290,6 +293,7 @@ export class DocumentRepository {
     if (params.items.length === 0) return;
 
     const rows: NewDocumentPermission[] = params.items.map((it) => ({
+      id: randomUUID(),
       documentId: params.documentId,
       subjectType: it.subjectType,
       subjectId: it.subjectId,
@@ -310,6 +314,7 @@ export class DocumentRepository {
     },
   ): Promise<DocumentEvent> {
     const insertable: NewDocumentEvent = {
+      id: randomUUID(),
       documentId: params.documentId,
       eventType: params.eventType,
       actorId: params.actorId,

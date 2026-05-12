@@ -12,7 +12,7 @@
 |------|------|------|----------|
 | Agent 入口 | `AGENTS.md`（根） | Agent 必读手册 | 低 |
 | 文档索引 | `docs/INDEX.md` | **本文件**，按需加载地图 | 随文档变动 |
-| 规约 | `docs/conventions/` | 命名与目录规则 | 低 |
+| 规约 | `docs/conventions/` | 命名、目录与 Agent 工作流规约 | 低 |
 | 代码规格 | `specs/` | 前端代码结构快照 | 跟随代码 |
 | 产品需求 | `docs/prd/` | 模块/阶段 PRD | 阶段性新增 |
 | 前端实现 | `frontend/` | Next.js 14 + React 18（`@portal/web`，端口 3000） | 跟随代码 |
@@ -33,6 +33,7 @@
 |------|------|--------|----------|
 | `docs/conventions/naming.md` | ~5 KB | 命名、重命名、rename、kebab、PascalCase | 新建/重命名文件、导出符号 |
 | `docs/conventions/directories.md` | ~6 KB | 放哪里、归属、目录、放在 modules 还是 components | 拿不准代码/文档落点时 |
+| `docs/conventions/agent-workflow.md` | ~6 KB | Agent 工作流、验证证据、生命周期、反偷懒、红旗 | 跨多阶段任务、交付前自检、需明确「何为完成」时 |
 | `.cursor/rules/30-doc-sync-on-completion.mdc` | ~2 KB | 功能完成后文档同步、docs/INDEX.md 更新、specs 更新 | Agent 每次功能变更结束前自动触发（alwaysApply） |
 
 > ⚠️ 有争议先查这两个文件，再继续写代码。
@@ -69,6 +70,8 @@
 | `docs/prd/document/spec_detail.md` | ~52 KB | Documents 系统明细 spec（域模型/存储/契约/实现） | Document API、MinIO、PostgreSQL、permission、version_conflict | `backend/`、`modules/documents/` |
 | `docs/prd/auth_rbac.md` | ~15 KB | Auth/RBAC 模块方案（用户登录/JWT/Workspace 多租户/角色权限/审计） | auth、登录、JWT、RBAC、权限、workspace、membership、角色 | `backend/src/auth-provider/`、`backend/src/middleware/auth-v2.ts`、`backend/src/middleware/rbac.ts`、`frontend/modules/auth/` |
 | `docs/prd/email/core_email_prd.md` | ~45 KB | Email 后端真实实现契约（Express + Drizzle + IMAP/POP3/SMTP + 附件 + 审计） | email backend、邮件后端、IMAP、POP3、SMTP、邮箱账号、收发、同步 | `backend/src/routes/email.ts`、`backend/src/services/email/`、`packages/db`、`packages/shared` |
+| `docs/prd/email/extend_with_react.md` | ~28 KB | React Email 引入评估（模板渲染/编辑器/Tiptap 关系/落地架构） | react-email、邮件模板编辑器、@react-email/editor、Tiptap vs React Email | `modules/email/` |
+| `docs/prd/email/extend_with_copilo.md` | ~18 KB | Email Phase 2 PRD：AI 工作台（三栏布局/Tiptap/Agent 任务；模板系统移至 Phase 3 未来规划） | 邮件 AI、Tiptap、Agent 任务、邮件工作台、AI Panel | `modules/email/`、`frontend/app/api/email/ai-completion/` |
 
 ### 4.2 工程架构
 
@@ -83,7 +86,10 @@
 | 路径 | 包名 | 端口 | 说明 |
 |------|------|------|------|
 | `frontend/` | `@portal/web` | 3000 | Next.js 14 App Router · TS · React 18 · Tailwind · Shadcn/UI · Zustand · React Query · CopilotKit |
-| `frontend/app/[lang]/(dashboard)/` | — | — | DashTail 路由壳，所有业务页面挂这里 |
+| `frontend/app/[lang]/(dashboard)/` | — | — | DashTail 路由壳，多数业务页面挂这里 |
+| `frontend/app/[lang]/workspace/` | — | — | 个人工作台：独立 `layout.tsx` + `workspace.layout.provider`（无侧栏/底栏）；入口见顶栏头像下拉 |
+| `frontend/app/[lang]/hermes/` | — | — | Hermes：独立 `layout.tsx`（auth+i18n）+ 继承 `workspace.layout.provider`（无侧栏/底栏） |
+| `frontend/app/[lang]/email/` | — | — | Email：独立 `layout.tsx`（auth+i18n）+ 继承 `workspace.layout.provider`（无侧栏/底栏）；`/email`、`/email/settings` |
 | `frontend/modules/<domain>/` | — | — | 业务模块（hermes / finance / risk / forecast / copilotkit / documents / email / generative-ui / **auth** …） |
 | `frontend/modules/email/` | — | — | Email 前端：真实 `/api/email/*` 接入、账号绑定/同步/列表详情/发信/附件；`vitest.config.ts` + `modules/email/tests/*` |
 | `frontend/app/(auth)/` | — | — | 认证路由组（login / register / workspace/select），独立 layout 无 Sidebar/Header |

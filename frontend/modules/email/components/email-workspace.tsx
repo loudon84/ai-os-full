@@ -1,18 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useState, useTransition } from "react";
-import { Icon } from "@iconify/react";
-import { Plus } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { toast } from "react-hot-toast";
 
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import { Separator } from "@/components/ui/separator";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
@@ -23,9 +19,7 @@ import type {
   EmailMessageResponse,
 } from "@portal/shared";
 
-import { EMAIL_PERMISSION } from "../constants/permissions";
 import { useEmailSync } from "../hooks/use-email-sync";
-import { useEmailPermission } from "../hooks/use-email-permission";
 import { useEmailAccountStore } from "../stores/email-account-store";
 import { useEmailStore } from "../stores/email-store";
 import type { EmailContactView } from "../types/email-view";
@@ -36,12 +30,13 @@ import {
   listEmailFolders,
   listEmailMessages,
 } from "../services/email-api";
-import { EmailAccountCard } from "./email-account-card";
 import { EmailAccountForm } from "./email-account-form";
 import { EmailChatBox } from "./email-chat-box";
+import { useEmailAgentActions, type EmailAgentResultPayload } from "../hooks/use-email-agent-actions";
+import { useEmailCopilotContext } from "../hooks/use-email-copilot-context";
 import { EmailComposeForm } from "./email-compose-form";
-import { EmailContactList } from "./email-contact-list";
-import { EmailDetail } from "./email-detail";
+import { EmailAIPanel } from "./email-ai-panel";
+import { EmailDetailPane } from "./email-detail-pane";
 import { EmailHeader } from "./email-header";
 import { EmailList } from "./email-list";
 import type { FolderSelection } from "./email-sidebar-nav";
@@ -63,7 +58,6 @@ export function EmailWorkspace({
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
   const [isPending, startTransition] = useTransition();
   const [openSpam, setOpenSpam] = useState(false);
-  const [openComposeMail, setOpenComposeMail] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
   const [openChatBox, setOpenChatBox] = useState(false);
 
@@ -80,9 +74,42 @@ export function EmailWorkspace({
   const [appliedSearch, setAppliedSearch] = useState("");
   const [readFilter, setReadFilter] = useState<"all" | "read" | "unread">("all");
 
-  const { selectedMail, setSelectedMail } = useEmailStore();
+  const { selectedMail, setSelectedMail, composeMode, setComposeMode, clearMessageSelection } =
+    useEmailStore();
+  const [mailAiResult, setMailAiResult] = useState<EmailAgentResultPayload | null>(null);
+  const [composeAiResult, setComposeAiResult] = useState<EmailAgentResultPayload | null>(null);
+  const composePlainTextRef = useRef<() => string>(() => "");
+
+  const folderCtx = useMemo(
+    () =>
+      folderSelection
+        ? folderSelection.folder_type === "custom"
+          ? { folder_path: folderSelection.folder_path }
+          : { folder_type: folderSelection.folder_type }
+        : null,
+    [folderSelection],
+  );
+
+  useEmailCopilotContext({
+    selectedMail,
+    folder: folderCtx,
+    accountEmail: account?.email_address ?? null,
+  });
+
+  const handleAgentResult = useCallback((payload: EmailAgentResultPayload) => {
+    if (payload.action === "polish_compose" || payload.action === "translate_compose") {
+      setComposeAiResult(payload);
+    } else {
+      setMailAiResult(payload);
+    }
+  }, []);
+
+  const aiActions = useEmailAgentActions({
+    selectedMail,
+    getComposePlainText: () => composePlainTextRef.current(),
+    onResult: handleAgentResult,
+  });
   const setCachedAccount = useEmailAccountStore((s) => s.setCachedAccount);
-  const canSync = useEmailPermission(EMAIL_PERMISSION.SYNC_RUN);
 
   const buildListParams = useCallback(
     (sel: FolderSelection): EmailListParams => {
@@ -179,6 +206,7 @@ export function EmailWorkspace({
     setFolderSelection(sel);
     setSelectedMail(null);
     setDetailError(null);
+    clearMessageSelection();
   };
 
   const handleOpenMail = (id: string) => {
@@ -220,16 +248,15 @@ export function EmailWorkspace({
     setFolderSelection(null);
     setMessages([]);
     setSelectedMail(null);
+    clearMessageSelection();
   };
 
-  const handleAccountUpdatedFromCard = async () => {
-    const accRes = await fetchEmailAccount();
-    if (accRes.success && accRes.data) {
-      setAccount(accRes.data);
-      setCachedAccount(accRes.data);
-    }
-    await reloadFoldersAndMessages();
-  };
+  const layoutSizes = useMemo(() => {
+    if (!defaultLayout?.length) return [18, 52, 30];
+    if (defaultLayout.length === 2) return [...defaultLayout, 28];
+    if (defaultLayout.length >= 3) return defaultLayout.slice(0, 3);
+    return [18, 52, 30];
+  }, [defaultLayout]);
 
   if (booting) {
     return (
@@ -276,9 +303,14 @@ export function EmailWorkspace({
 
   return (
     <>
-      {openComposeMail && (
+      {composeMode !== null && account && (
         <EmailComposeForm
-          onClose={() => setOpenComposeMail(false)}
+          editorPlainTextRef={composePlainTextRef}
+          composeAiResult={composeAiResult}
+          onClearComposeAi={() => setComposeAiResult(null)}
+          runPolishCompose={aiActions.runPolishCompose}
+          runTranslatePlainText={aiActions.runTranslatePlainText}
+          onClose={() => {}}
           onSent={() => void reloadFoldersAndMessages()}
         />
       )}
@@ -297,35 +329,26 @@ export function EmailWorkspace({
               "-left-full": isNarrow && !showSidebar,
             })}
           >
-            <Card className="h-full overflow-auto pb-0 no-scrollbar">
-              <CardHeader className="sticky top-0 z-50 mb-0 border-none bg-card px-6 pb-0 xl:mb-0">
-                <Button onClick={() => setOpenComposeMail(true)} className="w-full">
-                  <Plus className="h-4 w-4 ltr:mr-1 rtl:ml-1.5" />
-                  撰写
-                </Button>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <EmailAccountCard
-                  account={account}
-                  onAccountRemoved={handleAccountRemoved}
-                  onAccountUpdated={handleAccountUpdatedFromCard}
-                />
-                <EmailSidebarNav
-                  isCollapsed={false}
-                  folders={folders}
-                  selected={
-                    folderSelection ?? {
-                      folder_type: "inbox",
-                      folder_path: "INBOX",
-                    }
+            <div className="h-full overflow-auto no-scrollbar bg-background px-1 pt-2">
+              <EmailSidebarNav
+                isCollapsed={false}
+                folders={folders}
+                selected={
+                  folderSelection ?? {
+                    folder_type: "inbox",
+                    folder_path: "INBOX",
                   }
-                  onSelect={(sel) => {
-                    handleSelectFolder(sel);
-                    setShowSidebar(false);
-                  }}
-                />
-              </CardContent>
-            </Card>
+                }
+                onSelect={(sel) => {
+                  handleSelectFolder(sel);
+                  setShowSidebar(false);
+                }}
+                onCompose={() => {
+                  setComposeMode("new");
+                  setShowSidebar(false);
+                }}
+              />
+            </div>
           </div>
         )}
         <TooltipProvider delayDuration={0}>
@@ -338,82 +361,41 @@ export function EmailWorkspace({
           >
             {!isNarrow && (
               <ResizablePanel
-                defaultSize={defaultLayout[0]}
+                defaultSize={layoutSizes[0]}
                 collapsedSize={navCollapsedSize}
                 collapsible
-                minSize={15}
-                maxSize={22}
+                minSize={12}
+                maxSize={20}
                 onCollapse={() => {
-                  setIsCollapsed(true);
+                  setIsCollapsed(false);
                   document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(true)}`;
                 }}
                 className={cn(
                   isCollapsed && "min-w-[50px] transition-all duration-300 ease-in-out",
                 )}
               >
-                <Card className="h-full overflow-auto no-scrollbar">
-                  <CardHeader
-                    className={cn(
-                      "sticky top-0 z-[99] mb-0 border-none bg-card px-6 pb-0",
-                      { "px-2": isCollapsed },
-                    )}
-                  >
-                    <Button
-                      size={isCollapsed ? "icon" : "default"}
-                      onClick={() => setOpenComposeMail(true)}
-                      className={isCollapsed ? "w-full" : ""}
-                    >
-                      <Plus
-                        className={cn("h-4 w-4 ltr:mr-1 rtl:ml-1", {
-                          "mr-0 h-5 w-5": isCollapsed,
-                        })}
-                      />
-                      {!isCollapsed && "撰写"}
-                    </Button>
-                  </CardHeader>
-                  <CardContent className={cn("space-y-3", { "px-2": isCollapsed })}>
-                    {!isCollapsed && (
-                      <EmailAccountCard
-                        account={account}
-                        onAccountRemoved={handleAccountRemoved}
-                        onAccountUpdated={handleAccountUpdatedFromCard}
-                      />
-                    )}
-                    <EmailSidebarNav
-                      isCollapsed={isCollapsed}
-                      folders={folders}
-                      selected={
-                        folderSelection ?? {
-                          folder_type: "inbox",
-                          folder_path: "INBOX",
-                        }
+                <div className="h-full overflow-auto no-scrollbar">
+                  <EmailSidebarNav
+                    isCollapsed={isCollapsed}
+                    folders={folders}
+                    selected={
+                      folderSelection ?? {
+                        folder_type: "inbox",
+                        folder_path: "INBOX",
                       }
-                      onSelect={handleSelectFolder}
-                    />
-                    <Separator />
-                    {!isCollapsed && (
-                      <div className="mx-4 mb-2 mt-4 text-xs font-medium uppercase text-default-800">
-                        聊天
-                      </div>
-                    )}
-                    {contacts.map((contact, index) => (
-                      <EmailContactList
-                        key={`email-contact-${contact.fullName}-${index}`}
-                        contact={contact}
-                        handleOpenChatBox={() => setOpenChatBox(true)}
-                        isCollapsed={isCollapsed}
-                      />
-                    ))}
-                  </CardContent>
-                </Card>
+                    }
+                    onSelect={handleSelectFolder}
+                    onCompose={() => setComposeMode("new")}
+                  />
+                </div>
               </ResizablePanel>
             )}
             {!isNarrow && <ResizableHandle withHandle />}
-            <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
+            <ResizablePanel defaultSize={isNarrow ? 72 : layoutSizes[1]} minSize={30}>
               <Card className="h-full">
                 <CardContent className="h-full overflow-y-auto px-0 no-scrollbar">
                   {!isPending && (
-                    <div className="sticky top-0 z-50 mb-1 flex flex-row flex-wrap gap-4 space-y-1.5 rounded-t-md border-b border-none border-border bg-card px-6 pt-6">
+                    <div className="sticky top-0 z-50 mb-1 flex flex-row flex-wrap items-center gap-4 space-y-1.5 rounded-t-md border-b border-none border-border bg-card px-6 pt-6">
                       <EmailHeader
                         selectedMail={selectedMail}
                         onClose={() => {
@@ -429,7 +411,7 @@ export function EmailWorkspace({
                           setSyncError(null);
                         }}
                         hasAccount={!!account}
-                        canSync={canSync}
+                        canSync={true}
                         isSyncing={isSyncing}
                         syncError={syncError}
                         lastSyncAt={account.last_sync_at}
@@ -445,6 +427,11 @@ export function EmailWorkspace({
                           setReadFilter(v);
                           setSyncError(null);
                         }}
+                        visibleMessageIds={messages.map((m) => m.id)}
+                        onAfterBatchAction={() => {
+                          if (folderSelection) void loadMessages(folderSelection);
+                        }}
+                        onCompose={() => setComposeMode("new")}
                       />
                     </div>
                   )}
@@ -455,11 +442,15 @@ export function EmailWorkspace({
                           {detailError}
                         </div>
                       )}
-                      <EmailDetail
+                      <EmailDetailPane
                         mail={selectedMail}
+                        listMessages={messages}
                         onMailUpdated={() => {
                           if (folderSelection) void loadMessages(folderSelection);
                         }}
+                        runSummarizeEmail={aiActions.runSummarizeEmail}
+                        runDraftReply={aiActions.runDraftReply}
+                        runExtractTasks={aiActions.runExtractTasks}
                       />
                     </>
                   ) : isPending ? (
@@ -484,6 +475,33 @@ export function EmailWorkspace({
                   )}
                 </CardContent>
               </Card>
+            </ResizablePanel>
+            <ResizableHandle withHandle />
+            <ResizablePanel
+              defaultSize={isNarrow ? 28 : layoutSizes[2]}
+              minSize={0}
+              maxSize={40}
+              collapsible
+              collapsedSize={0}
+              className="min-w-0"
+            >
+              <EmailAIPanel
+                selectedMail={selectedMail}
+                accountEmail={account.email_address}
+                result={mailAiResult}
+                onClearResult={() => setMailAiResult(null)}
+                onApplyToCompose={(md) => {
+                  void navigator.clipboard.writeText(md);
+                  setComposeMode("new");
+                  toast.success("已复制到剪贴板，撰写窗口已打开");
+                }}
+                runSummarizeEmail={aiActions.runSummarizeEmail}
+                runDraftReply={aiActions.runDraftReply}
+                runTranslateEmail={aiActions.runTranslateEmail}
+                runExtractTasks={aiActions.runExtractTasks}
+                runExtractData={aiActions.runExtractData}
+                runCustomAgent={aiActions.runCustomAgent}
+              />
             </ResizablePanel>
           </ResizablePanelGroup>
         </TooltipProvider>

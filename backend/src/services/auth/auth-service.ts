@@ -69,7 +69,7 @@ export class AuthService {
   async login(input: {
     email: string;
     password: string;
-  }): Promise<{ user: { id: string; email: string; displayName: string | null; status: string }; tokens: TokenPair }> {
+  }): Promise<{ user: { id: string; email: string; displayName: string | null; status: string }; tokens: TokenPair; workspaceId: string | null }> {
     const lockCheck = this.lockout.check(input.email);
     if (!lockCheck.allowed) {
       throw forbidden("Account temporarily locked due to too many failed attempts");
@@ -101,6 +101,7 @@ export class AuthService {
       return {
         user: { id: authUser.id, email: authUser.email, displayName: authUser.displayName, status: authUser.status },
         tokens,
+        workspaceId,
       };
     } catch (err) {
       if (err instanceof Error && err.message.includes("credentials")) {

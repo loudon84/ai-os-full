@@ -10,7 +10,7 @@
 
 | 目标 | 位置 | 详情文档 |
 |------|------|---------|
-| 路由与页面 | `app/[lang]/` | `specs/pages.md` |
+| 路由与页面 | `app/[lang]/`（含 `(dashboard)/` 与平级 `workspace/`） | `specs/pages.md` |
 | API Route | `app/api/<resource>/route.ts` | `specs/project-structure.md` §4.2 |
 | UI 原子（Shadcn） | `components/ui/` | `specs/components.md` §1 |
 | 通用业务组件 | `components/<feature>/` | `specs/components.md` §2 |
@@ -174,17 +174,20 @@ app/(auth)/workspace/select/page.tsx   → WorkspaceSelectPage
 |------|---------|------|
 | 对外导出入口 | `modules/email/index.ts` | `EmailWorkspacePage` / `EmailSettingsPage` |
 | 页面组件 | `pages/email-workspace-page.tsx`、`pages/email-settings-page.tsx` | 工作区布局 cookie；设置占位说明 |
-| 工作区组件 | `components/email-workspace.tsx` | 未绑定账号 CTA、侧栏账号卡片+真实 folders+聊天、列表/详情、撰写浮层 |
+| 工作区组件 | `components/email-workspace.tsx` | 未绑定账号 CTA、侧栏+列表/详情、`ResizablePanelGroup` **三栏**（侧栏 / 主区 / AI Panel）、撰写浮层或全屏+撰写 AI |
 | 账号与附件 | `email-account-form.tsx`、`email-account-card.tsx`、`email-attachment-list.tsx` | 绑定/编辑/测试/删除；附件 Bearer 下载 |
-| 子组件 | `email-{header,sidebar-nav,list,detail,compose-form,spam-dialog,contact-list,chat-box,labels}.tsx` | 列表/详情/撰写接 `@portal/shared` 契约 |
-| Hooks / Stores | `hooks/use-email-sync.ts`、`hooks/use-email-permission.ts`、`stores/email-store.ts`、`stores/email-account-store.ts` | 同步、RBAC 宽松校验、选中邮件与账号缓存 |
-| Services / Types / Lib | `services/email-api.ts`、`types/email-result.ts`、`lib/email-errors.ts` 等 | `EmailResult<T>` 全量 Phase 1 API；错误归一化 |
+| 设置面板 / 弹窗 | `email-settings-panel.tsx`、`email-settings-dialog.tsx` | 与 `email/settings` 页同源；顶栏头像「邮箱设置」用 Dialog |
+| 子组件 | `email-{header,sidebar-nav,list,detail,detail-pane,thread-view,ai-panel,ai-action-button,ai-result-card,action-bar,compose-form,compose-workspace,compose-ai-panel,tiptap-editor,spam-dialog,chat-box,labels}.tsx` | 列表多选批量操作、详情+线程+操作条、Tiptap 撰写、全屏撰写壳、Copilot 可读上下文与 Agent Actions |
+| Hooks / Stores | `hooks/use-email-sync.ts`、`hooks/use-email-permission.ts`、`hooks/use-email-copilot-context.ts`、`hooks/use-email-agent-actions.ts`、`stores/email-store.ts`、`stores/email-account-store.ts` | 同步、RBAC；`email-store` 含撰写模式/草稿/多选 id；CopilotKit 注册邮件上下文与 summarize/draft/translate/extract/custom_agent 等 |
+| Services / Types / Lib | `services/email-api.ts`、`types/email-result.ts`、`lib/email-errors.ts`、`lib/email-quote.ts`、`lib/email-ai-completion.ts` 等 | `EmailResult<T>` API；引用块与前端 AI 补全调用 |
+| Next API | `app/api/email/ai-completion/route.ts` | 邮件模块一次性文本补全（非流式），代理 Hermes/OpenAI 兼容 `chat/completions` |
 | 测试 | `modules/email/tests/*.test.ts` | Vitest（`pnpm test` 使用 `vitest.config.ts`） |
 
 #### 对应的 `app/` 挂载页
 
 ```
-app/[lang]/(dashboard)/(apps)/email/page.tsx → EmailWorkspacePage
+app/[lang]/email/page.tsx → EmailWorkspacePage
+app/[lang]/email/settings/page.tsx → EmailSettingsPanel（页级壳 + 返回邮箱）
 ```
 
 ### 2.9 `modules/workspace/` — Workspace 壳（明细应用文件树面板）

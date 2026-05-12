@@ -61,13 +61,13 @@ export function getProviderPreset(provider: EmailProviderType): ProviderPreset |
     case "aliyun_enterprise":
       return {
         receive_protocol: "imap",
-        imap_host: "imap.mxhichina.com",
+        imap_host: "imap.qiye.aliyun.com",
         imap_port: 993,
         imap_secure: true,
         pop3_host: null,
         pop3_port: null,
         pop3_secure: true,
-        smtp_host: "smtp.mxhichina.com",
+        smtp_host: "smtp.qiye.aliyun.com",
         smtp_port: 465,
         smtp_secure: true,
         smtp_require_starttls: false,

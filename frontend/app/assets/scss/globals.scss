@@ -295,6 +295,21 @@
   }
 }
 
+/* WorkspaceLayoutProvider（email/hermes/workspace 等）：主区内 .app-height 扣除更少头部占位 */
+.workspace-layout {
+  .app-height {
+    height: calc(var(--vh, 1vh) * 100 - 8rem) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .workspace-layout {
+    .app-height {
+      height: calc(var(--vh, 1vh) * 100 - 7.6rem) !important;
+    }
+  }
+}
+
 @media (min-width: 1280px) {
   .semibox-content-wrapper {
     margin-left: 56px;

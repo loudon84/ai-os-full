@@ -4,10 +4,13 @@ import type { AuthProvider } from "../auth-provider/auth-provider.js";
 import { AuthProviderError } from "../auth-provider/auth-provider.js";
 import { unauthorized, forbidden } from "../errors.js";
 import { logger } from "./logger.js";
+import { eq } from "drizzle-orm";
+import { memberships } from "@portal/db";
 
 export function authV2Middleware(
   config: AppConfig,
   authProvider: AuthProvider,
+  db: import("@portal/db").Db,
 ): RequestHandler {
   const publicPaths = [
     "/api/v1/auth/register",
@@ -36,9 +39,18 @@ export function authV2Middleware(
         const token = authHeader.slice(7);
         try {
           const principal = await authProvider.verifyAccessToken(token);
+          let workspaceId = principal.workspaceId;
+          if (!workspaceId) {
+            const userMembership = await db
+              .select()
+              .from(memberships)
+              .where(eq(memberships.userId, principal.userId))
+              .limit(1);
+            workspaceId = userMembership[0]?.workspaceId ?? null;
+          }
           req.ctx = {
-            tenantId: principal.workspaceId ?? config.defaultTenantId,
-            workspaceId: principal.workspaceId ?? config.defaultWorkspaceId,
+            tenantId: workspaceId || config.defaultTenantId,
+            workspaceId,
             userId: principal.userId,
             roles: principal.roles,
             departments: [],

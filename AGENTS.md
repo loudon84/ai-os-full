@@ -69,6 +69,8 @@ docs/prd/<file>.md                 PRD 详情（单个文件 10–50 KB）
 
 > 默认只读 L1。**只有**任务明确落到某个域时才加载对应的 L2 / L3。
 
+跨阶段工作流、验证证据与反偷懒约定见 [docs/conventions/agent-workflow.md](docs/conventions/agent-workflow.md)。
+
 ---
 
 ## 三、文档目录一句话地图
@@ -96,6 +98,8 @@ docs/prd/<file>.md                 PRD 详情（单个文件 10–50 KB）
 | `docs/prd/document/spec_detail.md` | Documents 系统明细 spec（域模型/存储/契约） | 改 Documents 数据模型/API 契约 |
 | `docs/prd/auth_rbac.md` | Auth/RBAC 模块方案（JWT/Workspace 多租户/角色权限） | 改 `backend/src/auth-provider/`、`middleware/auth-v2.ts`、`frontend/modules/auth/` 时 |
 | `docs/prd/email/core_email_prd.md` | Email 后端真实实现契约（Express + Drizzle + IMAP/POP3/SMTP） | 改 `backend/src/routes/email.ts`、`backend/src/services/email/`、`packages/db`、`packages/shared` 时 |
+| `docs/prd/email/extend_with_react.md` | React Email 引入评估（模板渲染/编辑器/Tiptap 关系） | 评估邮件模板编辑器选型时 |
+| `docs/prd/email/extend_with_copilo.md` | Email Phase 2 PRD：AI 工作台（三栏/Tiptap/Agent；模板系统在 Phase 3） | 改邮件 AI 面板、编辑工作台时 |
 
 ### 3.2 实现目录
 
@@ -103,8 +107,11 @@ docs/prd/<file>.md                 PRD 详情（单个文件 10–50 KB）
 |------|------|------|--------|
 | `frontend/` | `@portal/web` | Next.js 前端实现，端口 3000 | 改前端代码 |
 | `frontend/modules/<domain>/` | — | 前端业务模块代码 | 改具体业务模块 |
-| `frontend/modules/email/` | — | Email 前端（Phase 1 API、`EmailResult`、账号表单、同步、附件下载；`frontend/vitest.config.ts`） | 改邮件工作区 |
+| `frontend/modules/email/` | — | Email 前端（Phase 1 API + Phase 2：Tiptap 撰写、回复/转发/线程视图、列表多选批量、三栏+`EmailAIPanel`、CopilotKit `useCopilotReadable`/`useCopilotAction`、全屏撰写 AI；`app/api/email/ai-completion`；`frontend/vitest.config.ts`） | 改邮件工作区 |
 | `frontend/middleware.ts` | — | `/api/*` 反代到 backend `/api/v1/*` | 改前后端代理或环境切换时 |
+| `frontend/provider/workspace.layout.provider.tsx` | — | 独立壳层（仅 Header + flex 主内容）：`/[lang]/workspace`、`/[lang]/hermes`、`/[lang]/email` 等复用 | 改该壳层、全页 flex 高度策略时 |
+| `frontend/app/[lang]/hermes/` | — | Hermes 独立路由组（与 `(dashboard)` 平级）：继承 `WorkspaceLayoutProvider`（无 Sidebar/Footer） | 迁移 Hermes 路由壳、调整 Hermes 页面布局 |
+| `frontend/app/[lang]/email/` | — | Email 独立路由组（与 `(dashboard)` 平级）：继承 `WorkspaceLayoutProvider`（无 Sidebar/Footer）；`/email`、`/email/settings` | 迁移邮件路由壳、调整邮件页布局 |
 | `backend/` | `@portal/server` | Express + Drizzle 后端实现，端口 8000 | 改后端 / 加端点 / 改路由 |
 | `backend/src/auth-provider/` | — | AuthProvider 抽象 + JwtProvider 自建 JWT（jsonwebtoken + argon2id） | 改认证/JWT 逻辑 |
 | `backend/src/routes/auth.ts` | — | 认证 4 端点（register/login/refresh/logout） | 改认证路由 |

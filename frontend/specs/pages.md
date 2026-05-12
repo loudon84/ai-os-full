@@ -90,6 +90,42 @@
 
 ---
 
+## 四点五、个人工作台 (`/[lang]/workspace/`)
+
+> 与 `(dashboard)` **同级**（不在 `(dashboard)/` 路由组内）。`workspace/layout.tsx` 使用 `WorkspaceLayoutProvider`：仅 Header + `flex-1 min-h-0` 主内容区（无 Sidebar/Footer）；全局 Copilot 仍由根 `app/[lang]/layout.tsx` 挂载。**需登录**。入口：顶栏头像下拉 →「个人工作台」。
+
+| 路由 | 文件 | 功能 |
+|------|------|------|
+| `/[lang]/workspace` | `workspace/page.tsx` | Demo：挂载 `DocumentListPage`（与 dashboard `documents` 列表同源组件） |
+
+---
+
+## 四点六、Hermes（Standalone，`/[lang]/hermes/`）
+
+> 与 `(dashboard)` **同级**（不在 `(dashboard)/` 路由组内）。`hermes/layout.tsx` 使用 `WorkspaceLayoutProvider`：仅 Header + `flex-1 min-h-0` 主内容区（无 Sidebar/Footer）；全局 Copilot 仍由根 `app/[lang]/layout.tsx` 挂载。**需登录**。
+
+| 路由 | 文件 | 功能 |
+|------|------|------|
+| `/[lang]/hermes` | `hermes/page.tsx` | Hermes 仪表盘主页（`HermesDashboardPage`） |
+| `/[lang]/hermes/sessions` | `hermes/sessions/page.tsx` | 会话列表（`HermesSessionsPage`） |
+| `/[lang]/hermes/skills` | `hermes/skills/page.tsx` | Skills 列表（`HermesSkillsPage`） |
+| `/[lang]/hermes/settings` | `hermes/settings/page.tsx` | Hermes 设置（`HermesSettingsPage`） |
+| `/[lang]/hermes/runtime` | `hermes/runtime/page.tsx` | Runtime 对话工位（`RuntimeChatPage`） |
+| `/[lang]/hermes/dev/*` | `hermes/dev/*` | Dev Tool UI 预览（生产环境 404） |
+
+---
+
+## 四点七、Email（Standalone，`/[lang]/email/`）
+
+> 与 `(dashboard)` **同级**（不在 `(dashboard)/` 路由组内）。`email/layout.tsx` 使用 `WorkspaceLayoutProvider`：仅 Header + `flex-1 min-h-0` 主内容区（无 Sidebar/Footer）；全局 Copilot 仍由根 `app/[lang]/layout.tsx` 挂载。**需登录**。
+
+| 路由 | 文件 | 功能 |
+|------|------|------|
+| `/[lang]/email` | `email/page.tsx` | 邮件工作区瘦壳页，挂载 `EmailWorkspacePage`：三栏可缩放（侧栏/主区/AI Panel）、Tiptap 撰写、回复转发与批量操作、Copilot 上下文与 Agent Actions；布局 cookie 为三列 `react-resizable-panels:layout` |
+| `/[lang]/email/settings` | `email/settings/page.tsx` | 邮箱账号配置全页（与顶栏头像弹窗同源 `EmailSettingsPanel`） |
+
+---
+
 ## 五、Dashboard 页面 (`/[lang]/(dashboard)/`)
 
 > Dashboard 路由组共享 `(dashboard)/layout.tsx`，**需要登录**（未登录自动 redirect 到 `/auth/login`）。
@@ -108,7 +144,6 @@
 |------|------|------|
 | `/[lang]/calendar` | `(apps)/calendar/page.tsx` | 日历应用，FullCalendar 集成，支持拖拽事件/事件面板 |
 | `/[lang]/chat` | `(apps)/chat/page.tsx` | 聊天应用，联系人列表/消息/转发/置顶/联系人详情(屏蔽/静音/搜索) |
-| `/[lang]/email` | `(apps)/email/page.tsx` | 邮件应用瘦壳页，挂载 `EmailWorkspacePage`：客户端加载账号/文件夹/列表，绑定与设置整合在侧栏 |
 | `/[lang]/kanban` | `(apps)/kanban/page.tsx` | 看板应用，基于 @dnd-kit 拖拽排序 |
 | `/[lang]/projects` | `(apps)/projects/page.tsx` | 项目列表，支持网格/列表视图切换，含 DataTable |
 | `/[lang]/projects/[id]` | `(apps)/projects/[id]/` | 项目详情，含子页面：overview/activity/discussion/documents/files/task/team/settings |

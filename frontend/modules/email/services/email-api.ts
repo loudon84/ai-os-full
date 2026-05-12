@@ -1,5 +1,5 @@
 import { api } from "@/config/axios.config";
-import { tokenManager } from "@/modules/auth/lib/token-manager";
+import { tokenManager } from "@/modules/auth/services/token-manager";
 import type {
   BatchEmailActionRequest,
   BatchEmailActionResponse,

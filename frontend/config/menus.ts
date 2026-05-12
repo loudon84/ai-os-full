@@ -128,12 +128,14 @@ export const menusConfig = {
           href: "/email",
         },
         {
-          title: "邮箱任务日志",
+          title: "邮箱任务",
           icon: ListFill,
           href: "/email-task-log",
         },
       ],
     },
+    /* 基础组件 不显示 */
+    /*
     {
       title: "Components",
       icon: Components,
@@ -303,7 +305,6 @@ export const menusConfig = {
         },
       ],
     },
-
     {
       title: "Forms",
       icon: Stacks2,
@@ -1002,6 +1003,7 @@ export const menusConfig = {
         },
       ],
     },
+    */
     {
       title: "Finance",
       icon: "heroicons:currency-dollar",

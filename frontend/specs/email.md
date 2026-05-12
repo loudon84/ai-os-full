@@ -10,7 +10,8 @@
 
 | 路由 | 页面组件 | 说明 |
 | --- | --- | --- |
-| `app/[lang]/(dashboard)/(apps)/email/page.tsx` | `EmailWorkspacePage` | 邮箱工作区；数据在客户端加载（RSC 无法访问内存 Token） |
+| `app/[lang]/email/page.tsx` | `EmailWorkspacePage` | 邮箱工作区；数据在客户端加载（RSC 无法访问内存 Token）；`email/layout.tsx` 使用 `WorkspaceLayoutProvider` |
+| `app/[lang]/email/settings/page.tsx` | `EmailSettingsPanel`（页级壳） | 邮箱账号配置全页；与顶栏头像「邮箱设置」Dialog 同源面板 |
 
 ---
 
@@ -18,12 +19,12 @@
 
 | 项 | 决策 |
 | --- | --- |
-| route type | existing page modification；dashboard route |
-| selected page template | `DataManagementTemplate` |
-| shell inheritance | 继承 Header、Sidebar、Footer、ThemeCustomize、Auth protection、i18n、DirectionProvider、GlobalCopilotProvider |
-| layout files | 瘦壳 `page.tsx`；无页面级 `layout.tsx`；无模块级 WorkspaceLayout |
-| Copilot behavior | 不新建 Provider；不强制注册页面 Copilot 上下文 |
-| forbidden changes | 不修改 `app/[lang]/layout.tsx`、`app/[lang]/(dashboard)/layout.tsx`、`provider/*`、`components/ui/*` |
+| route type | standalone route `app/[lang]/email/*`（与 `(dashboard)` 平级） |
+| selected page template | 沿用 `EmailWorkspacePage` / 设置页 `EmailSettingsPanel`，无独立 Dashboard 母版 |
+| shell inheritance | `email/layout.tsx`：`WorkspaceLayoutProvider` → Header、Auth（服务端 session）、i18n；无 Sidebar / Footer / ThemeCustomize；根布局仍含 DirectionProvider、GlobalCopilotProvider |
+| layout files | 路由组级 `email/layout.tsx`；各子路由仅 `page.tsx` |
+| Copilot behavior | 不新建 Provider；使用全局 Copilot Sidebar（与 `WorkspaceLayoutProvider` 右侧避让一致） |
+| forbidden changes | 不修改 `app/[lang]/layout.tsx`、`app/[lang]/(dashboard)/layout.tsx`、`provider/*`（除已存在的 `workspace.layout.provider` 复用）、`components/ui/*` |
 
 ---
 

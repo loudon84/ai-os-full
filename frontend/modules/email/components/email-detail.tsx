@@ -1,11 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Icon } from "@iconify/react";
 import { toast } from "react-hot-toast";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import type { EmailAddress, EmailMessageResponse } from "@portal/shared";
 
 import { updateEmailMessage } from "../services/email-api";
@@ -93,7 +91,7 @@ export function EmailDetail({ mail, onMailUpdated }: EmailDetailProps) {
             title="email-html"
             sandbox=""
             srcDoc={mail.html_body}
-            className="min-h-[240px] w-full rounded-md border border-default-200 bg-background"
+            className="min-h-[360px] w-full rounded-md border border-default-200 bg-background"
           />
         ) : (
           <pre className="whitespace-pre-wrap text-sm text-default-700">
@@ -102,18 +100,6 @@ export function EmailDetail({ mail, onMailUpdated }: EmailDetailProps) {
         )}
 
         <EmailAttachmentList attachments={mail.attachments} />
-
-        <div className="my-5 border border-dashed border-default-300" />
-        <div className="flex flex-wrap items-center gap-4 pb-5">
-          <Button type="button" variant="outline" disabled>
-            <Icon icon="heroicons:arrow-uturn-left" className="h-4 w-4 ltr:mr-1 rtl:ml-1" />
-            回复（后续）
-          </Button>
-          <Button type="button" variant="outline" disabled>
-            <Icon icon="heroicons:arrow-uturn-right" className="h-4 w-4 ltr:mr-1 rtl:ml-1" />
-            转发（后续）
-          </Button>
-        </div>
       </div>
     </div>
   );

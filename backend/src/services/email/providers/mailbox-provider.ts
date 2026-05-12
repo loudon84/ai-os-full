@@ -26,6 +26,7 @@ export interface FetchedMessage {
   attachments: FetchedAttachment[];
   flags: string[];
   folderPath: string;
+  folderSpecialUse: string | null;
 }
 
 export interface FolderInfo {

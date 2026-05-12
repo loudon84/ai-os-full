@@ -42,6 +42,7 @@ export const authOptions = {
             id: data.user.id,
             email: data.user.email,
             name: data.user.display_name ?? data.user.email,
+            workspaceId: data.user.workspace_id,
             accessToken: data.access_token,
             refreshToken: data.refresh_token,
             expiresIn: data.expires_in,
@@ -64,11 +65,13 @@ export const authOptions = {
         token.accessToken = (user as any).accessToken;
         token.refreshToken = (user as any).refreshToken;
         token.userId = user.id;
+        token.workspaceId = (user as any).workspaceId;
       }
       return token;
     },
     async session({ session, token }) {
       session.user.id = token.userId as string;
+      (session as any).workspaceId = token.workspaceId;
       (session as any).accessToken = token.accessToken;
       (session as any).refreshToken = token.refreshToken;
       return session;
