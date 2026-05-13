@@ -93,6 +93,9 @@ docs/prd/<file>.md                 PRD 详情（单个文件 10–50 KB）
 | `docs/prd/integrate_copilot.md` | CopilotKit 接入 PRD | 改 AI 接入层时 |
 | `docs/prd/hermes_dashboard_phase1.md` | Hermes 骨架 | 改 `frontend/modules/hermes` 基础 |
 | `docs/prd/hermes_dashboard_phase2-8.md` | Hermes 分阶段增强 | 对应阶段任务时按需加载 |
+| `docs/prd/hermes/wiki_spec.md` | Hermes Desktop / hermes-agent 与 Portal 对接说明（IPC、gateway、安装发布、邮件/文档 AI 契约索引） | 改 hermes-desktop 嵌入、本地 agent 安装/管理/对话桥接、`modules/email`/`modules/documents` 与桌面壳协同时 |
+| `docs/prd/hermes/wiki_channel.md` | Hermes `hermesAPI` 与 IPC channel 全量表（含扁平附录 D；可用 `scripts/gen-hermes-preload-ipc-table.mjs` 从 preload 重生成） | 查 Main/Preload 通道名、对 `hermes-desktop` 做 IPC 级联改动时 |
+| `docs/prd/hermes/wiki_renderer.md` | Hermes Desktop 渲染进程：页面如何挂 `hermesAPI`、Layout 视图表、Chat 流式订阅、远程-only 与各 Screen 契约 | 改 `hermes-desktop` 前端屏、嵌 WebView/Portal、对齐 Chat/Gateway 等行为时 |
 | `docs/prd/generative-ui.md` | Generative UI 模块 PRD | 改 `frontend/modules/generative-ui` 时 |
 | `docs/prd/document/core_target.md` | Documents（Univer 表格）总体方案 | 改文档模块前后端时 |
 | `docs/prd/document/spec_detail.md` | Documents 系统明细 spec（域模型/存储/契约） | 改 Documents 数据模型/API 契约 |
@@ -107,7 +110,7 @@ docs/prd/<file>.md                 PRD 详情（单个文件 10–50 KB）
 |------|------|------|--------|
 | `frontend/` | `@portal/web` | Next.js 前端实现，端口 3000 | 改前端代码 |
 | `frontend/modules/<domain>/` | — | 前端业务模块代码 | 改具体业务模块 |
-| `frontend/modules/email/` | — | Email 前端（Phase 1 API + Phase 2：Tiptap 撰写、回复/转发/线程视图、列表多选批量、三栏+`EmailAIPanel`、CopilotKit `useCopilotReadable`/`useCopilotAction`、全屏撰写 AI；`app/api/email/ai-completion`；`frontend/vitest.config.ts`） | 改邮件工作区 |
+| `frontend/modules/email/` | — | Email 前端（Phase 1 API + Phase 2：Tiptap 撰写、回复/转发/线程视图、列表多选批量、三栏+`EmailAIPanel`（邮件 AI）与 `HermesChatPanel`（Hermes 流式对话；首轮发消息前 `injectEmailToWorkspace` 将 `email-context/` 写入当前 runtime 会话；`lib/html-to-text` 补全 HTML 正文上下文；内嵌 `RuntimeWorkspacePanel`；按邮件 id 绑定 `hermes-panel-session-binding` 续会话）、CopilotKit `useCopilotReadable`/`useCopilotAction`、全屏撰写 AI；`app/api/email/ai-completion`；`frontend/vitest.config.ts`） | 改邮件工作区 |
 | `frontend/middleware.ts` | — | `/api/*` 反代到 backend `/api/v1/*` | 改前后端代理或环境切换时 |
 | `frontend/provider/workspace.layout.provider.tsx` | — | 独立壳层（仅 Header + flex 主内容）：`/[lang]/workspace`、`/[lang]/hermes`、`/[lang]/email` 等复用 | 改该壳层、全页 flex 高度策略时 |
 | `frontend/app/[lang]/hermes/` | — | Hermes 独立路由组（与 `(dashboard)` 平级）：继承 `WorkspaceLayoutProvider`（无 Sidebar/Footer） | 迁移 Hermes 路由壳、调整 Hermes 页面布局 |

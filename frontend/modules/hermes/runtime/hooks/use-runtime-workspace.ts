@@ -39,7 +39,8 @@ async function apiJson<T>(path: string, options?: RequestInit): Promise<T> {
 
 export function useRuntimeWorkspace(explicitSessionId?: string | null) {
   const storeSessionId = useRuntimeSessionStore((s) => s.currentSession?.session_id ?? null);
-  const sessionId = explicitSessionId ?? storeSessionId;
+  /** `undefined`：走全局 runtime store；`null` / `string`：仅绑定该会话（Hermes 面板等），不回退 store */
+  const sessionId = explicitSessionId === undefined ? storeSessionId : explicitSessionId;
 
   const [currentDir, setCurrentDir] = useState<string>(".");
   const queryClient = useQueryClient();

@@ -22,12 +22,16 @@ export function RuntimeFilePreviewDialog({
   open,
   onOpenChange,
   path,
+  /** 与 `RuntimeWorkspacePanel` 的 `boundSessionId` 对齐；不传则使用全局 runtime 会话 */
+  fileSessionBinding,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   path: string | null;
+  fileSessionBinding?: string | null;
 }) {
-  const { sessionId, buildRawUrl, readTextFile, saveFile } = useRuntimeWorkspace();
+  const workspaceArg = fileSessionBinding === undefined ? undefined : fileSessionBinding;
+  const { sessionId, buildRawUrl, readTextFile, saveFile } = useRuntimeWorkspace(workspaceArg);
   const filePath = path ?? "";
 
   const ext = useMemo(() => extOf(filePath), [filePath]);

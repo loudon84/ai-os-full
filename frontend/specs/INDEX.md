@@ -46,10 +46,13 @@ Hermes 是核心业务模块，目录较复杂。按"主题入口"索引：
 | Tool UI 总索引 | `modules/hermes/tool-ui/registry.ts`, `types.ts` | 按 tool name 定位 UI 适配器 |
 | Tool UI 细分 | `tool-ui/adapters/`, `cards/`, `mappers/`, `schemas/`, `mocks/`, `fixtures/` | 见 §2.2 |
 | Copilot UI 壳 | `modules/hermes/components/copilot/hermes-copilot-panel.tsx`, `hermes-tool-renderer.tsx`, `interrupt-banner.tsx`, `interrupt-form-card.tsx`, `resume-action-bar.tsx` | AI 对话面板与中断交互 |
+| 嵌入面板（Chat） | `modules/hermes/components/panel/HermesChatPanel.tsx` + `HermesPanel*.tsx` | 可嵌入业务页：`HermesClient`（Web BFF `/api/hermes/runtime/*` → hermes-webui；Desktop `hermesAPI`）+ `useHermesPanelChat`（首轮可选 `injectEmailToWorkspace` 写入 `email-context/`）；卡片内嵌 `RuntimeWorkspacePanel`（`workspaceInvalidateKey` 刷新列表；`list`/`file` 等与全页 runtime 同源 BFF） |
+| Hermes 统一客户端 | `modules/hermes/client/`（`createHermesClient`、`createHermesRuntimeSession`、`WebHermesClient`、`DesktopHermesClient`） | 与 hermes-desktop IPC 或 Portal `/api/hermes/runtime` 对齐的对话出口 |
+| Runtime 服务 | `modules/hermes/services/workspace-email-inject.ts` | 邮件正文/附件注入 Hermes session workspace（`email-context/body.md`、附件目录与索引） |
 | Dashboard UI | `modules/hermes/components/dashboard/metrics-overview.tsx`, `clickable-metric-card.tsx` | Dashboard 指标卡片 |
 | Dev Preview | `modules/hermes/dev/preview-registry.ts`, `preview-config.ts`, `schema-resolver.ts`, `story-seeds.ts` + `components/dev-preview/*` | 独立预览工作台（Phase 7） |
-| Stores | `stores/hermes-agent-store.ts`, `hermes-tool-ui-store.ts`, `hermes-interrupt-store.ts`, `hermes-dashboard-context-store.ts`, `hermes-preview-store.ts` | 各 UI 子状态 |
-| Hooks | `hooks/use-hermes-copilot.ts`, `use-active-hermes-agent.ts`, `use-tool-render-model.ts`, `use-hermes-interrupt.ts`, `use-preview-*.ts`, `use-dashboard-context.ts`, `use-dashboard-card-injection.ts`, `use-agent-toolset.ts`, `use-schema-validation.ts` | 分别对应 Copilot/Interrupt/Preview/Dashboard |
+| Stores | `stores/hermes-agent-store.ts`, `hermes-tool-ui-store.ts`, `hermes-interrupt-store.ts`, `hermes-dashboard-context-store.ts`, `hermes-preview-store.ts`, `hermes-panel-session-binding.ts` | 各 UI 子状态；`hermes-panel-session-binding` 将业务键（如 `email:${messageId}`）与 Hermes runtime `session_id` 绑定（localStorage，用于邮件明细关闭后再开续聊） |
+| Hooks | `hooks/use-hermes-copilot.ts`, `use-active-hermes-agent.ts`, `use-tool-render-model.ts`, `use-hermes-interrupt.ts`, `use-hermes-panel-chat.ts`, `use-preview-*.ts`, `use-dashboard-context.ts`, `use-dashboard-card-injection.ts`, `use-agent-toolset.ts`, `use-schema-validation.ts` | 分别对应 Copilot/Interrupt/嵌入面板 Chat（含 `sessionId`、`workspacePath` 绑定 hermes-webui workspace）/Preview/Dashboard |
 | API | `modules/hermes/api/`, `modules/hermes/services/` | 数据访问与 Gateway 封装 |
 | 测试 | `modules/hermes/tests/` | 单测（`tool-ui-registry.spec.ts`、`tool-ui-schema.spec.ts`）+ e2e 用例（`hermes-dashboard-e2e-cases.md`） |
 
@@ -179,7 +182,7 @@ app/(auth)/workspace/select/page.tsx   → WorkspaceSelectPage
 | 设置面板 / 弹窗 | `email-settings-panel.tsx`、`email-settings-dialog.tsx` | 与 `email/settings` 页同源；顶栏头像「邮箱设置」用 Dialog |
 | 子组件 | `email-{header,sidebar-nav,list,detail,detail-pane,thread-view,ai-panel,ai-action-button,ai-result-card,action-bar,compose-form,compose-workspace,compose-ai-panel,tiptap-editor,spam-dialog,chat-box,labels}.tsx` | 列表多选批量操作、详情+线程+操作条、Tiptap 撰写、全屏撰写壳、Copilot 可读上下文与 Agent Actions |
 | Hooks / Stores | `hooks/use-email-sync.ts`、`hooks/use-email-permission.ts`、`hooks/use-email-copilot-context.ts`、`hooks/use-email-agent-actions.ts`、`stores/email-store.ts`、`stores/email-account-store.ts` | 同步、RBAC；`email-store` 含撰写模式/草稿/多选 id；CopilotKit 注册邮件上下文与 summarize/draft/translate/extract/custom_agent 等 |
-| Services / Types / Lib | `services/email-api.ts`、`types/email-result.ts`、`lib/email-errors.ts`、`lib/email-quote.ts`、`lib/email-ai-completion.ts` 等 | `EmailResult<T>` API；引用块与前端 AI 补全调用 |
+| Services / Types / Lib | `services/email-api.ts`、`types/email-result.ts`、`lib/email-errors.ts`、`lib/email-quote.ts`、`lib/email-ai-completion.ts`、`lib/html-to-text.ts` 等 | `EmailResult<T>` API；引用块与前端 AI 补全；`htmlToPlainText` 供 Hermes 邮件上下文（HTML→纯文本） |
 | Next API | `app/api/email/ai-completion/route.ts` | 邮件模块一次性文本补全（非流式），代理 Hermes/OpenAI 兼容 `chat/completions` |
 | 测试 | `modules/email/tests/*.test.ts` | Vitest（`pnpm test` 使用 `vitest.config.ts`） |
 

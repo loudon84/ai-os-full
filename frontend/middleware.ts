@@ -13,6 +13,10 @@ const LOCAL_API_PREFIXES = [
   "/ai/hermes",
   "/api/auth",
   "/api/chat",
+  /** Next Route Handler：邮件一次性补全（非 Express `/api/v1/email/*`） */
+  "/api/email/ai-completion",
+  /** Next Hermes BFF（Gateway 代理、runtime 反代 hermes-webui） */
+  "/api/hermes",
   "/ai/finance",
   "/api/forms",  
   "/api/boards",

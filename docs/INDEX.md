@@ -72,6 +72,9 @@
 | `docs/prd/email/core_email_prd.md` | ~45 KB | Email 后端真实实现契约（Express + Drizzle + IMAP/POP3/SMTP + 附件 + 审计） | email backend、邮件后端、IMAP、POP3、SMTP、邮箱账号、收发、同步 | `backend/src/routes/email.ts`、`backend/src/services/email/`、`packages/db`、`packages/shared` |
 | `docs/prd/email/extend_with_react.md` | ~28 KB | React Email 引入评估（模板渲染/编辑器/Tiptap 关系/落地架构） | react-email、邮件模板编辑器、@react-email/editor、Tiptap vs React Email | `modules/email/` |
 | `docs/prd/email/extend_with_copilo.md` | ~18 KB | Email Phase 2 PRD：AI 工作台（三栏布局/Tiptap/Agent 任务；模板系统移至 Phase 3 未来规划） | 邮件 AI、Tiptap、Agent 任务、邮件工作台、AI Panel | `modules/email/`、`frontend/app/api/email/ai-completion/` |
+| `docs/prd/hermes/wiki_spec.md` | ~10 KB | Hermes Desktop + hermes-agent 与 Portal 对接：IPC/gateway、存储、winget/rpm 安装形态、邮件与文档 AI 契约索引 | hermes-desktop、hermes-agent、本地安装、winget、rpm、`send-message`、WebView 嵌入 | `docs/wiki/hermes-agent-desktop.md`、`hermes-desktop/`、`frontend/modules/email/`、`frontend/modules/documents/` |
+| `docs/prd/hermes/wiki_channel.md` | ~18 KB | Hermes `hermesAPI` 全量 IPC：分组表 + 附录 D 扁平索引（invoke 96 + 订阅 12）；生成脚本 `scripts/gen-hermes-preload-ipc-table.mjs` | preload、ipcMain、channel、hermesAPI、全量 IPC | `hermes-desktop/src/preload/index.ts` |
+| `docs/prd/hermes/wiki_renderer.md` | ~8 KB | Hermes Desktop Renderer：`App`/`Layout` 视图切换、各 Screen 与 `window.hermesAPI` 映射、远程-only 限制、WebView 对齐点 | renderer、Layout、Chat、Gateway、Skills、无 React Router | `hermes-desktop/src/renderer/src/` |
 
 ### 4.2 工程架构
 
@@ -91,7 +94,8 @@
 | `frontend/app/[lang]/hermes/` | — | — | Hermes：独立 `layout.tsx`（auth+i18n）+ 继承 `workspace.layout.provider`（无侧栏/底栏） |
 | `frontend/app/[lang]/email/` | — | — | Email：独立 `layout.tsx`（auth+i18n）+ 继承 `workspace.layout.provider`（无侧栏/底栏）；`/email`、`/email/settings` |
 | `frontend/modules/<domain>/` | — | — | 业务模块（hermes / finance / risk / forecast / copilotkit / documents / email / generative-ui / **auth** …） |
-| `frontend/modules/email/` | — | — | Email 前端：真实 `/api/email/*` 接入、账号绑定/同步/列表详情/发信/附件；`vitest.config.ts` + `modules/email/tests/*` |
+| `frontend/modules/email/` | — | — | Email 前端：真实 `/api/email/*` 接入、账号绑定/同步/列表详情/发信/附件；右侧 `EmailAIPanel` / `HermesChatPanel` Tab（Hermes 首轮发信前将当前邮件写入 workspace `email-context/`，正文含 HTML→纯文本）；`vitest.config.ts` + `modules/email/tests/*` |
+| `frontend/modules/hermes/client/`、`components/panel/`、`services/workspace-email-inject.ts`、`runtime/components/RuntimeWorkspacePanel.tsx`、`runtime/hooks/use-runtime-workspace.ts`、`stores/hermes-panel-session-binding.ts` | — | — | `HermesClient` + `createHermesRuntimeSession`；`HermesChatPanel` / `useHermesPanelChat`（邮件 `emailForWorkspaceInject` + workspace 注入）；`RuntimeWorkspacePanel` 支持 `workspaceInvalidateKey`；`hermes-panel-session-binding` 持久化「明细 → session_id」 |
 | `frontend/app/(auth)/` | — | — | 认证路由组（login / register / workspace/select），独立 layout 无 Sidebar/Header |
 | `frontend/middleware.ts` | — | — | 反代 `/api/*` → backend `/api/v1/*`，Authorization 头透传 |
 

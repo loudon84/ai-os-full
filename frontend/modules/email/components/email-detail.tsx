@@ -48,12 +48,12 @@ export function EmailDetail({ mail, onMailUpdated }: EmailDetailProps) {
   const when = mail.date ?? mail.received_at ?? mail.sent_at ?? mail.created_at;
 
   return (
-    <div className="mt-2 flex h-full flex-col px-6 pb-8">
+    <div className="mt-1 flex h-full flex-col px-3">
       <div>
         <div className="text-lg font-medium text-default-900">
           {mail.subject ?? "（无主题）"}
         </div>
-        <div className="mt-6 flex items-center gap-2">
+        <div className="mt-4 flex items-center gap-2">
           <Avatar className="h-11 w-11">
             <AvatarFallback>
               {(mail.from?.name ?? mail.from?.address ?? "?").slice(0, 2).toUpperCase()}

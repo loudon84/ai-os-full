@@ -11,7 +11,10 @@ export function GlobalCopilotProvider({
   children,
 }: GlobalCopilotProviderProps) {
   return (
-    <CopilotKit runtimeUrl={COPILOT_CONFIG.runtimeUrl}>
+    <CopilotKit
+      runtimeUrl={COPILOT_CONFIG.runtimeUrl}
+      disableInspector={process.env.NODE_ENV === "production"}
+    >
       {children}
     </CopilotKit>
   );

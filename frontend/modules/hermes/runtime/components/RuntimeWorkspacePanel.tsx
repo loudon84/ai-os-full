@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ArrowUp,
   FilePlus,
@@ -20,6 +20,7 @@ import {
   RefreshCcw,
   FileText,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { useRuntimeSessionStore } from "../stores/runtime-session-store";
 import { useRuntimeWorkspace } from "../hooks/use-runtime-workspace";
 import { RuntimeFsPromptDialog } from "./RuntimeFsPromptDialog";
@@ -27,10 +28,32 @@ import { RuntimeFilePreviewDialog } from "./RuntimeFilePreviewDialog";
 
 type PromptKind = "newFile" | "newFolder" | "rename";
 
-export function RuntimeWorkspacePanel() {
-  const session = useRuntimeSessionStore((s) => s.currentSession);
+type RuntimeWorkspacePanelProps = {
+  /**
+   * 绑定到指定 runtime 会话（如邮件侧栏 Hermes 面板），与全局 `useRuntimeSessionStore` 无关。
+   * 不传则沿用 store 当前会话（Hermes 全页 runtime）。
+   */
+  boundSessionId?: string | null;
+  /** 绑定模式下展示在标题下的 workspace 路径（通常来自 `/api/hermes/runtime/session`） */
+  workspacePathLabel?: string | null;
+  /** 外部写入 workspace 后递增，触发列表刷新 */
+  workspaceInvalidateKey?: number;
+  className?: string;
+};
+
+export function RuntimeWorkspacePanel(props: RuntimeWorkspacePanelProps = {}) {
+  const { boundSessionId, workspacePathLabel, workspaceInvalidateKey, className } = props;
+  const sessionFromStore = useRuntimeSessionStore((s) => s.currentSession);
+  const workspaceHookArg = boundSessionId === undefined ? undefined : boundSessionId;
   const { sessionId, currentDir, setCurrentDir, goUp, entries, listQuery, refresh, createFile, createDir, rename, remove } =
-    useRuntimeWorkspace();
+    useRuntimeWorkspace(workspaceHookArg);
+
+  useEffect(() => {
+    if (workspaceInvalidateKey === undefined) return;
+    if (!workspaceInvalidateKey) return;
+    if (!sessionId) return;
+    void refresh();
+  }, [workspaceInvalidateKey, sessionId, refresh]);
 
   const [prompt, setPrompt] = useState<{ kind: PromptKind; targetPath?: string } | null>(null);
   const [previewPath, setPreviewPath] = useState<string | null>(null);
@@ -71,13 +94,21 @@ export function RuntimeWorkspacePanel() {
     await remove.mutateAsync({ path });
   };
 
+  const workspaceSubtitle =
+    boundSessionId === undefined ? (sessionFromStore?.workspace ?? "—") : (workspacePathLabel ?? "—");
+
   return (
-    <div className="flex h-full flex-col rounded-xl border bg-background overflow-hidden">
+    <div
+      className={cn(
+        "flex h-full flex-col rounded-xl border bg-background overflow-hidden",
+        className,
+      )}
+    >
       <div className="flex items-center justify-between gap-2 border-b p-3">
         <div className="min-w-0">
           <div className="text-sm font-semibold">Workspace</div>
-          <div className="truncate text-xs text-muted-foreground" title={session?.workspace ?? ""}>
-            {session?.workspace ?? "—"}
+          <div className="truncate text-xs text-muted-foreground" title={workspaceSubtitle}>
+            {workspaceSubtitle}
           </div>
         </div>
         <div className="flex items-center gap-1">
@@ -267,6 +298,7 @@ export function RuntimeWorkspacePanel() {
           if (!o) setPreviewPath(null);
         }}
         path={previewPath}
+        fileSessionBinding={boundSessionId === undefined ? undefined : sessionId}
       />
     </div>
   );

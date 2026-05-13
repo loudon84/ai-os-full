@@ -33,7 +33,7 @@ export function EmailActionBar(props: {
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-2 border-t border-default-200 px-6 py-4">
+    <div className="flex flex-wrap items-center gap-2 border-t border-default-200 px-4 py-4">
       <Button
         type="button"
         variant="outline"

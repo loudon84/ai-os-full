@@ -9,6 +9,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
@@ -42,6 +43,11 @@ import { EmailList } from "./email-list";
 import type { FolderSelection } from "./email-sidebar-nav";
 import { EmailSidebarNav } from "./email-sidebar-nav";
 import { EmailSpamDialog } from "./email-spam-dialog";
+import { HermesChatPanel } from "@/modules/hermes/components/panel/HermesChatPanel";
+import { scopeKeyEmailMessage } from "@/modules/hermes/stores/hermes-panel-session-binding";
+import { htmlToPlainText } from "../lib/html-to-text";
+import { Icon } from "@iconify/react";
+import type { ImperativePanelHandle } from "react-resizable-panels";
 
 interface EmailWorkspaceProps {
   defaultLayout: number[] | undefined;
@@ -60,6 +66,7 @@ export function EmailWorkspace({
   const [openSpam, setOpenSpam] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
   const [openChatBox, setOpenChatBox] = useState(false);
+  const [aiPanelTab, setAiPanelTab] = useState<"email-ai" | "hermes-chat">("email-ai");
 
   const [booting, setBooting] = useState(true);
   const [account, setAccount] = useState<EmailAccountResponse | null>(null);
@@ -79,6 +86,10 @@ export function EmailWorkspace({
   const [mailAiResult, setMailAiResult] = useState<EmailAgentResultPayload | null>(null);
   const [composeAiResult, setComposeAiResult] = useState<EmailAgentResultPayload | null>(null);
   const composePlainTextRef = useRef<() => string>(() => "");
+  const leftNavPanelRef = useRef<ImperativePanelHandle>(null);
+  const rightAiPanelRef = useRef<ImperativePanelHandle>(null);
+  /** 左侧栏展开时的目标宽度（百分比），折叠前与拖拽时更新 */
+  const lastLeftNavExpandedPercentRef = useRef(18);
 
   const folderCtx = useMemo(
     () =>
@@ -258,6 +269,64 @@ export function EmailWorkspace({
     return [18, 52, 30];
   }, [defaultLayout]);
 
+  useEffect(() => {
+    lastLeftNavExpandedPercentRef.current = layoutSizes[0];
+  }, [layoutSizes[0]]);
+
+  const toggleLeftNavPanel = useCallback(() => {
+    if (isNarrow) return;
+    const panel = leftNavPanelRef.current;
+    if (!panel) return;
+    if (panel.getCollapsed()) {
+      panel.expand();
+      const minPct = 5;
+      const maxPct = 20;
+      const target = Math.min(maxPct, Math.max(minPct, lastLeftNavExpandedPercentRef.current));
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          leftNavPanelRef.current?.resize(target, "percentages");
+        });
+      });
+    } else {
+      const s = panel.getSize("percentages");
+      if (s > navCollapsedSize + 0.5) lastLeftNavExpandedPercentRef.current = s;
+      panel.collapse();
+    }
+  }, [isNarrow, navCollapsedSize]);
+
+  const toggleRightAiPanel = useCallback(() => {
+    const panel = rightAiPanelRef.current;
+    if (!panel) return;
+    if (panel.getCollapsed()) panel.expand();
+    else panel.collapse();
+  }, []);
+
+  const hermesMailContext = useMemo(() => {
+    if (!selectedMail) return null;
+    const body =
+      selectedMail.text_body ??
+      htmlToPlainText(selectedMail.html_body ?? "") ??
+      selectedMail.snippet ??
+      "";
+    return {
+      type: "email" as const,
+      payload: {
+        id: selectedMail.id,
+        subject: selectedMail.subject,
+        from: selectedMail.from,
+        to: selectedMail.to,
+        body,
+        attachments: selectedMail.attachments.map((a) => ({
+          id: a.id,
+          filename: a.filename,
+          content_type: a.content_type,
+          size_bytes: a.size_bytes,
+        })),
+      },
+      summary: `${selectedMail.subject ?? "（无主题）"} · ${selectedMail.from?.address ?? ""}`,
+    };
+  }, [selectedMail]);
+
   if (booting) {
     return (
       <div className="app-height flex items-center justify-center text-sm text-default-500">
@@ -361,11 +430,15 @@ export function EmailWorkspace({
           >
             {!isNarrow && (
               <ResizablePanel
+                ref={leftNavPanelRef}
                 defaultSize={layoutSizes[0]}
                 collapsedSize={navCollapsedSize}
                 collapsible
-                minSize={12}
+                minSize={5}
                 maxSize={20}
+                onResize={(size) => {
+                  if (size > navCollapsedSize + 0.5) lastLeftNavExpandedPercentRef.current = size;
+                }}
                 onCollapse={() => {
                   setIsCollapsed(false);
                   document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(true)}`;
@@ -395,44 +468,68 @@ export function EmailWorkspace({
               <Card className="h-full">
                 <CardContent className="h-full overflow-y-auto px-0 no-scrollbar">
                   {!isPending && (
-                    <div className="sticky top-0 z-50 mb-1 flex flex-row flex-wrap items-center gap-4 space-y-1.5 rounded-t-md border-b border-none border-border bg-card px-6 pt-6">
-                      <EmailHeader
-                        selectedMail={selectedMail}
-                        onClose={() => {
-                          setSelectedMail(null);
-                          setDetailError(null);
-                        }}
-                        handleSpam={() => setOpenSpam((value) => !value)}
-                        handleSidebar={() => setShowSidebar((value) => !value)}
-                        search={searchInput}
-                        onSearchChange={setSearchInput}
-                        onSearchApply={() => {
-                          setAppliedSearch(searchInput);
-                          setSyncError(null);
-                        }}
-                        hasAccount={!!account}
-                        canSync={true}
-                        isSyncing={isSyncing}
-                        syncError={syncError}
-                        lastSyncAt={account.last_sync_at}
-                        onSync={async () => {
-                          setSyncError(null);
-                          const r = await syncNow();
-                          if (!r.ok && "error" in r && r.error) {
-                            setSyncError(r.error);
-                          }
-                        }}
-                        readFilter={readFilter}
-                        onReadFilterChange={(v) => {
-                          setReadFilter(v);
-                          setSyncError(null);
-                        }}
-                        visibleMessageIds={messages.map((m) => m.id)}
-                        onAfterBatchAction={() => {
-                          if (folderSelection) void loadMessages(folderSelection);
-                        }}
-                        onCompose={() => setComposeMode("new")}
-                      />
+                    <div className="sticky top-0 z-50 mb-1 flex min-h-10 flex-nowrap items-center gap-2 rounded-t-md border-b border-none border-border bg-card px-2 py-1.5">
+                      <button
+                        type="button"
+                        className={cn(
+                          "inline-flex shrink-0 items-center justify-center rounded-md p-1 text-default-500 hover:bg-default-100 hover:text-default-800",
+                          isNarrow && "pointer-events-none opacity-40",
+                        )}
+                        aria-label={isNarrow ? "窄屏下请使用侧栏入口" : "折叠或展开左侧文件夹栏"}
+                        title={isNarrow ? "窄屏下请使用侧栏入口" : "折叠/展开左侧栏"}
+                        disabled={isNarrow}
+                        onClick={toggleLeftNavPanel}
+                      >
+                        <Icon icon="heroicons:arrows-right-left" className="h-4 w-4 shrink-0" />
+                      </button>
+                      <div className="min-w-0 flex-1">
+                        <EmailHeader
+                          selectedMail={selectedMail}
+                          onClose={() => {
+                            setSelectedMail(null);
+                            setDetailError(null);
+                          }}
+                          handleSpam={() => setOpenSpam((value) => !value)}
+                          handleSidebar={() => setShowSidebar((value) => !value)}
+                          search={searchInput}
+                          onSearchChange={setSearchInput}
+                          onSearchApply={() => {
+                            setAppliedSearch(searchInput);
+                            setSyncError(null);
+                          }}
+                          hasAccount={!!account}
+                          canSync={true}
+                          isSyncing={isSyncing}
+                          syncError={syncError}
+                          lastSyncAt={account.last_sync_at}
+                          onSync={async () => {
+                            setSyncError(null);
+                            const r = await syncNow();
+                            if (!r.ok && "error" in r && r.error) {
+                              setSyncError(r.error);
+                            }
+                          }}
+                          readFilter={readFilter}
+                          onReadFilterChange={(v) => {
+                            setReadFilter(v);
+                            setSyncError(null);
+                          }}
+                          visibleMessageIds={messages.map((m) => m.id)}
+                          onAfterBatchAction={() => {
+                            if (folderSelection) void loadMessages(folderSelection);
+                          }}
+                          onCompose={() => setComposeMode("new")}
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        className="inline-flex shrink-0 items-center justify-center rounded-md p-1 text-default-500 hover:bg-default-100 hover:text-default-800"
+                        aria-label="折叠或展开右侧 AI 面板"
+                        title="折叠/展开右侧 AI 面板"
+                        onClick={toggleRightAiPanel}
+                      >
+                        <Icon icon="heroicons:arrows-right-left" className="h-4 w-4 shrink-0" />
+                      </button>
                     </div>
                   )}
                   {selectedMail ? (
@@ -478,30 +575,74 @@ export function EmailWorkspace({
             </ResizablePanel>
             <ResizableHandle withHandle />
             <ResizablePanel
+              ref={rightAiPanelRef}
               defaultSize={isNarrow ? 28 : layoutSizes[2]}
-              minSize={0}
-              maxSize={40}
+              minSize={5}
+              maxSize={50}
               collapsible
               collapsedSize={0}
               className="min-w-0"
             >
-              <EmailAIPanel
-                selectedMail={selectedMail}
-                accountEmail={account.email_address}
-                result={mailAiResult}
-                onClearResult={() => setMailAiResult(null)}
-                onApplyToCompose={(md) => {
-                  void navigator.clipboard.writeText(md);
-                  setComposeMode("new");
-                  toast.success("已复制到剪贴板，撰写窗口已打开");
-                }}
-                runSummarizeEmail={aiActions.runSummarizeEmail}
-                runDraftReply={aiActions.runDraftReply}
-                runTranslateEmail={aiActions.runTranslateEmail}
-                runExtractTasks={aiActions.runExtractTasks}
-                runExtractData={aiActions.runExtractData}
-                runCustomAgent={aiActions.runCustomAgent}
-              />
+              <Tabs
+                value={aiPanelTab}
+                onValueChange={(v) => setAiPanelTab(v as "email-ai" | "hermes-chat")}
+                className="flex h-full min-h-0 flex-col gap-0"
+              >
+                <TabsList className="h-9 w-full shrink-0 justify-start rounded-none border-b bg-transparent px-2 py-0">
+                  <TabsTrigger value="email-ai" className="text-xs">
+                    邮件 AI
+                  </TabsTrigger>
+                  <TabsTrigger value="hermes-chat" className="text-xs">
+                    Hermes Chat
+                  </TabsTrigger>
+                </TabsList>
+                <TabsContent
+                  value="email-ai"
+                  className="mt-0 flex min-h-0 flex-1 flex-col overflow-hidden data-[state=inactive]:hidden"
+                >
+                  <EmailAIPanel
+                    selectedMail={selectedMail}
+                    accountEmail={account.email_address}
+                    result={mailAiResult}
+                    onClearResult={() => setMailAiResult(null)}
+                    onApplyToCompose={(md) => {
+                      void navigator.clipboard.writeText(md);
+                      setComposeMode("new");
+                      toast.success("已复制到剪贴板，撰写窗口已打开");
+                    }}
+                    runSummarizeEmail={aiActions.runSummarizeEmail}
+                    runDraftReply={aiActions.runDraftReply}
+                    runTranslateEmail={aiActions.runTranslateEmail}
+                    runExtractTasks={aiActions.runExtractTasks}
+                    runExtractData={aiActions.runExtractData}
+                    runCustomAgent={aiActions.runCustomAgent}
+                  />
+                </TabsContent>
+                <TabsContent
+                  value="hermes-chat"
+                  forceMount
+                  className="mt-0 flex min-h-0 flex-1 flex-col overflow-hidden data-[state=inactive]:hidden"
+                >
+                  <HermesChatPanel
+                    sessionPersistenceKey={
+                      selectedMail?.id ? scopeKeyEmailMessage(selectedMail.id) : undefined
+                    }
+                    context={hermesMailContext}
+                    emailForWorkspaceInject={selectedMail}
+                    presetSystemPrompt="你是邮件工作区助手。请用简体中文回答，可使用 Markdown。"
+                    presetActions={[
+                      { label: "摘要", prompt: "请总结这封邮件的要点" },
+                      { label: "回复草稿", prompt: "请为这封邮件写一封专业回复" },
+                      { label: "提取待办", prompt: "请提取邮件中的待办事项" },
+                    ]}
+                    onApplyResult={(md) => {
+                      void navigator.clipboard.writeText(md);
+                      setComposeMode("new");
+                      toast.success("已复制到剪贴板，撰写窗口已打开");
+                    }}
+                  />
+                </TabsContent>
+              </Tabs>
             </ResizablePanel>
           </ResizablePanelGroup>
         </TooltipProvider>
