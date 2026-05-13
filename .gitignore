@@ -35,3 +35,9 @@ storybook-static/
 # Debug
 debug-storybook.log
 *.log
+
+
+hermes-agent/
+hermes-web-ui/
+hermes-desktop/
+product-agents-main/
