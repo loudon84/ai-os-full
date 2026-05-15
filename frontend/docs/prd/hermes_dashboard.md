@@ -99,7 +99,7 @@ src/
 你已经定了从 `.env.local` 读取，这里只保留两项：
 
 ```env
-HERMES_GATEWAY_BASE_URL=http://192.168.0.118:8642
+HERMES_GATEWAY_BASE_URL=http://localhost:8642
 HERMES_GATEWAY_TOKEN=change-me-local-dev
 ```
 
@@ -526,7 +526,7 @@ export default function HermesPage() {
 在前端 `.env.local` 写：
 
 ```env
-HERMES_GATEWAY_BASE_URL=http://192.168.0.118:8642
+HERMES_GATEWAY_BASE_URL=http://localhost:8642
 HERMES_GATEWAY_TOKEN=你的token
 ```
 

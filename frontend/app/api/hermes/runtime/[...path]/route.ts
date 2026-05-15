@@ -2,6 +2,21 @@ import { NextRequest, NextResponse } from "next/server";
 import { createSseHeaders } from "@/modules/hermes/copilot/sse";
 import { getHermesWebuiConfig } from "@/modules/hermes/runtime/services/hermes-webui.bff";
 
+function bffUpstreamUnreachableResponse(baseUrl: string, targetUrl: string, err: unknown): NextResponse {
+  const message = err instanceof Error ? err.message : String(err);
+  return NextResponse.json(
+    {
+      error: "hermes_runtime_bff_upstream_unreachable",
+      message,
+      baseUrl,
+      targetUrl,
+      hint:
+        "Next 服务端转发到 hermes-webui（默认 :8787）。请在本机启动 webui，并在根目录 .env 或 frontend/.env.local 设置 HERMES_WEBUI_BASE_URL=http://localhost:8787（勿使用已废弃的旧局域网 IP）。",
+    },
+    { status: 502 },
+  );
+}
+
 function mapRuntimePathToWebuiApi(pathParts: string[]): string {
   const key = pathParts.join("/");
   const mapped: Record<string, string> = {
@@ -202,15 +217,20 @@ export async function GET(request: NextRequest, ctx: { params: Promise<{ path?: 
   });
 
   const key = path.join("/");
-  if (key === "chat/stream") {
-    return proxySse(request, url.toString());
-  }
+  const targetUrl = url.toString();
+  try {
+    if (key === "chat/stream") {
+      return await proxySse(request, targetUrl);
+    }
 
-  if (key === "file/raw") {
-    return proxyBinary(request, url.toString());
-  }
+    if (key === "file/raw") {
+      return await proxyBinary(request, targetUrl);
+    }
 
-  return proxyJson(request, url.toString());
+    return await proxyJson(request, targetUrl);
+  } catch (err) {
+    return bffUpstreamUnreachableResponse(baseUrl, targetUrl, err);
+  }
 }
 
 export async function POST(request: NextRequest, ctx: { params: Promise<{ path?: string[] }> }) {
@@ -219,10 +239,15 @@ export async function POST(request: NextRequest, ctx: { params: Promise<{ path?:
   const upstreamPath = mapRuntimePathToWebuiApi(path);
   const url = new URL(`${baseUrl}${upstreamPath}`);
 
-  if (path.join("/") === "upload") {
-    return proxyUpload(request, url.toString());
-  }
+  const targetUrl = url.toString();
+  try {
+    if (path.join("/") === "upload") {
+      return await proxyUpload(request, targetUrl);
+    }
 
-  return proxyJson(request, url.toString());
+    return await proxyJson(request, targetUrl);
+  } catch (err) {
+    return bffUpstreamUnreachableResponse(baseUrl, targetUrl, err);
+  }
 }
 

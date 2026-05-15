@@ -37,7 +37,7 @@ function getHermesGatewayEnv(): HermesGatewayEnv {
   const baseUrlRaw =
     process.env.HERMES_GATEWAY_BASE_URL ??
     process.env.HERMES_BASE_URL ??
-    "http://192.168.0.118:8642";
+    "http://localhost:8642";
 
   const token =
     process.env.HERMES_GATEWAY_TOKEN ??
@@ -60,7 +60,7 @@ function getHermesOpenAiEnv(): HermesOpenAiEnv {
   const baseUrlRaw =
     process.env.HERMES_BASE_URL ??
     process.env.HERMES_GATEWAY_BASE_URL ??
-    "http://192.168.0.118:8642/v1";
+    "http://localhost:8642/v1";
 
   const apiKey =
     process.env.HERMES_API_KEY ??

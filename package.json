@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node scripts/dev-runner.ts watch",
+    "dev": "node --import tsx scripts/dev-runner.ts",
     "dev:web": "pnpm --filter @portal/web dev",
     "dev:server": "pnpm --filter @portal/server dev",
     "dev:list": "echo 'Use .portal/dev-status/dev-server.json'",
@@ -22,7 +22,8 @@
     "release:stable": "bash scripts/release.sh stable",
     "prepare-frontend-dist": "bash scripts/prepare-frontend-dist.sh"
   },
-  "devDependencies": {
+  "devDependencies": { 
+    "tsx": "^4.19.2",
     "turbo": "^2.5.0"
   },
   "packageManager": "pnpm@9.15.4"

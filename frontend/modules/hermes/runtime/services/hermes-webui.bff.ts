@@ -15,8 +15,6 @@ export function getHermesWebuiConfig(): HermesWebuiConfig {
     process.env.NEXT_PUBLIC_HERMES_WEBUI_BASE_URL ??
     DEFAULT_WEBUI_BASE_URL;
 
-  debugger
-
   return {
     baseUrl: raw.trim().replace(/\/+$/, ""),
   };
