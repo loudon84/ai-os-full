@@ -136,7 +136,7 @@
 | Hero | `hero.tsx` | 首屏英雄区块，framer-motion 动画 |
 | Stats | `stats.tsx` | 统计数据区块 |
 | AllComponents | `all-components.tsx` | 组件集合展示，Swiper 轮播 |
-| AboutDashtail | `about-dashtail.tsx` | DashTail 特性介绍 |
+| AboutDashtail | `about-dashtail.tsx` | CopilotSMC 特性介绍 |
 | AboutUs | `about-us.tsx` | 关于我们 |
 | Faq | `faq.tsx` | FAQ，Accordion 展示 |
 | PricingPlan | `pricing-plan.tsx` | 定价方案 |

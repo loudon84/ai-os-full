@@ -57,10 +57,10 @@ const Footer = () => {
             className="inline-flex items-center gap-4 text-primary-foreground"
           >
             <SiteLogo className="w-[50px] h-[52px]" />
-            <span className="text-3xl font-semibold">DashTail</span>
+            <span className="text-3xl font-semibold">CopilotSMC</span>
           </Link>
           <p className="text-base leading-7 text-default-200 dark:text-default-600 text-center mt-3">
-            DashTail is a developer-friendly, ready-to-use admin template designed for building attractive, scalable, and high-performing web applications, powered by the cutting-edge technologies of Next.js and Tailwind CSS.</p>
+            CopilotSMC is a developer-friendly, ready-to-use admin template designed for building attractive, scalable, and high-performing web applications, powered by the cutting-edge technologies of Next.js and Tailwind CSS.</p>
           <div className="mt-9 flex justify-center flex-wrap gap-4">
             <Button asChild variant="outline" className="rounded text-primary-foreground border-primary">
               <Link href="/dashboard" target="__blank">View Demo</Link>
@@ -69,7 +69,7 @@ const Footer = () => {
               <Link href="/docs/introduction">View Documentation</Link>
             </Button>
             <Button asChild variant="outline" className="rounded text-primary-foreground border-primary">
-              <Link href="https://1.envato.market/dashtail-regular" target="__blank">Buy Now</Link>
+              <Link href="https://1.envato.market/copilotsmc-regular" target="__blank">Buy Now</Link>
             </Button>
           </div>
           <div className="mt-8 flex items-center justify-center flex-wrap gap-5">
@@ -89,7 +89,7 @@ const Footer = () => {
       </div>
       <div className="relative bg-default-900 dark:bg-default-50 py-6">
         <div className="container flex flex-col text-center md:text-start md:flex-row gap-2">
-          <p className="text-primary-foreground flex-1 text-base xl:text-lg font-medium">COPYRIGHT &copy; 2024 DashTail All rights Reserved</p>
+          <p className="text-primary-foreground flex-1 text-base xl:text-lg font-medium">COPYRIGHT &copy; 2024 CopilotSMC All rights Reserved</p>
           <p className="text-primary-foreground flex-none text-base font-medium">
             Hand-crafted & Made by {" "}
             <Link href="https://codeshaper.net" target="__blank" className="text-primary hover:underline">Codeshaper</Link></p>

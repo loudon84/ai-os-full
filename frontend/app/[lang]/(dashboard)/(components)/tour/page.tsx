@@ -75,7 +75,7 @@ const UiTour = () => {
                           <Image
                             className="w-full h-full"
                             src={tourlogo}
-                            alt=" dashtail logo"
+                            alt=" copilotsmc logo"
                           />
                         </div>
                       </div>
@@ -110,7 +110,7 @@ const UiTour = () => {
                           Free register
                         </h5>
                         <p className="text-muted-foreground mb-0 text-sm">
-                          Get your Free DashTail account now.
+                          Get your Free CopilotSMC account now.
                         </p>
                       </CardContent>
                     </Card>
@@ -131,7 +131,7 @@ const UiTour = () => {
                           Log in account
                         </h5>
                         <p className="text-muted-foreground mb-0 text-sm">
-                          Sign in to continue to DashTail.
+                          Sign in to continue to CopilotSMC.
                         </p>
                       </CardContent>
                     </Card>
@@ -152,7 +152,7 @@ const UiTour = () => {
                           Get Product
                         </h5>
                         <p className="text-muted-foreground mb-0 text-sm">
-                          Sign in to continue to DashTail.
+                          Sign in to continue to CopilotSMC.
                         </p>
                       </CardContent>
                     </Card>

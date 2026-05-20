@@ -2,7 +2,7 @@
 
 > 本文档是所有 AI Agent 在本仓库工作时的**第一读物**（唯一强制入口）。
 > 目标：让 Agent 用「索引 → 按需加载」模式工作，避免每次会话盲目读取海量 PRD / specs。
-> 项目：`smc-coworker-aios/portal`（DashTail 壳 + Hermes AI OS 模块）
+> 项目：`smc-coworker-aios/portal`（CopilotSMC 壳 + Hermes AI OS 模块）
 
 ---
 

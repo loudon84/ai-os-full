@@ -15,7 +15,7 @@
 | UI 原子（Shadcn） | `components/ui/` | `specs/components.md` §1 |
 | 通用业务组件 | `components/<feature>/` | `specs/components.md` §2 |
 | 布局/Header/Sidebar/Footer | `components/partials/` | `specs/layout-structure.md` |
-| DashTail Layout/Menu 二开对照（Customizer·Store·menus 映射） | `specs/structure.md` | 本文档 + `specs/layout-structure.md` |
+| CopilotSMC Layout/Menu 二开对照（Customizer·Store·menus 映射） | `specs/structure.md` | 本文档 + `specs/layout-structure.md` |
 | Layout 设计规范/页面母版 | `docs/prd/design_layout_style.md` | `specs/layout-structure.md` §13-16 |
 | Provider 链 | `provider/`（配 `app/[lang]/layout.tsx`） | `specs/layout-structure.md` §2 |
 | 全局状态 Store | `store/index.ts`（主题+Sidebar） | `specs/layout-structure.md` §8 |
@@ -46,12 +46,12 @@ Hermes 是核心业务模块，目录较复杂。按"主题入口"索引：
 | Tool UI 总索引 | `modules/hermes/tool-ui/registry.ts`, `types.ts` | 按 tool name 定位 UI 适配器 |
 | Tool UI 细分 | `tool-ui/adapters/`, `cards/`, `mappers/`, `schemas/`, `mocks/`, `fixtures/` | 见 §2.2 |
 | Copilot UI 壳 | `modules/hermes/components/copilot/hermes-copilot-panel.tsx`, `hermes-tool-renderer.tsx`, `interrupt-banner.tsx`, `interrupt-form-card.tsx`, `resume-action-bar.tsx` | AI 对话面板与中断交互 |
-| 嵌入面板（Chat） | `modules/hermes/components/panel/HermesChatPanel.tsx` + `HermesPanel*.tsx` | 可嵌入业务页：`HermesClient`（Web BFF `/api/hermes/runtime/*` → hermes-webui；Desktop `hermesAPI`）+ `useHermesPanelChat`（首轮可选 `injectEmailToWorkspace` 写入 `email-context/`）；卡片内嵌 `RuntimeWorkspacePanel`（`workspaceInvalidateKey` 刷新列表；`list`/`file` 等与全页 runtime 同源 BFF） |
+| 嵌入面板（Chat） | `modules/hermes/components/panel/HermesChatPanel.tsx` + `HermesPanel*.tsx` | 可嵌入业务页：`HermesClient`（Web BFF `/api/hermes/runtime/*` → hermes-webui；Desktop `hermesAPI`）+ `useHermesPanelChat`（首轮可选邮件 `injectEmailToWorkspace` 写 `email-context/`；或通用 `workspaceInjector` 如文档 `document-context/`）；卡片内嵌 `RuntimeWorkspacePanel`（`workspaceInvalidateKey` 刷新列表；`list`/`file` 等与全页 runtime 同源 BFF） |
 | Hermes 统一客户端 | `modules/hermes/client/`（`createHermesClient`、`createHermesRuntimeSession`、`WebHermesClient`、`DesktopHermesClient`） | 与 hermes-desktop IPC 或 Portal `/api/hermes/runtime` 对齐的对话出口 |
 | Runtime 服务 | `modules/hermes/services/workspace-email-inject.ts` | 邮件正文/附件注入 Hermes session workspace（`email-context/body.md`、附件目录与索引） |
 | Dashboard UI | `modules/hermes/components/dashboard/metrics-overview.tsx`, `clickable-metric-card.tsx` | Dashboard 指标卡片 |
 | Dev Preview | `modules/hermes/dev/preview-registry.ts`, `preview-config.ts`, `schema-resolver.ts`, `story-seeds.ts` + `components/dev-preview/*` | 独立预览工作台（Phase 7） |
-| Stores | `stores/hermes-agent-store.ts`, `hermes-tool-ui-store.ts`, `hermes-interrupt-store.ts`, `hermes-dashboard-context-store.ts`, `hermes-preview-store.ts`, `hermes-panel-session-binding.ts` | 各 UI 子状态；`hermes-panel-session-binding` 将业务键（如 `email:${messageId}`）与 Hermes runtime `session_id` 绑定（localStorage，用于邮件明细关闭后再开续聊） |
+| Stores | `stores/hermes-agent-store.ts`, `hermes-tool-ui-store.ts`, `hermes-interrupt-store.ts`, `hermes-dashboard-context-store.ts`, `hermes-preview-store.ts`, `hermes-panel-session-binding.ts` | 各 UI 子状态；`hermes-panel-session-binding` 将业务键（如 `email:${messageId}`、`document:${documentId}`）与 Hermes runtime `session_id` 绑定（localStorage，用于明细关闭后再开续聊） |
 | Hooks | `hooks/use-hermes-copilot.ts`, `use-active-hermes-agent.ts`, `use-tool-render-model.ts`, `use-hermes-interrupt.ts`, `use-hermes-panel-chat.ts`, `use-preview-*.ts`, `use-dashboard-context.ts`, `use-dashboard-card-injection.ts`, `use-agent-toolset.ts`, `use-schema-validation.ts` | 分别对应 Copilot/Interrupt/嵌入面板 Chat（含 `sessionId`、`workspacePath` 绑定 hermes-webui workspace）/Preview/Dashboard |
 | API | `modules/hermes/api/`, `modules/hermes/services/` | 数据访问与 Gateway 封装 |
 | 测试 | `modules/hermes/tests/` | 单测（`tool-ui-registry.spec.ts`、`tool-ui-schema.spec.ts`）+ e2e 用例（`hermes-dashboard-e2e-cases.md`） |
@@ -193,7 +193,19 @@ app/[lang]/email/page.tsx → EmailWorkspacePage
 app/[lang]/email/settings/page.tsx → EmailSettingsPanel（页级壳 + 返回邮箱）
 ```
 
-### 2.9 `modules/workspace/` — Workspace 壳（明细应用文件树面板）
+### 2.10 `modules/documents/` — Documents（Univer + Hermes + CopilotKit）
+
+| 主题 | 核心文件 | 用途 |
+|------|---------|------|
+| 对外导出入口 | `modules/documents/index.ts` | 页面组件、`DocumentAIPanel`、`SpreadsheetAIPanel` 等 |
+| 详情 / 工作台 | `pages/DocumentDetailPage.tsx`、`DocumentWorkbookPage.tsx` | Univer 编辑；大屏侧栏 **Tabs**：「AI 助手」`DocumentAIPanel`（`HermesChatPanel` + `services/workspace-document-inject.ts`）/「数据操作」`SpreadsheetAIPanel`（`copilot/useSpreadsheetDocumentAi` Patch 流） |
+| Hermes 文档注入 | `services/workspace-document-inject.ts` | 首轮会话向 workspace 写入 `document-context/overview.md`（元数据 + 快照 JSON 摘录） |
+| 表格 AI / 适配器 | `components/SpreadsheetAIPanel.tsx`、`copilot/useSpreadsheetDocumentAi.ts`、`adapters/univer/*` | CopilotKit + Facade interaction / Patch 预览与批准 |
+| 类型与 API | `types/document.types.ts`（`DocumentMeta` 等与 `@portal/shared` 对齐）、`services/document.api.ts` | 列表/详情/快照/保存 |
+
+> 详情路由：`app/[lang]/(dashboard)/documents/[documentId]/page.tsx` → `DocumentDetailPage`。
+
+### 2.11 `modules/workspace/` — Workspace 壳（明细应用文件树面板）
 
 用于“业务明细应用 Workspace Layout”中的 `workspace files` 区块（文件树/目录），作为主内容区旁的工作区资源入口（文档、工件、执行产物等）。
 

@@ -187,7 +187,7 @@ const ProjectHeader = ({ project }: { project: Project }) => {
             <div className="h-[148px] w-[148px] rounded">
               <Image
                 src={projectImage}
-                alt="dashtail"
+                alt="copilotsmc"
                 className="w-full h-full object-cover rounded"
               />
             </div>
@@ -210,7 +210,7 @@ const ProjectHeader = ({ project }: { project: Project }) => {
               </div>
             </div>
             <div className="text-sm text-default-600 w-full  mt-1">
-              Create a Brand logo design for a DashTail Admin. Logo should be
+              Create a Brand logo design for a CopilotSMC Admin. Logo should be
               match our dashboard theme.
             </div>
             <div className="mt-3 flex flex-wrap items-center gap-2 lg:gap-6">

@@ -42,8 +42,14 @@ export const documents = pgTable(
     deletedAt: timestamp("deleted_at", { withTimezone: false }),
   },
   (table) => [
-    check("chk_documents_type", sql`${table.documentType} IN ('spreadsheet')`),
-    check("chk_documents_engine", sql`${table.engine} IN ('univer')`),
+    check(
+      "chk_documents_type",
+      sql`${table.documentType} IN ('spreadsheet', 'markdown', 'pdf', 'html')`,
+    ),
+    check(
+      "chk_documents_engine",
+      sql`${table.engine} IN ('univer', 'tiptap', 'pdf-viewer', 'html-viewer')`,
+    ),
     check(
       "chk_documents_status",
       sql`${table.status} IN ('draft', 'active', 'archived', 'deleted')`,

@@ -71,7 +71,7 @@ const Faq = () => {
                   Do you provide design frames and GitHub access?
                 </AccordionTrigger>
                 <AccordionContent className="text-sm xl:text-base text-default-700">
-                  DashTail itself doesn’t include Figma design files automatically, but we're happy to provide them for free upon request. This allows for flexible customization within Figma.
+                  CopilotSMC itself doesn’t include Figma design files automatically, but we're happy to provide them for free upon request. This allows for flexible customization within Figma.
                   If you need GitHub access then you can ask our     <Link href="https://codeshaperbd.freshdesk.com/support/login" target="_blank" className="text-primary">support team</Link>. for GitHub access.
                 </AccordionContent>
               </AccordionItem>
@@ -80,11 +80,11 @@ const Faq = () => {
                 className="bg-background"
               >
                 <AccordionTrigger className="text-base xl:text-lg text-left font-medium text-default-900">
-                  What skills are needed to use DashTail?
+                  What skills are needed to use CopilotSMC?
                 </AccordionTrigger>
                 <AccordionContent className="text-sm xl:text-base text-default-700">
-                  Using DashTail effectively requires a foundational knowledge of front-end development, particularly with Tailwind and React for deeper customization.
-                  It's important to remember that DashTail is a front-end template;
+                  Using CopilotSMC effectively requires a foundational knowledge of front-end development, particularly with Tailwind and React for deeper customization.
+                  It's important to remember that CopilotSMC is a front-end template;
                   knowledge of back-end development is also necessary for full project development.
                 </AccordionContent>
               </AccordionItem>
@@ -101,7 +101,7 @@ const Faq = () => {
                   How are updates and upgrades handled?
                 </AccordionTrigger>
                 <AccordionContent className="text-sm xl:text-base text-default-700">
-                  The latest DashTail version can always be downloaded from ThemeForest without any extra charge.
+                  The latest CopilotSMC version can always be downloaded from ThemeForest without any extra charge.
                   Updates can be easily integrated by referring to our changelog and GitHub repository.
                 </AccordionContent>
               </AccordionItem>
@@ -121,10 +121,10 @@ const Faq = () => {
                 className="bg-background"
               >
                 <AccordionTrigger className="text-base xl:text-lg text-left font-medium text-default-900">
-                  Is DashTail worth the investment?
+                  Is CopilotSMC worth the investment?
                 </AccordionTrigger>
                 <AccordionContent className="text-sm xl:text-base text-default-700">
-                  Absolutely. DashTail is meticulously crafted to streamline the development process, offering a seamless and efficient way to build your web UI.
+                  Absolutely. CopilotSMC is meticulously crafted to streamline the development process, offering a seamless and efficient way to build your web UI.
                   It's a worthwhile investment for any developer looking for quality and efficiency.
                 </AccordionContent>
               </AccordionItem>
@@ -133,7 +133,7 @@ const Faq = () => {
                 className="bg-background"
               >
                 <AccordionTrigger className="text-base xl:text-lg text-left font-medium text-default-900">
-                  How can I get help with DashTail?
+                  How can I get help with CopilotSMC?
                 </AccordionTrigger>
                 <AccordionContent className="text-sm xl:text-base text-default-700">
                   For assistance, head over to our <Link href="https://codeshaperbd.freshdesk.com/support/login" target="_blank" className="text-primary">support portal</Link> , register, and submit a ticket.

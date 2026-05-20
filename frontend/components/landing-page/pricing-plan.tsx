@@ -14,7 +14,7 @@ const PricingPlan = () => {
             Pricing  <span className="text-primary">Plan</span>
           </h2>
           <p className="text-base xl:leading-7 text-center text-default-700 ">
-            DashTail stands as a prudent investment, safeguarding you against thousands in potential expenses.
+            CopilotSMC stands as a prudent investment, safeguarding you against thousands in potential expenses.
             With every update, amplify its value even further.
           </p>
         </div>
@@ -176,7 +176,7 @@ const PricingPlan = () => {
                 </li>
               </ul>
               <Button asChild>
-                <Link href="https://1.envato.market/dashtail-regular" target="__blank" className="mt-8 xl:mt-12 w-full">
+                <Link href="https://1.envato.market/copilotsmc-regular" target="__blank" className="mt-8 xl:mt-12 w-full">
                   Buy Now
                 </Link>
               </Button>
@@ -342,7 +342,7 @@ const PricingPlan = () => {
                 </li>
               </ul>
               <Button asChild>
-                <Link href="https://1.envato.market/dashtail-extended" target="__blank" className="mt-8 xl:mt-12 w-full">
+                <Link href="https://1.envato.market/copilotsmc-extended" target="__blank" className="mt-8 xl:mt-12 w-full">
                   Buy Now
                 </Link>
               </Button>

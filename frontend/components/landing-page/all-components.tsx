@@ -17,7 +17,7 @@ const AllComponents = () => {
           Component <span className="text-primary">Collection</span>
         </h2>
         <p className="text-base xl:leading-7 text-center text-default-700 ">
-          DashTail Admin Template offers a variety of carefully designed components, perfect for creating advanced reusable components,
+          CopilotSMC Admin Template offers a variety of carefully designed components, perfect for creating advanced reusable components,
           pages,dashboard etc.</p>
       </div>
       <div className=" mt-14 space-y-6">

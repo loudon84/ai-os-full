@@ -1134,7 +1134,7 @@ portal/scripts/
 
 ```bash
 # portal/package.json
-"dev": "node scripts/dev-runner.ts watch"
+"dev": "node --import tsx scripts/dev-runner.ts watch"
 ```
 
 `dev-runner.ts` 工作流程：

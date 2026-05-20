@@ -54,7 +54,7 @@ const ValidateInputWithIcon = () => {
               <FormControl>
                 <>
                   <Input
-                    placeholder="DashTail"
+                    placeholder="CopilotSMC"
                     {...field}
                     className={cn("", {
                       "border-destructive focus:border-destructive":

@@ -35,7 +35,7 @@ const PopupMarkerMap = ({ height = 350 }) => {
             />
             <Marker position={position}>
                 <Popup>
-                    <span className="text-gray-900 text-lg font-medium">Hello DashTail!</span>
+                    <span className="text-gray-900 text-lg font-medium">Hello CopilotSMC!</span>
                 </Popup>
             </Marker>
         </MapContainer>

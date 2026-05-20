@@ -228,12 +228,12 @@ export const projects = [
     id: "9d41eae4-5c96-4a7f-a70e-0ed9c4c5f5a1",
     title: "Acculance SaaS - POS System.",
     subtitle:
-      "Create a Brand logo design for a DashTail Admin. Total 21/25 tasks logo design for completed.",
+      "Create a Brand logo design for a CopilotSMC Admin. Total 21/25 tasks logo design for completed.",
     status: "completed",
     label: "bug",
     priority: "high",
     description:
-      "Create a Brand logo design for a DashTail Admin. Total 21/25 tasks logo design for completed.",
+      "Create a Brand logo design for a CopilotSMC Admin. Total 21/25 tasks logo design for completed.",
     percentage: 100,
     assign: [
       { image: avatar6, label: "John Doe", value: "john.doe" },

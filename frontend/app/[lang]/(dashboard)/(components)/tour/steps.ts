@@ -81,7 +81,7 @@ const steps:Step[] = [
       },
     ],
     title: "Register your account",
-    text: "Get your Free DashTail account now.",
+    text: "Get your Free CopilotSMC account now.",
   },
   {
     id: "intro2",
@@ -110,7 +110,7 @@ const steps:Step[] = [
       },
     ],
     title: "Login your account",
-    text: "Sign in to continue to DashTail.",
+    text: "Sign in to continue to CopilotSMC.",
   },
   {
     id: "intro3",
@@ -139,7 +139,7 @@ const steps:Step[] = [
       },
     ],
     title: "Get yout Product",
-    text: "Sign in to continue to DashTail.",
+    text: "Sign in to continue to CopilotSMC.",
   },
   {
     id: "intro4",
@@ -161,7 +161,7 @@ const steps:Step[] = [
       },
     ],
     title: "Thank you !",
-    text: "Sign in to continue to DashTail.",
+    text: "Sign in to continue to CopilotSMC.",
   },
 ];
 

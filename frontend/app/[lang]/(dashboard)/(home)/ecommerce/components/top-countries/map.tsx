@@ -7,7 +7,7 @@ const Map = ({ height = 300 }) => {
 
   return (
     <div className={`w-full h-[${height}px]`}>
-      <VectorMap {...world} className="h-full w-full object-cover dashtail-codeVmapPrimary" />
+      <VectorMap {...world} className="h-full w-full object-cover copilotsmc-codeVmapPrimary" />
     </div>
   );
 };

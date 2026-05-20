@@ -16,10 +16,10 @@ export type ProjectStatus = (typeof PROJECT_STATUSES)[number];
 
 // ===== Documents domain =====
 
-export const DOCUMENT_TYPES = ["spreadsheet"] as const;
+export const DOCUMENT_TYPES = ["spreadsheet", "markdown", "pdf", "html"] as const;
 export type DocumentType = (typeof DOCUMENT_TYPES)[number];
 
-export const DOCUMENT_ENGINES = ["univer"] as const;
+export const DOCUMENT_ENGINES = ["univer", "tiptap", "pdf-viewer", "html-viewer"] as const;
 export type DocumentEngine = (typeof DOCUMENT_ENGINES)[number];
 
 export const DOCUMENT_STATUSES = [

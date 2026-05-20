@@ -27,7 +27,7 @@ const Overview = () => {
         <div className="col-span-12 2xl:col-span-8">
           <div className="grid grid-cols-12 gap-6">
             <div className="col-span-12">
-              <div className="dashtail-legend">
+              <div className="copilotsmc-legend">
                 <ReportChart />
               </div>
             </div>

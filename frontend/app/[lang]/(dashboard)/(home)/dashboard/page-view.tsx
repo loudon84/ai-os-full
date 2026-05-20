@@ -57,7 +57,7 @@ const DashboardPageView = ({ trans }: DashboardPageViewProps) => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="dashtail-legend">
+              <div className="copilotsmc-legend">
                 <UserDeviceReport />
               </div>
             </CardContent>

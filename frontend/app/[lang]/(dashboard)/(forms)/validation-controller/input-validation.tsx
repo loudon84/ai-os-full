@@ -54,7 +54,7 @@ const InputFormValidation = () => {
               <FormLabel className="mb-2">Username </FormLabel>
               <FormControl>
                 <Input
-                  placeholder="DashTail"
+                  placeholder="CopilotSMC"
                   {...field}
                   className={cn("", {
                     "border-destructive focus:border-destructive":

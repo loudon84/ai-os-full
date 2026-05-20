@@ -15,7 +15,7 @@ type Config = {
 
 const DemoApp = () => {
   const [config, setConfig] = useState<Config>({
-    text: "DashTail",
+    text: "CopilotSMC",
     textColor: "#FF0000",
     opacity: 0.2,
     gutter: 40,

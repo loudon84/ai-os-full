@@ -95,7 +95,8 @@
 | `frontend/app/[lang]/email/` | — | — | Email：独立 `layout.tsx`（auth+i18n）+ 继承 `workspace.layout.provider`（无侧栏/底栏）；`/email`、`/email/settings` |
 | `frontend/modules/<domain>/` | — | — | 业务模块（hermes / finance / risk / forecast / copilotkit / documents / email / generative-ui / **auth** …） |
 | `frontend/modules/email/` | — | — | Email 前端：真实 `/api/email/*` 接入、账号绑定/同步/列表详情/发信/附件；右侧 `EmailAIPanel` / `HermesChatPanel` Tab（Hermes 首轮发信前将当前邮件写入 workspace `email-context/`，正文含 HTML→纯文本）；`vitest.config.ts` + `modules/email/tests/*` |
-| `frontend/modules/hermes/client/`、`components/panel/`、`services/workspace-email-inject.ts`、`runtime/components/RuntimeWorkspacePanel.tsx`、`runtime/hooks/use-runtime-workspace.ts`、`stores/hermes-panel-session-binding.ts` | — | — | `HermesClient` + `createHermesRuntimeSession`；`HermesChatPanel` / `useHermesPanelChat`（邮件 `emailForWorkspaceInject` + workspace 注入）；`RuntimeWorkspacePanel` 支持 `workspaceInvalidateKey`；`hermes-panel-session-binding` 持久化「明细 → session_id」 |
+| `frontend/modules/hermes/client/`、`components/panel/`、`services/workspace-email-inject.ts`、`runtime/components/RuntimeWorkspacePanel.tsx`、`runtime/hooks/use-runtime-workspace.ts`、`stores/hermes-panel-session-binding.ts` | — | — | `HermesClient` + `createHermesRuntimeSession`；`HermesChatPanel` / `useHermesPanelChat`（邮件 `emailForWorkspaceInject`；通用业务可传 `workspaceInjector`；`scopeKeyDocument` 等绑定续聊）；`RuntimeWorkspacePanel` 支持 `workspaceInvalidateKey`；`hermes-panel-session-binding` 持久化「明细 → session_id」 |
+| `frontend/modules/documents/` | — | — | Documents：`DocumentDetailPage` 侧栏 Tabs「AI 助手」`DocumentAIPanel`（Hermes + `workspace-document-inject`）与「数据操作」`SpreadsheetAIPanel`（CopilotKit）；`DOCUMENT_TYPES` 含 markdown/pdf/html |
 | `frontend/app/(auth)/` | — | — | 认证路由组（login / register / workspace/select），独立 layout 无 Sidebar/Header |
 | `frontend/middleware.ts` | — | — | 反代 `/api/*` → backend `/api/v1/*`，Authorization 头透传 |
 
@@ -121,7 +122,7 @@
 | `backend/src/middleware/` | — | auth-v2（Bearer Token + 旧头降级）、rbac（权限码校验）、audit-logger（异步审计）、logger、error-handler | 鉴权、权限校验、审计、日志、错误响应 |
 | `backend/tests/` | — | Vitest 单元测试（checksum / version-conflict / permission / email-foundation） | 写后端测试 |
 | `packages/shared/` | `@portal/shared` | 前后端共享：常量（`DOCUMENT_*`、`SNAPSHOT_*`、`USER_*`、`WORKSPACE_*`、`MEMBERSHIP_*`、`PERMISSION_*`、`AUDIT_*`、`EMAIL_*`）+ TS 类型 + Zod 验证器；`zod` 是运行时依赖 | 改 API 契约、加共享类型 |
-| `packages/db/` | `@portal/db` | Drizzle schema（documents + auth/rbac + email）+ migrations + `createDb` 客户端 + 种子数据脚本 | 改 schema、加表、生成迁移 |
+| `packages/db/` | `@portal/db` | Drizzle schema（documents + auth/rbac + email）+ migrations（如 `0002_*` 扩展 `document_type`/`engine` 校验）+ `createDb` 客户端 + 种子数据脚本 | 改 schema、加表、生成迁移 |
 | `packages/db/src/migrations/` | — | Drizzle Kit 生成的 SQL（`pnpm db:generate`） | 迁移文件 |
 | `tooling/tsconfig/` | — | `base.json` / `node.json` 共享 TS 配置，被 backend 与 packages 继承 | 改编译选项 |
 

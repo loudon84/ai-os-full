@@ -15,7 +15,7 @@ import {
 import { Tailwind } from "@react-email/tailwind";
 import * as React from "react";
 
-import DashTailLogo from "@/public/images/logo/logo-2.png"
+import CopilotSMCLogo from "@/public/images/logo/logo.svg"
 export const VerifyOtp = () => {
   return (
     <Html>
@@ -27,7 +27,7 @@ export const VerifyOtp = () => {
             <Section>
               <Column className="flex flex-col items-center pt-10">
                 <Img
-                  src={DashTailLogo.src}
+                  src={CopilotSMCLogo.src}
                   alt="Dropbox"
                   className="w-[160px]"
                 />
@@ -35,7 +35,7 @@ export const VerifyOtp = () => {
                   Verify your email address
                 </Text>
                 <Text className="text-sm  text-center my-0 text-slate-900">
-                  To get started with DashTail, we simply need <br /> to verify your email address.
+                  To get started with CopilotSMC, we simply need <br /> to verify your email address.
                 </Text>
                 <Text className="text-base font-medium text-center text-slate-900">Verification Code</Text>
                 <Text className="text-3xl  font-bold text-center text-slate-900 my-0 ">987564</Text>

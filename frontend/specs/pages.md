@@ -154,7 +154,7 @@
 | 路由 | 文件 | 功能 |
 |------|------|------|
 | `/[lang]/documents` | `documents/page.tsx` | Univer 表格文档列表，新建 |
-| `/[lang]/documents/[documentId]` | `documents/[documentId]/page.tsx` | 标准编辑；侧栏 AI 面板；保存可带可选 AI 追溯字段 |
+| `/[lang]/documents/[documentId]` | `documents/[documentId]/page.tsx` | 标准编辑；侧栏 Tabs「AI 助手」（Hermes）+「数据操作」（CopilotKit Patch）；保存可带可选 AI 追溯字段 |
 | `/[lang]/documents/[documentId]/workbook` | `documents/[documentId]/workbook/page.tsx` | AI 工作台（与详情页同源组件，`variant="workbook"`） |
 
 #### 项目详情子页面

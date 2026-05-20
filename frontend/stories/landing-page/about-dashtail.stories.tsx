@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import AboutDashtail from "@/components/landing-page/about-dashtail";
+import AboutDashtail from "@/components/landing-page/about-copilotsmc";
 
 const meta: Meta<typeof AboutDashtail> = {
   title: "LandingPage/AboutDashtail",

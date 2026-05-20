@@ -1,6 +1,6 @@
 # smc-coworker-aios / portal
 
-基于 Next.js 14 App Router 的 AI OS 门户前端，融合 DashTail UI 壳层与 Hermes AI 业务模块（finance / risk / forecast / copilotkit）。
+基于 Next.js 14 App Router 的 AI OS 门户前端，融合 CopilotSMC UI 壳层与 Hermes AI 业务模块（finance / risk / forecast / copilotkit）。
 
 ---
 

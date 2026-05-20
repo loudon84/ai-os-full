@@ -1,6 +1,6 @@
 #!/usr/bin/env -S node --import tsx
 import { spawn } from "node:child_process";
-import { existsSync, readdirSync, statSync, writeFileSync, mkdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, statSync, writeFileSync, mkdirSync, readFileSync, unlinkSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { stdin, stdout } from "node:process";
@@ -72,7 +72,6 @@ function cleanup() {
   }, 5000).unref();
 
   if (existsSync(statusFile)) {
-    const { unlinkSync } = require("node:fs");
     try { unlinkSync(statusFile); } catch {}
   }
 }

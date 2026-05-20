@@ -34,6 +34,11 @@ export function scopeKeyEmailMessage(messageId: string): string {
   return `email:${messageId}`;
 }
 
+/** 文档详情页 Hermes 面板续聊键 */
+export function scopeKeyDocument(documentId: string): string {
+  return `document:${documentId}`;
+}
+
 export function getPanelSessionBinding(scopeKey: string): string | undefined {
   const id = readMap()[scopeKey];
   return typeof id === "string" && id.length > 0 ? id : undefined;

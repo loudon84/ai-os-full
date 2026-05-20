@@ -3,16 +3,19 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
+import { toast } from "react-hot-toast";
 
 import type { SheetRangeContext } from "../types/documentAi.types";
 import type { SnapshotSaveRequest } from "../types/document.types";
 import type { AiSaveLineage } from "../lib/snapshotSaveRequest";
 import { withAiSaveLineage } from "../lib/snapshotSaveRequest";
+import { DocumentAIPanel } from "../components/DocumentAIPanel";
 import { SpreadsheetAIPanel } from "../components/SpreadsheetAIPanel";
 import { readWorkbookIdFromSnapshot } from "../adapters/univer/WorkbookSnapshotAdapter";
 import { BreadcrumbItem } from "@/components/ui/breadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { DocumentModuleShell } from "../components/layout/DocumentModuleShell";
 import { UniverSheetEditor } from "../components/UniverSheetEditor";
@@ -187,23 +190,66 @@ export default function DocumentDetailPage(props: { documentId: string; variant?
             onSelectionContextChange={setSelectionCtx}
           />
         </div>
-        <div className="hidden w-[320px] shrink-0 lg:block xl:w-[340px]">
-          <SpreadsheetAIPanel
-            documentId={doc.id}
-            versionId={String(doc.current_version_no)}
-            workbookId={workbookIdGuess}
-            sessionId={sessionId}
-            engineRef={engineRef}
-            selectionContext={selectionCtx}
-            onAiSessionReset={() => setAiSaveLineage(null)}
-            onApprovedPatchApply={({ interactionId, patchId }) =>
-              setAiSaveLineage({
-                created_from: "ai_patch_apply",
-                related_interaction_id: interactionId,
-                related_patch_id: patchId,
-              })
-            }
-          />
+        <div className="hidden min-h-0 w-[320px] shrink-0 flex-col lg:flex xl:w-[340px]">
+          {doc.document_type === "spreadsheet" ? (
+            <Tabs defaultValue="hermes-ai" className="flex min-h-0 flex-1 flex-col gap-2">
+              <TabsList className="grid h-9 w-full shrink-0 grid-cols-2">
+                <TabsTrigger value="hermes-ai" className="text-xs">
+                  AI 助手
+                </TabsTrigger>
+                <TabsTrigger value="datasheet-ai" className="text-xs">
+                  数据操作
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent
+                value="hermes-ai"
+                forceMount
+                className="mt-0 flex min-h-0 flex-1 flex-col overflow-hidden data-[state=inactive]:hidden"
+              >
+                <DocumentAIPanel
+                  className="min-h-0 flex-1"
+                  document={doc}
+                  snapshot={snapshotQuery.data?.snapshot as Record<string, unknown> | undefined}
+                  onApplyResult={(md) => {
+                    void navigator.clipboard.writeText(md);
+                    toast.success("已复制到剪贴板");
+                  }}
+                />
+              </TabsContent>
+              <TabsContent
+                value="datasheet-ai"
+                forceMount
+                className="mt-0 flex min-h-0 flex-1 flex-col overflow-y-auto data-[state=inactive]:hidden"
+              >
+                <SpreadsheetAIPanel
+                  documentId={doc.id}
+                  versionId={String(doc.current_version_no)}
+                  workbookId={workbookIdGuess}
+                  sessionId={sessionId}
+                  engineRef={engineRef}
+                  selectionContext={selectionCtx}
+                  onAiSessionReset={() => setAiSaveLineage(null)}
+                  onApprovedPatchApply={({ interactionId, patchId }) =>
+                    setAiSaveLineage({
+                      created_from: "ai_patch_apply",
+                      related_interaction_id: interactionId,
+                      related_patch_id: patchId,
+                    })
+                  }
+                />
+              </TabsContent>
+            </Tabs>
+          ) : (
+            <DocumentAIPanel
+              className="min-h-0 flex-1"
+              document={doc}
+              snapshot={snapshotQuery.data?.snapshot as Record<string, unknown> | undefined}
+              onApplyResult={(md) => {
+                void navigator.clipboard.writeText(md);
+                toast.success("已复制到剪贴板");
+              }}
+            />
+          )}
         </div>
       </div>
     </DocumentModuleShell>

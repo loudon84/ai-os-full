@@ -31,7 +31,7 @@ const ShowCase = () => {
             Extensive UI <span className="text-primary">Elements</span>
           </h2>
           <p className="text-base leading-7 text-center text-default-700">
-            DashTail provides a rich set of pre-built dashboards, layouts, apps, pages, charts, forms, tables,
+            CopilotSMC provides a rich set of pre-built dashboards, layouts, apps, pages, charts, forms, tables,
             maps, etc. perfect for crafting advanced web applications.</p>
         </div>
 

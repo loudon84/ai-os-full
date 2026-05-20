@@ -40,7 +40,7 @@ const EventVMap = ({ height = 350 }: { height?: number }) => {
     return (
         <div>
             <div className={`w-full h-[${height}px]`}>
-                <VectorMap  {...world} layerProps={layerProps} className="h-full w-full object-cover dashtail-codeVmapInfo" />
+                <VectorMap  {...world} layerProps={layerProps} className="h-full w-full object-cover copilotsmc-codeVmapInfo" />
             </div>
             <div className="text-center">
                 <p className="text-sm font-medium text-card-foreground">Hovered: {hovered && <strong className="text-primary">{hovered}</strong>}</p>

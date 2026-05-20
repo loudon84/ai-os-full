@@ -114,7 +114,7 @@ const Blog = () => {
                     Don't want to receive email?{" "}
                     <Link href="/" className="font-medium text-violet-500">Unsubscribe here</Link>
                     </Text>
-                  <Text className="text-sm text-center text-gray-900 my-0">COPYRIGHT &copy; 2024 DashTail All rights  Reserved</Text>
+                  <Text className="text-sm text-center text-gray-900 my-0">COPYRIGHT &copy; 2024 CopilotSMC All rights  Reserved</Text>
                 </Column>
               </Row>
             </Section>

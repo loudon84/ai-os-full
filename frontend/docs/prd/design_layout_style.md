@@ -366,7 +366,7 @@ DangerZone
 
 不要一上来重做视觉系统。当前优先级应是：
 
-1. **保留现有 DashTail 壳**
+1. **保留现有 CopilotSMC 壳**
    它已经有 Header、Sidebar、多布局、主题、RTL、Copilot 侧栏联动。
 
 2. **新增 `docs/design/layout-patterns.md`**

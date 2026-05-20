@@ -537,7 +537,7 @@
   },
   {
     "name": "AboutDashtail",
-    "path": "components/landing-page/about-dashtail.tsx",
+    "path": "components/landing-page/about-copilotsmc.tsx",
     "level": "composite",
     "hasStory": true,
     "hasAutodocs": true,

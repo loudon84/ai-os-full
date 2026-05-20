@@ -1,8 +1,12 @@
-export type DocumentType = "spreadsheet";
-export type DocumentEngine = "univer";
-export type DocumentStatus = "draft" | "active" | "archived" | "deleted";
-export type DocumentProvider = "local" | "wecom" | "onlyoffice";
-export type DocumentPermissionRole = "view" | "edit" | "owner";
+import type {
+  DocumentEngine,
+  DocumentPermissionRole,
+  DocumentProvider,
+  DocumentStatus,
+  DocumentType,
+} from "@portal/shared";
+
+export type { DocumentEngine, DocumentPermissionRole, DocumentProvider, DocumentStatus, DocumentType };
 
 export interface DocumentMeta {
   id: string;

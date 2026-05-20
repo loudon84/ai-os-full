@@ -1,11 +1,11 @@
-# DashTail Layout / Menu 机制与本项目对照（二开速查）
+# CopilotSMC Layout / Menu 机制与本项目对照（二开速查）
 
-> 目的：对照 [DashTail 官方 Layout Customization](https://dash-tail.vercel.app/docs/layout-customization) 与 [Menu Customization](https://dash-tail.vercel.app/docs/menu-customization) 所描述的产品能力，映射到本仓库**真实代码路径**，便于后续在 Cursor 中改布局、改菜单、改主题定制器而不迷路。  
+> 目的：对照 [CopilotSMC 官方 Layout Customization](https://dash-tail.vercel.app/docs/layout-customization) 与 [Menu Customization](https://dash-tail.vercel.app/docs/menu-customization) 所描述的产品能力，映射到本仓库**真实代码路径**，便于后续在 Cursor 中改布局、改菜单、改主题定制器而不迷路。  
 > 更完整的 Provider 嵌套与生命周期见 `specs/layout-structure.md`。
 
 ---
 
-## 一、DashTail 官方文档在说什么（摘要）
+## 一、CopilotSMC 官方文档在说什么（摘要）
 
 ### 1.1 站点默认配置（`site.js` / 本仓库 `config/site.ts`）
 
@@ -58,7 +58,7 @@
 - `layout === "semibox"` → 强制 `useSidebar.setState({ sidebarType: "popover" })`。
 - `layout === "horizontal"` → 强制 `sidebarType: "classic"`，且 `navbarType: "sticky"`。
 
-因此 Customizer 里改 Layout 会**覆盖**用户之前选的 Sidebar Layout（符合 DashTail「布局与侧栏样式绑定」的产品逻辑，但扩展时要留意）。
+因此 Customizer 里改 Layout 会**覆盖**用户之前选的 Sidebar Layout（符合 CopilotSMC「布局与侧栏样式绑定」的产品逻辑，但扩展时要留意）。
 
 ### 2.2 `useSidebar`（持久化到 `localStorage`，键名 `sidebar-store`）
 
@@ -143,7 +143,7 @@
 
 ### 4.1 官方所说的「类名切换」在本项目中的体现
 
-DashTail 习惯用 body/wrapper 类切换布局；本项目 **Next App Router** 主要在：
+CopilotSMC 习惯用 body/wrapper 类切换布局；本项目 **Next App Router** 主要在：
 
 - **`provider/providers.tsx`**：`body` 上 `dash-tail-app`、`theme-{theme}`、`--radius`。
 - **`dashboard.layout.provider.tsx`**：`content-wrapper` + Tailwind 工具类控制主区左右 margin（随 `collapsed` 在 72px / 248px / 272px / 300px 等之间切换）。
@@ -200,14 +200,14 @@ DashTail 习惯用 body/wrapper 类切换布局；本项目 **Next App Router** 
 
 ---
 
-## 六、与 DashTail 文档的差异清单（避免照抄官方字符串）
+## 六、与 CopilotSMC 文档的差异清单（避免照抄官方字符串）
 
 1. **layout 取值**：代码为 `semibox`，不是 `semi-box`。
 2. **文档示例 `reverse` 布局**：本模板未使用 `reverse` 键，而用 `semibox` + 不同 Header 样式达到类似「半盒」效果。
 3. **Navbar**：Customizer 增加 `hidden`；horizontal 布局下不展示 `floating`。
 4. **Direction**：除 CSS `dir` 外，Rtl Switch 会改路由 locale，且实现上仅简化为 `en`/`ar`。
 5. **ThemeCustomize 可见性**：`module` 竖向布局下与 `useMediaQuery("(min-width: 768px)")` 耦合，与官方「始终右下角齿轮」可能不一致。
-6. **本项目增值**：`content-wrapper` 上根据 Copilot 侧栏 `marginRight`（`COPILOT_SIDEBAR_WIDTH`）预留空间，不属于 DashTail 原版文档范围。
+6. **本项目增值**：`content-wrapper` 上根据 Copilot 侧栏 `marginRight`（`COPILOT_SIDEBAR_WIDTH`）预留空间，不属于 CopilotSMC 原版文档范围。
 
 ---
 

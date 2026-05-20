@@ -21,6 +21,15 @@ export type HermesPanelChatContext = {
   summary?: string;
 };
 
+/** 通用 workspace 首轮注入结果（与邮件注入字段对齐，便于面板统一回调） */
+export type WorkspaceInjectResult = {
+  ok: boolean;
+  skipped?: boolean;
+  error?: string;
+};
+
+export type WorkspaceContentInjector = (sessionId: string) => Promise<WorkspaceInjectResult>;
+
 function buildContextPrefix(ctx: HermesPanelChatContext | null | undefined): string {
   if (!ctx) return "";
   const summary = ctx.summary ?? "";
@@ -97,6 +106,12 @@ export function useHermesPanelChat(options: {
   /** 首轮发消息前写入 Hermes workspace（需与 `context.type === "email"` 且 payload.id 一致） */
   emailForWorkspaceInject?: EmailMessageResponse | null;
   onEmailWorkspaceInjected?: (result: EmailWorkspaceInjectResult) => void;
+  /**
+   * 若提供则在首条用户消息且尚无会话时优先执行（不经过邮件分支）。
+   * 邮件面板请勿传入，避免与 `emailForWorkspaceInject` 冲突。
+   */
+  workspaceInjector?: WorkspaceContentInjector;
+  onWorkspaceInjected?: (result: WorkspaceInjectResult) => void;
 }) {
   const client = useMemo(() => createHermesClient(), []);
   const [messages, setMessages] = useState<HermesPanelMessage[]>([]);
@@ -244,15 +259,42 @@ export function useHermesPanelChat(options: {
           ctx && typeof ctx.payload === "object" && ctx.payload !== null && "id" in ctx.payload
             ? String((ctx.payload as { id: string }).id)
             : undefined;
-        const shouldInject =
+        const shouldInjectWorkspace =
+          isFirstUserMessage && !sessionIdRef.current && !!options.workspaceInjector;
+
+        const shouldInjectEmail =
           isFirstUserMessage &&
           !sessionIdRef.current &&
+          !options.workspaceInjector &&
           ctx?.type === "email" &&
           injectMail &&
           payloadId !== undefined &&
           injectMail.id === payloadId;
 
-        if (shouldInject) {
+        if (shouldInjectWorkspace) {
+          const workspaceInjector = options.workspaceInjector;
+          if (!workspaceInjector) {
+            setBusy(false);
+            return;
+          }
+          try {
+            const sidNow = await createHermesRuntimeSession();
+            persistSessionId(sidNow);
+            const inj = await workspaceInjector(sidNow);
+            options.onWorkspaceInjected?.(inj);
+            if (!inj.ok) {
+              rollbackNewSession();
+              setError(inj.error ?? "业务上下文写入 workspace 失败");
+              setBusy(false);
+              return;
+            }
+          } catch (e) {
+            rollbackNewSession();
+            setError(e instanceof Error ? e.message : String(e));
+            setBusy(false);
+            return;
+          }
+        } else if (shouldInjectEmail) {
           try {
             const sidNow = await createHermesRuntimeSession();
             persistSessionId(sidNow);
@@ -367,6 +409,8 @@ export function useHermesPanelChat(options: {
       options.profile,
       options.emailForWorkspaceInject,
       options.onEmailWorkspaceInjected,
+      options.workspaceInjector,
+      options.onWorkspaceInjected,
     ],
   );
 

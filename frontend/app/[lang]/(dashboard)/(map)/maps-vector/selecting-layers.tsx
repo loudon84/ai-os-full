@@ -23,7 +23,7 @@ const SelectingLayers = ({ height = 250 }: { height?: number }) => {
     return (
         <div>
             <div className={`w-full h-[${height}px]`}>
-                <VectorMap {...world} layerProps={{ onClick }} className="h-full w-full object-cover dashtail-codeVmapWarning" />
+                <VectorMap {...world} layerProps={{ onClick }} className="h-full w-full object-cover copilotsmc-codeVmapWarning" />
             </div>
             <div className="text-center">
                 <p className="text-sm font-medium text-card-foreground">Selected:</p>

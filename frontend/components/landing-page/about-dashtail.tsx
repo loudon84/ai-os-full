@@ -88,12 +88,12 @@ const AboutDashtail = () => {
     }
   ]
   return (
-    <section className="py-16 2xl:py-[120px]" id="whyDashTail">
+    <section className="py-16 2xl:py-[120px]" id="whyCopilotSMC">
       <div className="container">
 
         <div className="max-w-[670px] mx-auto">
           <h2 className="text-center text-xl xl:text-3xl xl:leading-[46px] font-semibold text-default-900 mb-3">
-            Why Choose  <span className="text-primary">DashTail</span>
+            Why Choose  <span className="text-primary">CopilotSMC</span>
           </h2>
           <p className="text-base xl:leading-7 text-center text-default-700 ">
             Transform your development experience with our ultra-customizable, developer-friendly admin template: crafting exceptional user journeys made effortless.
@@ -104,7 +104,7 @@ const AboutDashtail = () => {
           {
             data.map((item, index) => (
               <div
-                key={`about-dashtail-${index}`}
+                key={`about-copilotsmc-${index}`}
                 className="relative text-center border border-dotted border-default-300 rounded-sm py-6 pb-8 px-6 hover:border-primary hover:border-solid">
                 <div className="w-[72px] h-[72px] absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
                   <Image src={item.icon} alt={item.title} className="w-full h-full object-cover" priority={true} />

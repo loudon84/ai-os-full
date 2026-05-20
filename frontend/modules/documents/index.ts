@@ -9,6 +9,7 @@ export * from "./types/documentAi.types";
 
 export { documentAiApi, resolveDocumentAiStreamUrl } from "./services/documentAi.api";
 export { SpreadsheetAIPanel } from "./components/SpreadsheetAIPanel";
+export { DocumentAIPanel } from "./components/DocumentAIPanel";
 export { SpreadsheetPatchPreview } from "./components/SpreadsheetPatchPreview";
 export { buildSpreadsheetPatchPreviewModel } from "./lib/spreadsheetPatchPreview";
 

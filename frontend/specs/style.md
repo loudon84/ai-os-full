@@ -1,6 +1,6 @@
-# DashTail 样式与主题系统 Wiki
+# CopilotSMC 样式与主题系统 Wiki
 
-> 本文档提炼自 DashTail 官方文档及项目实际代码，供 LLM 在样式/主题/色彩相关任务中快速引用。
+> 本文档提炼自 CopilotSMC 官方文档及项目实际代码，供 LLM 在样式/主题/色彩相关任务中快速引用。
 > 来源：https://dash-tail.vercel.app/docs/introduction
 
 ---
@@ -24,7 +24,7 @@
 
 ## 2. 三层主题架构
 
-DashTail 采用 **Shadcn/UI + Tailwind CSS 变量 + next-themes** 三层架构：
+CopilotSMC 采用 **Shadcn/UI + Tailwind CSS 变量 + next-themes** 三层架构：
 
 ```
 ┌─────────────────────────────────────────────┐
@@ -545,4 +545,4 @@ module.exports = {
 ---
 
 *最后更新：2026-05-09*
-*来源：DashTail 官方文档 https://dash-tail.vercel.app/docs + 项目代码分析*
+*来源：CopilotSMC 官方文档 https://dash-tail.vercel.app/docs + 项目代码分析*

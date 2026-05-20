@@ -1,0 +1,10 @@
+{
+  "mode": "dev",
+  "startedAt": "2026-05-20T01:35:32.284Z",
+  "backendPort": 8000,
+  "frontendPort": 3000,
+  "pids": {
+    "backend": 4880,
+    "frontend": 33700
+  }
+}

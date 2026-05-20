@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import logo from "@/public/images/logo/logo-1.png";
+import logo from "@/public/images/logo/logo.svg";
 import Image from "next/image";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { SiteLogo } from "@/components/svg";

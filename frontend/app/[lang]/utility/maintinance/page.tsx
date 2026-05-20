@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import logo from "@/public/images/logo/logo-2.png";
+import logo from "@/public/images/logo/logo.svg";
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

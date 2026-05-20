@@ -175,7 +175,7 @@ const Corporate = () => {
                   </Row>
                   <Row>
                     <Column className="pt-10 pb-2">
-                      <Text className="text-xs text-slate-300">COPYRIGHT &copy; 2024 DashTail All rights <br /> Reserved</Text>
+                      <Text className="text-xs text-slate-300">COPYRIGHT &copy; 2024 CopilotSMC All rights <br /> Reserved</Text>
                     </Column>
                     <Column className="pt-10 pb-2">
                       <Link href="/" className="text-xs font-medium  text-slate-300">Unsubscribe</Link>

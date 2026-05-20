@@ -111,6 +111,7 @@ docs/prd/<file>.md                 PRD 详情（单个文件 10–50 KB）
 | `frontend/` | `@portal/web` | Next.js 前端实现，端口 3000 | 改前端代码 |
 | `frontend/modules/<domain>/` | — | 前端业务模块代码 | 改具体业务模块 |
 | `frontend/modules/email/` | — | Email 前端（Phase 1 API + Phase 2：Tiptap 撰写、回复/转发/线程视图、列表多选批量、三栏+`EmailAIPanel`（邮件 AI）与 `HermesChatPanel`（Hermes 流式对话；首轮发消息前 `injectEmailToWorkspace` 将 `email-context/` 写入当前 runtime 会话；`lib/html-to-text` 补全 HTML 正文上下文；内嵌 `RuntimeWorkspacePanel`；按邮件 id 绑定 `hermes-panel-session-binding` 续会话）、CopilotKit `useCopilotReadable`/`useCopilotAction`、全屏撰写 AI；`app/api/email/ai-completion`；`frontend/vitest.config.ts`） | 改邮件工作区 |
+| `frontend/modules/documents/` | — | Documents：`DocumentDetailPage` 侧栏 Tabs「AI 助手」`DocumentAIPanel`（`HermesChatPanel` + `workspaceInjector` / `workspace-document-inject` 写入 `document-context/`；`scopeKeyDocument` 续会话）与「数据操作」`SpreadsheetAIPanel`（CopilotKit Patch）；`@portal/shared` `DOCUMENT_TYPES` / `DOCUMENT_ENGINES` 已扩展 markdown·pdf·html 与对应引擎占位 | 改文档工作区、文档 AI、Univer 集成 |
 | `frontend/middleware.ts` | — | `/api/*` 反代到 backend `/api/v1/*` | 改前后端代理或环境切换时 |
 | `frontend/provider/workspace.layout.provider.tsx` | — | 独立壳层（仅 Header + flex 主内容）：`/[lang]/workspace`、`/[lang]/hermes`、`/[lang]/email` 等复用 | 改该壳层、全页 flex 高度策略时 |
 | `frontend/app/[lang]/hermes/` | — | Hermes 独立路由组（与 `(dashboard)` 平级）：继承 `WorkspaceLayoutProvider`（无 Sidebar/Footer） | 迁移 Hermes 路由壳、调整 Hermes 页面布局 |

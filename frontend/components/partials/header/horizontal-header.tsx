@@ -13,7 +13,7 @@ const horizontalHeader = ({ handleOpenSearch }: { handleOpenSearch: () => void; 
           <SiteLogo className="h-7 w-7" />
           <span className=" text-xl font-semibold lg:inline-block hidden">
             {" "}
-            DashTail
+            CopilotSMC
           </span>
         </Link>
       </div>

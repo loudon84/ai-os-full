@@ -28,7 +28,7 @@ const CountryMap = () => {
         <div className={`w-[full] h-[329px]`}>
           <VectorMap
             {...world}
-            className="h-full w-full object-fill dashtail-codeVmapWhite"
+            className="h-full w-full object-fill copilotsmc-codeVmapWhite"
           />
         </div>
       </div>

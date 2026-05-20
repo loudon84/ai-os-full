@@ -9,7 +9,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
-import { useHermesPanelChat, type HermesPanelChatContext } from "../../hooks/use-hermes-panel-chat";
+import {
+  useHermesPanelChat,
+  type HermesPanelChatContext,
+  type WorkspaceContentInjector,
+  type WorkspaceInjectResult,
+} from "../../hooks/use-hermes-panel-chat";
 import { HermesPanelComposer } from "./HermesPanelComposer";
 import { HermesPanelMessageList } from "./HermesPanelMessageList";
 import { HermesPanelToolCard } from "./HermesPanelToolCard";
@@ -21,6 +26,8 @@ export type HermesChatPresetAction = {
   prompt: string;
 };
 
+export type { WorkspaceContentInjector, WorkspaceInjectResult };
+
 export function HermesChatPanel(props: {
   context?: HermesPanelChatContext | null;
   presetActions?: HermesChatPresetAction[];
@@ -30,6 +37,9 @@ export function HermesChatPanel(props: {
   sessionPersistenceKey?: string;
   /** 首轮写入 workspace 的完整邮件（需与 email 类 context 的 payload.id 一致） */
   emailForWorkspaceInject?: EmailMessageResponse | null;
+  /** 首轮写入 workspace 的通用注入（与邮件二选一；邮件面板请勿传入） */
+  workspaceInjector?: WorkspaceContentInjector;
+  onWorkspaceInjected?: (result: WorkspaceInjectResult) => void;
   onApplyResult?: (markdown: string) => void;
   className?: string;
 }) {
@@ -40,6 +50,8 @@ export function HermesChatPanel(props: {
     profile,
     sessionPersistenceKey,
     emailForWorkspaceInject,
+    workspaceInjector,
+    onWorkspaceInjected,
     onApplyResult,
     className,
   } = props;
@@ -58,6 +70,17 @@ export function HermesChatPanel(props: {
         toast.success("Workspace 已有邮件上下文（未覆盖）");
       } else {
         toast.success("已将邮件正文与附件注入 Hermes Workspace");
+      }
+      setWorkspaceInvalidateKey((k) => k + 1);
+    },
+    workspaceInjector,
+    onWorkspaceInjected: (r) => {
+      onWorkspaceInjected?.(r);
+      if (!r.ok) return;
+      if (r.skipped) {
+        toast.success("Workspace 已有业务上下文（未覆盖）");
+      } else {
+        toast.success("已将业务上下文写入 Hermes Workspace");
       }
       setWorkspaceInvalidateKey((k) => k + 1);
     },

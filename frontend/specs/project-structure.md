@@ -1,7 +1,7 @@
 # 项目代码结构文档
 
 > 本文档描述项目完整代码结构，供 Agent 在开发时从代码结构与组件清单完成功能落点。
-> 项目名称：DashTail (smc-coworker-aios/portal)
+> 项目名称：CopilotSMC (smc-coworker-aios/portal)
 
 ---
 

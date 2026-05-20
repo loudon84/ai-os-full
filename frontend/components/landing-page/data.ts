@@ -450,7 +450,7 @@ export const menus = [
   },
   {
     title: "Why Dash Tail",
-    href: "#whyDashTail",
+    href: "#whyCopilotSMC",
   },
   {
     title: "Pricing",
