@@ -40,4 +40,6 @@ debug-storybook.log
 hermes-agent/
 hermes-web-ui/
 hermes-desktop/
-product-agents-main/
+copilot-desktop/
+copilot-serve/
+product-agents/

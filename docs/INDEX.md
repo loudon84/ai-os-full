@@ -18,12 +18,15 @@
 | 前端实现 | `frontend/` | Next.js 14 + React 18（`@portal/web`，端口 3000） | 跟随代码 |
 | 后端实现 | `backend/` | Express 5 + Drizzle（`@portal/server`，端口 8000）；documents API 已就位 | 跟随代码 |
 | 工作区包 | `packages/` | `@portal/shared`（类型/Zod）· `@portal/db`（Drizzle schema/migrations） | 跟随代码 |
+| 桌面 Electron | `copilot-desktop/` | `smc-ai-copilot` — SMC Copilot 桌面壳；**独立 git**（pnpm workspace 成员） | 跟随子仓库 |
+| 桌面本地控制面 | `copilot-serve/` | `ai-copilot-serve` — FastAPI :8765；**独立 git**（Python，非 pnpm） | 跟随子仓库 |
 | 工具链 | `tooling/tsconfig/` | 共享 TypeScript 基础配置（`base.json` / `node.json`） | 低 |
 | 工程配置 | 根级 | `package.json` / `pnpm-workspace.yaml` / `turbo.json` / `.npmrc` / `.env.example` / `.github/workflows/ci.yml` | 低 |
 | 已废弃后端 | `ai-os-api/` | **DEPRECATED**：原 Python FastAPI documents API，已 100% 迁至 `backend/`；详见 [`ai-os-api/DEPRECATED.md`](../ai-os-api/DEPRECATED.md) | 不再维护 |
 | README | `README.md` | 对外入门 | 低 |
 
-> Portal 是 **pnpm + Turborepo monorepo**。依赖拓扑：`@portal/shared` → `@portal/db` → `@portal/server`；`@portal/web` 仅依赖 `@portal/shared`。
+> Portal 是 **pnpm + Turborepo monorepo**。依赖拓扑：`@portal/shared` → `@portal/db` → `@portal/server`；`@portal/web` 仅依赖 `@portal/shared`。  
+> 根目录 `copilot-desktop/`、`copilot-serve/` 为**嵌套独立 git 仓库**（父仓库 `.gitignore` 忽略其内容）；功能迭代在各自 remote 提交，与 Portal 主仓分离。
 
 ---
 
@@ -142,7 +145,22 @@ pnpm db:migrate               # 执行 migration 到 PG（读 .env）
 
 > `packages/db/{drizzle.config.ts,src/migrate.ts}` 已自动加载 `portal/.env`，无需手动 export `DATABASE_URL`。
 
-### 6.2 已废弃
+### 6.2 桌面端子项目（独立 git）
+
+| 路径 | 包名 / 运行时 | 端口 | 独立 remote（示例） | Agent 入口 |
+|------|----------------|------|---------------------|------------|
+| `copilot-desktop/` | `smc-ai-copilot` · Electron 39 + React 19 | 嵌入 Portal :3000；Auth :8000；Gateway 8642+ | `loudon84/ai-os-desktop`、`fathah/hermes-desktop` | `copilot-desktop/AGENTS.md` |
+| `copilot-serve/` | `ai-copilot-serve` · Python 3.12 FastAPI | 8765 | `loudon84/ai-os-serve` | `copilot-serve/AGENT.md` |
+
+```bash
+# 桌面壳（在 copilot-desktop/ 目录，独立 git）
+npm run dev
+
+# 本地控制面（在 copilot-serve/ 目录，独立 git）
+pip install -e ".[dev]" && uvicorn ai_copilot_serve.main:app --reload --host 127.0.0.1 --port 8765
+```
+
+### 6.3 已废弃
 
 | 路径 | 状态 | 替代品 |
 |------|------|--------|
@@ -162,6 +180,7 @@ pnpm db:migrate               # 执行 migration 到 PG（读 .env）
 | `frontend/debug-storybook.log` | 调试日志 | 无参考价值 |
 | `node_modules/`、`.turbo/`、`*/dist/`、`*/.next/` | 构建产物 | 体积大、非必需 |
 | `ai-os-api/` | 已废弃 Python 后端 | 仅历史参考，见 `DEPRECATED.md` |
+| `copilot-desktop/`、`copilot-serve/` | 嵌套独立 git；日常开发在子仓库 | 任务明确涉及桌面时再读子项目 `AGENTS.md` |
 
 ---
 

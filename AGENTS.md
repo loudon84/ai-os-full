@@ -10,9 +10,9 @@
 
 | 维度 | 值 |
 |------|---|
-| 仓库形态 | pnpm + Turborepo monorepo（独立 git 仓库，与 paperclip 无关联） |
-| Workspace 包 | `@portal/web`（frontend）· `@portal/server`（backend）· `@portal/shared`（packages/shared）· `@portal/db`（packages/db） |
-| 依赖拓扑 | `shared` → `db` → `server` ；`web` → `shared` |
+| 仓库形态 | pnpm + Turborepo monorepo（独立 git 仓库，与 paperclip 无关联）；根目录另含 **独立 git 子项目** `copilot-desktop/`、`copilot-serve/`（各自 remote 更新，父仓库默认不跟踪其内容） |
+| Workspace 包 | `@portal/web`（frontend）· `@portal/server`（backend）· `@portal/shared`（packages/shared）· `@portal/db`（packages/db）· `smc-ai-copilot`（copilot-desktop，Electron） |
+| 依赖拓扑 | Portal：`shared` → `db` → `server` ；`web` → `shared`。桌面端：`copilot-desktop` → Portal Web（:3000）+ AI-OS Auth（:8000）+ `copilot-serve`（:8765，本地控制面） |
 | 前端技术栈 | Next.js 14 App Router · TS 5 · React 18 · Tailwind · Shadcn/UI · Zustand · React Query · CopilotKit（端口 3000） |
 | 后端技术栈 | Express 5 · Drizzle ORM · postgres-js · Pino · Zod · aws-sdk v3 (S3/MinIO)（端口 8000） |
 | 路由壳（前端） | `frontend/app/[lang]/(dashboard)/` — 保留不动，所有新功能挂进来 |
@@ -63,6 +63,7 @@ docs/prd/<file>.md                 PRD 详情（单个文件 10–50 KB）
   ├─ 改后端 / 加端点 / 改 schema → + docs/INDEX.md 第六节（backend/ + packages/）
   ├─ 改 Hermes / Finance / Risk / Email / Documents → + docs/INDEX.md 中对应 PRD 条目
   ├─ 改 monorepo 工程（workspace / turbo / tsconfig / CI） → + docs/prd/monorepo.md
+  ├─ 改桌面端 Electron / 本地控制面 → 先读 `copilot-desktop/AGENTS.md` 或 `copilot-serve/AGENT.md`（独立 git，勿与 Portal 混改）
   ├─ 定命名或目录争议            → + docs/conventions/*
   └─ 跨多个领域 / 需求不清       → 先问用户，再选择性加载
 ```
@@ -136,6 +137,8 @@ docs/prd/<file>.md                 PRD 详情（单个文件 10–50 KB）
 | `packages/db/` | `@portal/db` | Drizzle schema（documents/auth/email）+ migrations + `createDb` | 改 schema / 加表 / 生成迁移 |
 | `tooling/tsconfig/` | — | 共享 TS 配置（`base.json`/`node.json`），被 backend + packages 继承 | 改全局编译选项 |
 | `.github/workflows/ci.yml` | — | CI：install + typecheck + test + build | 改 CI 流水线 |
+| `copilot-desktop/` | `smc-ai-copilot` | Electron 39 桌面壳（SMC Copilot）：嵌入 Portal `aios-home`（:3000）、AI-OS Auth（:8000）、Hermes Gateway 多 Profile；**独立 git**（如 `loudon84/ai-os-desktop`） | 改桌面 IPC/安装/多 Profile/Web Operator；读 `copilot-desktop/AGENTS.md` |
+| `copilot-serve/` | `ai-copilot-serve` | Python 3.12 FastAPI 本地控制面（:8765）：Gateway 监管、Profile、审批/Workspace Guard；**独立 git**（`loudon84/ai-os-serve`），**不**在 pnpm workspace | 改本地 Hermes 运行时 API；读 `copilot-serve/AGENT.md` |
 | `ai-os-api/` | — | **DEPRECATED** Python 后端，见 `ai-os-api/DEPRECATED.md`；**不再修改** | 仅历史参考 |
 
 ---
@@ -157,7 +160,7 @@ docs/prd/<file>.md                 PRD 详情（单个文件 10–50 KB）
 8. **文档归属**：PRD → `docs/prd/`；前端代码规格 → `specs/`；规约 → `docs/conventions/`。**不要**把这三类混放。
 9. **中文优先**：所有交互响应、commit message、文档一律简体中文（代码标识符除外）。
 10. **最小变更**：优先编辑已有文件；只在确有必要时新建。
-11. **Agent 不要主动读**：`node_modules/`、`*/dist/`、`*/.next/`、`.turbo/`、`frontend/generated/raw/*.json`、`ai-os-api/`（体积大或已废弃）。
+11. **Agent 不要主动读**：`node_modules/`、`*/dist/`、`*/.next/`、`.turbo/`、`frontend/generated/raw/*.json`、`ai-os-api/`（体积大或已废弃）。桌面子项目默认在各自仓库开发；仅在任务明确涉及 Portal↔桌面协同时读 `copilot-desktop/`、`copilot-serve/`。
 12. **功能完成后文档同步**（详见 `.cursor/rules/30-doc-sync-on-completion.mdc`）：
     - 代码结构变更（新增/删除模块、路由、导出、文档）→ 必须同步更新 `docs/INDEX.md` + 本文件第三节
     - 页面/功能变更（新增/删除页面、组件、Hook、Store）→ 必须按 `frontend/specs/INDEX.md` 第五节规则更新对应 specs
@@ -208,6 +211,15 @@ docs/prd/<file>.md                 PRD 详情（单个文件 10–50 KB）
 读：AGENTS.md → docs/prd/monorepo.md（按章节定位）
      + 相关根级配置文件（package.json / pnpm-workspace.yaml / turbo.json / .npmrc）
 不读：业务模块 specs / PRD
+```
+
+### 场景 F：用户说「改桌面端 / copilot-desktop / copilot-serve」
+```
+读：AGENTS.md（本节地图）→ 目标子项目 AGENTS.md
+     copilot-desktop/AGENTS.md  — Electron、IPC、嵌入 Portal
+     copilot-serve/AGENT.md     — FastAPI 本地控制面、Gateway 监管
+不读：frontend/specs（除非改 Portal 页面被桌面嵌入的部分）
+注意：两目录为独立 git；在子目录内 commit/push，勿假定与 portal 主仓库同一 remote
 ```
 
 ---

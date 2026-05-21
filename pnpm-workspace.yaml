@@ -2,3 +2,5 @@ packages:
   - frontend
   - backend
   - packages/*
+  - copilot-desktop
+  # copilot-serve：Python（ai-copilot-serve），独立 git，不纳入 pnpm workspace
