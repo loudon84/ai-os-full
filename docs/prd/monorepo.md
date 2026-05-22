@@ -964,7 +964,7 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24.14.1
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm typecheck

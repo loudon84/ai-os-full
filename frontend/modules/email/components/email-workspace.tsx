@@ -9,7 +9,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
@@ -34,9 +34,8 @@ import {
 import { EmailAccountForm } from "./email-account-form";
 import { EmailChatBox } from "./email-chat-box";
 import { useEmailAgentActions, type EmailAgentResultPayload } from "../hooks/use-email-agent-actions";
-import { useEmailCopilotContext } from "../hooks/use-email-copilot-context";
 import { EmailComposeForm } from "./email-compose-form";
-import { EmailAIPanel } from "./email-ai-panel";
+
 import { EmailDetailPane } from "./email-detail-pane";
 import { EmailHeader } from "./email-header";
 import { EmailList } from "./email-list";
@@ -66,7 +65,6 @@ export function EmailWorkspace({
   const [openSpam, setOpenSpam] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
   const [openChatBox, setOpenChatBox] = useState(false);
-  const [aiPanelTab, setAiPanelTab] = useState<"email-ai" | "hermes-chat">("email-ai");
 
   const [booting, setBooting] = useState(true);
   const [account, setAccount] = useState<EmailAccountResponse | null>(null);
@@ -90,22 +88,6 @@ export function EmailWorkspace({
   const rightAiPanelRef = useRef<ImperativePanelHandle>(null);
   /** 左侧栏展开时的目标宽度（百分比），折叠前与拖拽时更新 */
   const lastLeftNavExpandedPercentRef = useRef(18);
-
-  const folderCtx = useMemo(
-    () =>
-      folderSelection
-        ? folderSelection.folder_type === "custom"
-          ? { folder_path: folderSelection.folder_path }
-          : { folder_type: folderSelection.folder_type }
-        : null,
-    [folderSelection],
-  );
-
-  useEmailCopilotContext({
-    selectedMail,
-    folder: folderCtx,
-    accountEmail: account?.email_address ?? null,
-  });
 
   const handleAgentResult = useCallback((payload: EmailAgentResultPayload) => {
     if (payload.action === "polish_compose" || payload.action === "translate_compose") {
@@ -583,66 +565,24 @@ export function EmailWorkspace({
               collapsedSize={0}
               className="min-w-0"
             >
-              <Tabs
-                value={aiPanelTab}
-                onValueChange={(v) => setAiPanelTab(v as "email-ai" | "hermes-chat")}
-                className="flex h-full min-h-0 flex-col gap-0"
-              >
-                <TabsList className="h-9 w-full shrink-0 justify-start rounded-none border-b bg-transparent px-2 py-0">
-                  <TabsTrigger value="email-ai" className="text-xs">
-                    邮件 AI
-                  </TabsTrigger>
-                  <TabsTrigger value="hermes-chat" className="text-xs">
-                    Hermes Chat
-                  </TabsTrigger>
-                </TabsList>
-                <TabsContent
-                  value="email-ai"
-                  className="mt-0 flex min-h-0 flex-1 flex-col overflow-hidden data-[state=inactive]:hidden"
-                >
-                  <EmailAIPanel
-                    selectedMail={selectedMail}
-                    accountEmail={account.email_address}
-                    result={mailAiResult}
-                    onClearResult={() => setMailAiResult(null)}
-                    onApplyToCompose={(md) => {
-                      void navigator.clipboard.writeText(md);
-                      setComposeMode("new");
-                      toast.success("已复制到剪贴板，撰写窗口已打开");
-                    }}
-                    runSummarizeEmail={aiActions.runSummarizeEmail}
-                    runDraftReply={aiActions.runDraftReply}
-                    runTranslateEmail={aiActions.runTranslateEmail}
-                    runExtractTasks={aiActions.runExtractTasks}
-                    runExtractData={aiActions.runExtractData}
-                    runCustomAgent={aiActions.runCustomAgent}
-                  />
-                </TabsContent>
-                <TabsContent
-                  value="hermes-chat"
-                  forceMount
-                  className="mt-0 flex min-h-0 flex-1 flex-col overflow-hidden data-[state=inactive]:hidden"
-                >
-                  <HermesChatPanel
-                    sessionPersistenceKey={
-                      selectedMail?.id ? scopeKeyEmailMessage(selectedMail.id) : undefined
-                    }
-                    context={hermesMailContext}
-                    emailForWorkspaceInject={selectedMail}
-                    presetSystemPrompt="你是邮件工作区助手。请用简体中文回答，可使用 Markdown。"
-                    presetActions={[
-                      { label: "摘要", prompt: "请总结这封邮件的要点" },
-                      { label: "回复草稿", prompt: "请为这封邮件写一封专业回复" },
-                      { label: "提取待办", prompt: "请提取邮件中的待办事项" },
-                    ]}
-                    onApplyResult={(md) => {
-                      void navigator.clipboard.writeText(md);
-                      setComposeMode("new");
-                      toast.success("已复制到剪贴板，撰写窗口已打开");
-                    }}
-                  />
-                </TabsContent>
-              </Tabs>
+              <HermesChatPanel
+                sessionPersistenceKey={
+                  selectedMail?.id ? scopeKeyEmailMessage(selectedMail.id) : undefined
+                }
+                context={hermesMailContext}
+                emailForWorkspaceInject={selectedMail}
+                presetSystemPrompt="你是邮件工作区助手。请用简体中文回答，可使用 Markdown。"
+                presetActions={[
+                  { label: "摘要", prompt: "请总结这封邮件的要点" },
+                  { label: "回复草稿", prompt: "请为这封邮件写一封专业回复" },
+                  { label: "提取待办", prompt: "请提取邮件中的待办事项" },
+                ]}
+                onApplyResult={(md) => {
+                  void navigator.clipboard.writeText(md);
+                  setComposeMode("new");
+                  toast.success("已复制到剪贴板，撰写窗口已打开");
+                }}
+              />
             </ResizablePanel>
           </ResizablePanelGroup>
         </TooltipProvider>

@@ -1,6 +1,5 @@
 "use client";
 
-import { useCopilotAction } from "@copilotkit/react-core";
 import { useCallback, useRef } from "react";
 
 import type { EmailMessageResponse } from "@portal/shared";
@@ -197,83 +196,6 @@ export function useEmailAgentActions(input: {
     },
     [notify],
   );
-
-  useCopilotAction({
-    name: "summarize_email",
-    description: "总结当前选中邮件的要点（中文摘要）。",
-    parameters: [],
-    handler: async () => runSummarizeEmail(),
-  });
-
-  useCopilotAction({
-    name: "draft_reply",
-    description: "根据当前选中邮件生成中文回复草稿。",
-    parameters: [],
-    handler: async () => runDraftReply(),
-  });
-
-  useCopilotAction({
-    name: "translate_email",
-    description: "将当前选中邮件正文翻译为目标语言。",
-    parameters: [
-      {
-        name: "target_lang",
-        type: "string",
-        description: "目标语言，例如：English、日本語、简体中文",
-        required: true,
-      },
-    ],
-    handler: async ({ target_lang }: { target_lang: string }) => runTranslateEmail(target_lang),
-  });
-
-  useCopilotAction({
-    name: "extract_tasks",
-    description: "从当前选中邮件提取待办事项清单。",
-    parameters: [],
-    handler: async () => runExtractTasks(),
-  });
-
-  useCopilotAction({
-    name: "extract_data",
-    description: "从当前选中邮件提取关键数据（表格/列表）。",
-    parameters: [],
-    handler: async () => runExtractData(),
-  });
-
-  useCopilotAction({
-    name: "custom_agent",
-    description: "使用指定业务 Agent（finance / risk / forecast / default）结合当前邮件回答自定义问题。",
-    parameters: [
-      {
-        name: "agent_id",
-        type: "string",
-        description: "Agent：finance | risk | forecast | default",
-        required: true,
-      },
-      {
-        name: "user_goal",
-        type: "string",
-        description: "希望 Agent 完成的任务描述",
-        required: true,
-      },
-    ],
-    handler: async ({ agent_id, user_goal }: { agent_id: string; user_goal: string }) =>
-      runCustomAgent(agent_id || "default", user_goal),
-  });
-
-  useCopilotAction({
-    name: "polish_compose",
-    description: "润色或改写当前撰写框中的邮件正文（需全屏撰写已打开）。",
-    parameters: [
-      {
-        name: "instruction",
-        type: "string",
-        description: "润色要求，例如：更正式、更简短、改成英文",
-        required: true,
-      },
-    ],
-    handler: async ({ instruction }: { instruction: string }) => runPolishCompose(instruction),
-  });
 
   return {
     runSummarizeEmail,

@@ -12,7 +12,7 @@ pnpm dev
 # http://localhost:3000
 ```
 
-推荐使用 `pnpm`（仓库已提交 `pnpm-lock.yaml`）。Node 版本遵循 Next.js 14 的要求。
+推荐使用 `pnpm`（仓库已提交 `pnpm-lock.yaml`）。Node **24.14.1**（见仓库根目录 `.nvmrc`）；Python **3.12**（本地控制面 `copilot-serve` / hermes-agent）。
 
 ---
 

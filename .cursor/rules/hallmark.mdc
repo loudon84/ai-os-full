@@ -1,0 +1,43 @@
+---
+description: Anti-AI-slop UI design (Hallmark). Use when building or redesigning pages/components, auditing visual slop, or the user invokes hallmark / audit / redesign / study. Read the installed skill before emitting UI.
+alwaysApply: false
+---
+
+# Hallmark（反 AI 味 UI）
+
+本仓库已通过 `npx skills add nutlope/hallmark` 安装，技能根目录：
+
+```text
+.agents/skills/hallmark/
+  SKILL.md              # 主流程（必读）
+  references/           # 规则集（按需加载）
+```
+
+## 触发时必读
+
+1. **`.agents/skills/hallmark/SKILL.md`** — 默认设计流、四个动词、组件级 vs 页面级分流
+2. 按 SKILL 内链接 **按需** 加载 `references/`（勿一次性读完全部）
+
+## 与本仓库其他约束的关系
+
+| 场景 | 优先级 |
+|------|--------|
+| Portal `frontend/` 新页面 | 仍须先输出 **Layout Decision**（`25-layout-decision.mdc`），且 **不魔改** `components/ui/`、不改路由壳 |
+| 已有 `DESIGN.md` / `design.md` | Hallmark Pre-flight **以该文件为锁定设计系统**（见 SKILL Step 0） |
+| `copilot-desktop` / Electron UI | Hallmark 的 **Implementation safety rail** 适用：默认就地改文件，不删路由/组件目录，删改前列文件清单 |
+| 组件级任务（按钮、卡片等） | 走 **Component-scope**，跳过 macrostructure |
+
+## 四个动词（用户可说）
+
+| 动词 | 作用 |
+|------|------|
+| *(默认)* | 新建 UI：选 macrostructure + 主题 + 65 项 slop 门 + 交付前自评 |
+| `hallmark audit <target>` | 只打分与清单，**不改代码** |
+| `hallmark redesign <target>` | 保留 IA/路由/文案意图，重做视觉层 |
+| `hallmark study <URL\|截图>` | 提取设计 DNA，不像素级抄袭 |
+
+## 更新
+
+```bash
+npx skills add nutlope/hallmark --yes
+```
