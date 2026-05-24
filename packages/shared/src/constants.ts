@@ -149,8 +149,57 @@ export const PERMISSION_CODES = [
   "user.disable",
   "audit.read",
   "auth.manage",
+  "team_task:read",
+  "team_task:create",
+  "team_task:assign",
+  "team_task:approve",
+  "team_task:execute",
+  "team_task:cancel",
+  "profile:read",
+  "profile:write",
+  "skill:read",
+  "skill:write",
+  "skill:publish",
+  "plugin:read",
+  "plugin:write",
+  "mcp:read",
+  "mcp:write",
+  "desktop:bootstrap",
+  "connector:read",
+  "connector:write",
+  "hermes:read",
+  "hermes:write",
+  "hermes:approve",
 ] as const;
 export type PermissionCode = (typeof PERMISSION_CODES)[number];
+
+const SERVICE_CENTER_READ: PermissionCode[] = [
+  "profile:read",
+  "skill:read",
+  "plugin:read",
+  "mcp:read",
+  "connector:read",
+];
+
+const SERVICE_CENTER_WRITE: PermissionCode[] = [
+  "profile:write",
+  "skill:write",
+  "skill:publish",
+  "plugin:write",
+  "mcp:write",
+  "connector:write",
+];
+
+const TEAM_TASK_READ: PermissionCode[] = ["team_task:read"];
+const TEAM_TASK_WRITE: PermissionCode[] = [
+  "team_task:create",
+  "team_task:assign",
+  "team_task:approve",
+  "team_task:cancel",
+];
+
+const HERMES_READ: PermissionCode[] = ["hermes:read"];
+const HERMES_WRITE: PermissionCode[] = ["hermes:write", "hermes:approve"];
 
 export const SYSTEM_ROLE_PERMISSIONS: Record<string, readonly PermissionCode[]> = {
   super_admin: PERMISSION_CODES,
@@ -169,6 +218,14 @@ export const SYSTEM_ROLE_PERMISSIONS: Record<string, readonly PermissionCode[]> 
     "user.update",
     "user.disable",
     "audit.read",
+    ...SERVICE_CENTER_READ,
+    ...SERVICE_CENTER_WRITE,
+    ...TEAM_TASK_READ,
+    ...TEAM_TASK_WRITE,
+    ...HERMES_READ,
+    ...HERMES_WRITE,
+    "team_task:execute",
+    "desktop:bootstrap",
   ],
   owner: [
     "workspace.read",
@@ -184,9 +241,25 @@ export const SYSTEM_ROLE_PERMISSIONS: Record<string, readonly PermissionCode[]> 
     "permission.read",
     "user.read",
     "audit.read",
+    ...SERVICE_CENTER_READ,
+    ...SERVICE_CENTER_WRITE,
+    ...TEAM_TASK_READ,
+    ...TEAM_TASK_WRITE,
+    ...HERMES_READ,
+    ...HERMES_WRITE,
+    "team_task:execute",
+    "desktop:bootstrap",
   ],
   user: [
     "workspace.read",
     "permission.read",
+    "team_task:read",
+    "team_task:execute",
+    ...HERMES_READ,
+    "profile:read",
+    "skill:read",
+    "plugin:read",
+    "mcp:read",
+    "desktop:bootstrap",
   ],
 } as const;

@@ -1,0 +1,1 @@
+ALTER TABLE "connector_configs" ADD CONSTRAINT "uq_connector_configs_workspace_key" UNIQUE("workspace_id","connector_key");

@@ -85,6 +85,10 @@
 | 文档 | 大小 | 主题 | 触发词 | 关联代码 |
 |------|------|------|--------|---------|
 | `docs/prd/monorepo.md` | ~40 KB | Portal monorepo 架构方案（pnpm workspace + Turborepo + frontend/backend/packages 划分 + tsconfig/CI/.npmrc 全套配置） | monorepo、workspace、turbo、@portal/*、依赖拓扑、tsconfig 共享、CI、构建顺序 | 根级 + `tooling/` + `packages/` + `backend/` + `frontend/` |
+| `docs/prd/backend-team-v2.0.md` | ~3 KB | backend team_v2.0：Team Task Hub + Hermes Service Center 模块化单体升级索引 | team task、service center、profile、skill、mcp、desktop sync、team_v2.0 | `backend/`、`packages/shared/src/team-tasks/`、`packages/shared/src/service-center/`、`packages/db/src/schema/team-tasks.ts` |
+| `prd/team_v2.0_center_service.md` | ~90 KB | backend 单体服务优化完整架构方案（team_v2.1 正文） | Team Task Hub、Hermes Service Center、Profile、Skill、MCP、Desktop Sync | `backend/`、`packages/db/`、`packages/shared/` |
+| `prd/team_v2.0.1_hotfix_center_service.md` | ~4 KB | team_v2.0.1 hotfix：Webhook/RBAC/审批/Desktop-Id/MCP health 修补 | hotfix、webhook、RBAC、approval、desktop client id | `backend/`、`packages/shared/`、`packages/db/` |
+| `prd/team_v2.1_center_agent.md` | ~65 KB | team_v2.1：Hermes Service Center 集成（Gateway/Run/Events/Tool Facade/Prompt Template/Task Replay） | hermes chat、agent run、SSE、gateway router、tool facade、prompt template | `backend/src/services/hermes/`、`backend/src/routes/hermes.ts`、`packages/shared/src/hermes/` |
 
 ---
 
@@ -110,7 +114,20 @@
 
 | 路径 | 包名 | 用途 | 触发词 |
 |------|------|------|--------|
-| `backend/` | `@portal/server` | Express 5 + Pino + CORS，端口 8000；`/api/v1/documents`、Auth/RBAC、`/api/v1/email` 基础端点已就位 | 改后端、加端点、改路由、改中间件 |
+| `backend/` | `@portal/server` | Express 5 + Pino + CORS，端口 8000；Auth/RBAC/Documents/Email/Audit + **Team Task Hub** + **Hermes Service Center** | 改后端、加端点、Team Task、Service Center |
+| `backend/src/routes/team-tasks.ts` | — | Team Task Hub 12 端点（`/api/v1/team/tasks/*`） | 团队任务、分派、状态回传、copilot-serve 拉取 |
+| `backend/src/routes/service-center-profiles.ts` | — | Profile 配置中心（`/api/v1/service-center/profiles/*`） | Profile CRUD、模板、manifest |
+| `backend/src/routes/service-center-skills.ts` | — | Skill Template Hub | Skill 模板、版本、发布、安装 |
+| `backend/src/routes/service-center-plugins.ts` | — | Plugin Registry | Plugin manifest |
+| `backend/src/routes/service-center-mcp.ts` | — | MCP Registry | MCP Server / Tool |
+| `backend/src/routes/desktop-sync.ts` | — | Desktop Sync / Bootstrap | 桌面端注册、bootstrap、心跳 |
+| `backend/src/routes/connectors.ts` | — | Connector Webhooks | 外部 Webhook 创建任务 |
+| `backend/src/routes/hermes.ts` | — | Hermes Service Center（`/api/v1/hermes/*`） | AI Chat、Run、Gateway、Prompt Template、Tool Call 审批 |
+| `backend/src/routes/task-replay.ts` | — | Task Replay（`/api/v1/team/tasks/:id/replay`） | 任务事件 + run events + audit 聚合回放 |
+| `backend/src/services/hermes/` | — | Gateway Client/Router、Run、Events、Tool Facade、Context Builder、Prompt Template | Hermes 服务端集成 |
+| `packages/shared/src/hermes/` | — | Hermes 常量、类型、validators | Run/Events/ToolCall/Gateway 契约 |
+| `packages/db/src/schema/hermes-*.ts` | — | hermes_gateway_instances / hermes_runs / hermes_run_events / hermes_tool_calls / prompt_templates | Hermes DB schema |
+| `backend/src/services/service-center/` | — | profiles / skills / plugins / mcp / desktop-sync / connectors | Hermes Service Center |
 | `backend/src/auth-provider/` | — | AuthProvider 抽象接口 + JwtProvider 自建 JWT 实现（jsonwebtoken + argon2id） | 改认证提供者、JWT 逻辑 |
 | `backend/src/routes/auth.ts` | — | 认证 4 端点（register / login / refresh / logout） | 认证路由、登录/注册 |
 | `backend/src/routes/workspaces.ts` | — | Workspace + Membership + Role + Permission 路由（5+6+4+3=18 端点） | workspace/角色/权限管理 |

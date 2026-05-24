@@ -4,6 +4,7 @@ import type { AuthProvider } from "../auth-provider/auth-provider.js";
 import { AuthProviderError } from "../auth-provider/auth-provider.js";
 import { unauthorized, forbidden } from "../errors.js";
 import { logger } from "./logger.js";
+import { SERVICE_TOKEN_HEADER } from "./service-token.js";
 import { eq } from "drizzle-orm";
 import { memberships } from "@portal/db";
 
@@ -19,8 +20,28 @@ export function authV2Middleware(
     "/health",
   ];
 
+  function isWebhookPath(req: { path: string; originalUrl: string }): boolean {
+    return (
+      req.path.startsWith("/api/v1/connectors/webhooks/") ||
+      req.originalUrl.startsWith("/api/v1/connectors/webhooks/")
+    );
+  }
+
   return async (req, _res, next) => {
     try {
+      if (isWebhookPath(req)) {
+        req.ctx = {
+          tenantId: config.defaultTenantId,
+          workspaceId: config.defaultWorkspaceId,
+          userId: config.defaultUserId,
+          roles: [],
+          departments: [],
+          authSource: "webhook",
+          permissions: [],
+        };
+        return next();
+      }
+
       if (publicPaths.some((p) => req.path === p || req.originalUrl === p)) {
         req.ctx = {
           tenantId: config.defaultTenantId,
@@ -67,6 +88,31 @@ export function authV2Middleware(
           }
           return next(unauthorized("Invalid or expired token"));
         }
+      }
+
+      const serviceToken = req.header(SERVICE_TOKEN_HEADER);
+      if (
+        serviceToken &&
+        config.desktopSyncTokenSecret &&
+        serviceToken === config.desktopSyncTokenSecret
+      ) {
+        const workspaceId = req.header("x-workspace-id");
+        const userId = req.header("x-user-id");
+        if (!workspaceId || !userId) {
+          return next(
+            unauthorized("Service token requires x-workspace-id and x-user-id headers"),
+          );
+        }
+        req.ctx = {
+          tenantId: workspaceId,
+          workspaceId,
+          userId,
+          roles: [],
+          departments: [],
+          authSource: "service_token",
+          permissions: [],
+        };
+        return next();
       }
 
       const hasLegacyHeaders =

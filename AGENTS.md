@@ -246,6 +246,10 @@ docs/prd/<file>.md                 PRD 详情（单个文件 10–50 KB）
 | `docs/prd/email/core_email_prd.md` | Email 后端真实实现契约（Express + Drizzle + IMAP/POP3/SMTP） | 改 `backend/src/routes/email.ts`、`backend/src/services/email/`、`packages/db`、`packages/shared` 时 |
 | `docs/prd/email/extend_with_react.md` | React Email 引入评估（模板渲染/编辑器/Tiptap 关系） | 评估邮件模板编辑器选型时 |
 | `docs/prd/email/extend_with_copilo.md` | Email Phase 2 PRD：AI 工作台（三栏/Tiptap/Agent；模板系统在 Phase 3） | 改邮件 AI 面板、编辑工作台时 |
+| `docs/prd/backend-team-v2.0.md` | backend team_v2.0：Team Task Hub + Hermes Service Center 索引 | 改 Team Task、Profile、Skill、MCP、Desktop Sync 时 |
+| `prd/team_v2.0_center_service.md` | backend 单体服务优化完整方案（team_v2.1） | Team Task Hub、Service Center 全量设计 |
+| `prd/team_v2.0.1_hotfix_center_service.md` | team_v2.0.1 hotfix：Webhook/RBAC/审批/Desktop 绑定修补 | hotfix、鉴权缺口、审批流、copilot-serve 集成 |
+| `prd/team_v2.1_center_agent.md` | team_v2.1：Hermes Service Center 集成（Gateway/Run/Events/Tool Facade） | Hermes Chat、Agent Run、SSE、Prompt Template、Task Replay |
 
 ### 3.2 实现目录
 
@@ -266,6 +270,19 @@ docs/prd/<file>.md                 PRD 详情（单个文件 10–50 KB）
 | `backend/src/routes/users.ts` | — | 用户 5 端点（me/userId CRUD） | 改用户管理路由 |
 | `backend/src/routes/audit.ts` | — | 审计 2 端点 | 改审计日志路由 |
 | `backend/src/routes/email.ts` | — | Email 账号/消息/文件夹/同步/附件端点（`/api/v1/email/*`） | 改邮件后端 API 契约 |
+| `backend/src/routes/team-tasks.ts` | — | Team Task Hub 12 端点（`/api/v1/team/tasks/*`） | 团队任务分派、状态回传、copilot-serve |
+| `backend/src/routes/service-center-profiles.ts` | — | Profile 配置中心 | Profile / manifest |
+| `backend/src/routes/service-center-skills.ts` | — | Skill Template Hub | Skill 模板、版本、安装 |
+| `backend/src/routes/service-center-plugins.ts` | — | Plugin Registry | Plugin manifest |
+| `backend/src/routes/service-center-mcp.ts` | — | MCP Registry | MCP Server / Tool |
+| `backend/src/routes/desktop-sync.ts` | — | Desktop Sync / Bootstrap | 桌面端 bootstrap、心跳 |
+| `backend/src/routes/connectors.ts` | — | Connector Webhooks | 外部 Webhook 创建任务 |
+| `backend/src/routes/hermes.ts` | — | Hermes Service Center（`/api/v1/hermes/*`） | AI Chat、Run、Gateway、Prompt Template、Tool Call |
+| `backend/src/routes/task-replay.ts` | — | Task Replay | `GET /team/tasks/:id/replay` |
+| `backend/src/services/team-tasks/` | — | 任务状态机、分派、事件、结果、策略 | Team Task 业务 |
+| `backend/src/services/hermes/` | — | Gateway Client/Router、Run、Events、Tool Facade、Context Builder、Prompt Template | Hermes 服务端 Agent 集成 |
+| `backend/src/services/service-center/` | — | profiles / skills / plugins / mcp / desktop-sync / connectors | Hermes Service Center |
+| `packages/shared/src/hermes/` | — | Hermes 常量、类型、validators | Run/Events/Gateway/ToolCall 契约 |
 | `backend/src/services/auth/` | — | 认证业务（AuthService/TokenService/LoginLockoutService） | 改登录/注册/Token 逻辑 |
 | `backend/src/services/rbac/` | — | RBAC 业务（Workspace/Membership/Role/Permission/User Service） | 改权限管理逻辑 |
 | `backend/src/services/audit/` | — | 审计业务（AuditService，异步批量写入） | 改审计逻辑 |
@@ -275,8 +292,8 @@ docs/prd/<file>.md                 PRD 详情（单个文件 10–50 KB）
 | `backend/src/storage/` | — | S3/MinIO 快照存储（aws-sdk v3） | 改快照存取 |
 | `backend/src/middleware/` | — | auth-v2（Bearer Token + 旧头降级）/ rbac / audit-logger / logger / error-handler | 改鉴权/权限校验/审计/日志/错误响应结构 |
 | `backend/tests/` | — | Vitest 单元测试 | 写后端测试 |
-| `packages/shared/` | `@portal/shared` | 前后端共享：常量 + TS 类型 + Zod 验证器（含 documents/auth/email） | 改 API 契约 / 加共享类型 |
-| `packages/db/` | `@portal/db` | Drizzle schema（documents/auth/email）+ migrations + `createDb` | 改 schema / 加表 / 生成迁移 |
+| `packages/shared/` | `@portal/shared` | 前后端共享：常量 + TS 类型 + Zod 验证器（含 documents/auth/email/**team-tasks/service-center**） | 改 API 契约 / 加共享类型 |
+| `packages/db/` | `@portal/db` | Drizzle schema（documents/auth/email/**team-tasks/service-center**）+ migrations + `createDb` | 改 schema / 加表 / 生成迁移 |
 | `tooling/tsconfig/` | — | 共享 TS 配置（`base.json`/`node.json`），被 backend + packages 继承 | 改全局编译选项 |
 | `.github/workflows/ci.yml` | — | CI：install + typecheck + test + build | 改 CI 流水线 |
 | `copilot-desktop/` | `smc-ai-copilot` | Electron 39 桌面壳（SMC Copilot）：嵌入 Portal `aios-home`（:3000）、AI-OS Auth（:8000）、Hermes Gateway 多 Profile；**独立 git**（如 `loudon84/ai-os-desktop`） | 改桌面 IPC/安装/多 Profile/Web Operator；读 `copilot-desktop/AGENTS.md` |

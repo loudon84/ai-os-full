@@ -33,6 +33,19 @@ const configSchema = z.object({
   workspaceMemberLimit: z.coerce.number().default(100),
   superAdminEmail: z.string().optional(),
   superAdminPassword: z.string().optional(),
+
+  teamTaskWebhookSecret: z.string().min(16).optional(),
+  desktopSyncTokenSecret: z.string().min(16).optional(),
+  mcpServerEnabled: z.coerce.boolean().default(false),
+  mcpServerPort: z.coerce.number().default(8100),
+  serviceCenterBaseUrl: z.string().url().default("http://127.0.0.1:8000"),
+  teamTaskPollIntervalSec: z.coerce.number().default(15),
+  teamTaskTimeoutHours: z.coerce.number().default(24),
+
+  hermesGatewayBaseUrl: z.string().url().optional(),
+  hermesGatewayAuthToken: z.string().optional(),
+  hermesGatewayTimeoutMs: z.coerce.number().default(30000),
+  hermesRunMaxDurationSec: z.coerce.number().default(300),
 }).superRefine((value, ctx) => {
   if (value.nodeEnv === "production" && !value.emailCredentialEncryptionKey) {
     ctx.addIssue({
@@ -76,5 +89,16 @@ export function loadConfig(): AppConfig {
     workspaceMemberLimit: process.env.WORKSPACE_MEMBER_LIMIT,
     superAdminEmail: process.env.SUPER_ADMIN_EMAIL,
     superAdminPassword: process.env.SUPER_ADMIN_PASSWORD,
+    teamTaskWebhookSecret: process.env.TEAM_TASK_WEBHOOK_SECRET,
+    desktopSyncTokenSecret: process.env.DESKTOP_SYNC_TOKEN_SECRET,
+    mcpServerEnabled: process.env.MCP_SERVER_ENABLED,
+    mcpServerPort: process.env.MCP_SERVER_PORT,
+    serviceCenterBaseUrl: process.env.SERVICE_CENTER_BASE_URL,
+    teamTaskPollIntervalSec: process.env.TEAM_TASK_POLL_INTERVAL_SEC,
+    teamTaskTimeoutHours: process.env.TEAM_TASK_TIMEOUT_HOURS,
+    hermesGatewayBaseUrl: process.env.HERMES_GATEWAY_BASE_URL,
+    hermesGatewayAuthToken: process.env.HERMES_GATEWAY_AUTH_TOKEN,
+    hermesGatewayTimeoutMs: process.env.HERMES_GATEWAY_TIMEOUT_MS,
+    hermesRunMaxDurationSec: process.env.HERMES_RUN_MAX_DURATION_SEC,
   });
 }

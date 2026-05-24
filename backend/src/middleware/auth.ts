@@ -10,7 +10,7 @@ export interface RequestContext {
   userId: string;
   roles: string[];
   departments: string[];
-  authSource: "token" | "header";
+  authSource: "token" | "header" | "public" | "webhook" | "service_token";
   permissions: string[];
 }
 
@@ -19,6 +19,7 @@ declare global {
   namespace Express {
     interface Request {
       ctx: RequestContext;
+      rawBody?: string;
     }
   }
 }
