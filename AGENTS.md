@@ -250,6 +250,7 @@ docs/prd/<file>.md                 PRD 详情（单个文件 10–50 KB）
 | `prd/team_v2.0_center_service.md` | backend 单体服务优化完整方案（team_v2.1） | Team Task Hub、Service Center 全量设计 |
 | `prd/team_v2.0.1_hotfix_center_service.md` | team_v2.0.1 hotfix：Webhook/RBAC/审批/Desktop 绑定修补 | hotfix、鉴权缺口、审批流、copilot-serve 集成 |
 | `prd/team_v2.1_center_agent.md` | team_v2.1：Hermes Service Center 集成（Gateway/Run/Events/Tool Facade） | Hermes Chat、Agent Run、SSE、Prompt Template、Task Replay |
+| `prd/team_v1.8_chatpanel.md` | team_v1.8：Workspaces Chat Panel（`HermesWebChatSurface`、`window.workspaceChat`→copilot-serve chat/attachments API）；**v1.8.1 hotfix** 见 PRD 文末 | 改 `copilot-desktop` Workspaces Chat、`copilot-serve` profile chat |
 
 ### 3.2 实现目录
 
@@ -297,7 +298,7 @@ docs/prd/<file>.md                 PRD 详情（单个文件 10–50 KB）
 | `tooling/tsconfig/` | — | 共享 TS 配置（`base.json`/`node.json`），被 backend + packages 继承 | 改全局编译选项 |
 | `.github/workflows/ci.yml` | — | CI：install + typecheck + test + build | 改 CI 流水线 |
 | `copilot-desktop/` | `smc-ai-copilot` | Electron 39 桌面壳（SMC Copilot）：嵌入 Portal `aios-home`（:3000）、AI-OS Auth（:8000）、Hermes Gateway 多 Profile；**独立 git**（如 `loudon84/ai-os-desktop`） | 改桌面 IPC/安装/多 Profile/Web Operator；读 `copilot-desktop/AGENTS.md` |
-| `copilot-serve/` | `ai-copilot-serve` | Python 3.12 FastAPI 本地控制面（:8765）：Gateway 监管、Profile、审批/Workspace Guard；**独立 git**（`loudon84/ai-os-serve`），**不**在 pnpm workspace | 改本地 Hermes 运行时 API；读 `copilot-serve/AGENT.md` |
+| `copilot-serve/` | `ai-copilot-serve` | Python 3.12 FastAPI 本地控制面（:8765）：Gateway 监管、Profile、**team_v1.8** profile chat/attachments SSE、审批/Workspace Guard；**独立 git**（`loudon84/ai-os-serve`），**不**在 pnpm workspace | 改本地 Hermes 运行时 API；读 `copilot-serve/AGENT.md` |
 | `ai-os-api/` | — | **DEPRECATED** Python 后端，见 `ai-os-api/DEPRECATED.md`；**不再修改** | 仅历史参考 |
 
 ---
