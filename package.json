@@ -20,7 +20,13 @@
     "release": "bash scripts/release.sh",
     "release:canary": "bash scripts/release.sh canary",
     "release:stable": "bash scripts/release.sh stable",
-    "prepare-frontend-dist": "bash scripts/prepare-frontend-dist.sh"
+    "prepare-frontend-dist": "bash scripts/prepare-frontend-dist.sh",
+    "pm2:start": "node --import tsx scripts/pm2-deploy.ts start",
+    "pm2:restart": "node --import tsx scripts/pm2-deploy.ts restart",
+    "pm2:stop": "node --import tsx scripts/pm2-deploy.ts stop",
+    "pm2:status": "node --import tsx scripts/pm2-deploy.ts status",
+    "pm2:logs": "node --import tsx scripts/pm2-deploy.ts logs",
+    "pm2:build": "node --import tsx scripts/pm2-deploy.ts build"
   },
   "devDependencies": { 
     "tsx": "^4.19.2",
